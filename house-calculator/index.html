@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Калькулятор стоимости строительства частного дома в Анапе">
+<title>Калькулятор стоимости дома</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#EDEFEC; --surface:#FFFFFF; --ink:#18201D; --muted:#5B6661; --line:#D3D8D4;
+  --accent:#1F4E8C; --accent-ink:#FFFFFF; --signal:#F2B705; --signal-ink:#1B1A10;
+  --chip:#E4E9F2; --ok:#1E7A4B;
+  --display:"Montserrat", "Segoe UI", system-ui, sans-serif;
+  --body:"Montserrat", "Segoe UI", system-ui, sans-serif;
+  --mono:"Montserrat", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121614; --surface:#1B211E; --ink:#E8ECE9; --muted:#9AA59F; --line:#2E3733;
+    --accent:#6FA0E0; --accent-ink:#0D1624; --signal:#F2C230; --signal-ink:#1B1A10;
+    --chip:#223044; --ok:#4FC286;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121614; --surface:#1B211E; --ink:#E8ECE9; --muted:#9AA59F; --line:#2E3733;
+  --accent:#6FA0E0; --accent-ink:#0D1624; --signal:#F2C230; --signal-ink:#1B1A10;
+  --chip:#223044; --ok:#4FC286;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:24px}
+.demo-bar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);border-bottom:1px dashed var(--line);padding-bottom:12px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:600;color:var(--ink);font-size:14px}
+.logo i{width:28px;height:28px;border:2px dashed var(--muted);border-radius:6px;display:inline-block}
+.tag{background:var(--signal);color:var(--signal-ink);font-weight:600;font-size:12px;padding:3px 8px;border-radius:4px;letter-spacing:.02em}
+header h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,4.2vw,44px);line-height:1.12;margin:0 0 10px;text-wrap:balance;max-width:20ch}
+header p{margin:0;color:var(--muted);max-width:60ch;font-size:17px}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.params{display:grid;gap:26px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:10px}
+legend{font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0}
+.area-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.area-val{font-family:var(--display);font-size:32px;font-weight:700}
+.area-val small{font-family:var(--body);font-size:16px;font-weight:500;color:var(--muted);margin-left:4px}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.scale{display:flex;justify-content:space-between;font:12px var(--mono);color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt label{display:grid;gap:2px;height:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt label b{font-weight:600}
+.opt label span{font-size:13px;color:var(--muted);line-height:1.35}
+.opt input:checked + label{border-color:var(--accent);background:var(--chip)}
+.opt input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+.extras{display:grid;gap:8px}
+.check{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;cursor:pointer}
+.check input{margin-top:4px;accent-color:var(--accent);width:18px;height:18px;flex:none}
+.check div{flex:1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.check em{font-style:normal;font:13px var(--mono);color:var(--muted);white-space:nowrap}
+
+.result{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:grid;gap:18px}
+.total{background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:24px;display:grid;gap:6px}
+.total .lbl{font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.total .sum{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,36px);line-height:1.15;font-variant-numeric:tabular-nums}
+.total .per{font:14px var(--mono);opacity:.9}
+.total .term{margin-top:6px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--accent-ink) 25%,transparent);font-size:15px}
+.breakdown{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.breakdown h3{margin:0 0 10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.breakdown dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:8px 16px;font-size:15px}
+.breakdown dd{margin:0;font-family:var(--mono);font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
+.breakdown dt{color:var(--ink)}
+.form{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:12px}
+.form h3{margin:0;font-family:var(--display);font-size:18px;font-weight:500}
+.form p{margin:0;color:var(--muted);font-size:14px}
+.field{display:grid;gap:4px}
+.field label{font-size:13px;color:var(--muted)}
+.field input{font:inherit;padding:11px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.field input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.field input[aria-invalid=true]{border-color:#C0392B}
+.err{color:#C0392B;font-size:13px;min-height:0}
+button{font:600 16px var(--body);padding:14px 18px;border:0;border-radius:8px;background:var(--signal);color:var(--signal-ink);cursor:pointer}
+button:hover{filter:brightness(.96)}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.fine{font-size:12px;color:var(--muted)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.45;color:var(--muted);cursor:pointer}
+.consent input{margin-top:2px;width:18px;height:18px;flex:none;accent-color:var(--accent)}
+.consent u{text-underline-offset:2px;color:var(--ink)}
+
+.lead{display:grid;gap:10px}
+.lead h3{margin:0;font-family:var(--display);font-size:18px;font-weight:500}
+.tg{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font:14px/1.6 var(--body);white-space:pre-wrap;overflow-wrap:anywhere}
+.ok{color:var(--ok);font-weight:600;font-size:14px}
+.link{background:none;color:var(--accent);padding:0;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;border-top:1px solid var(--line);padding-top:24px}
+.how div{display:grid;gap:4px}
+.how b{font-weight:600}
+.how span{color:var(--muted);font-size:15px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Сколько стоит построить дом в Анапе</h1>
+    <p>Выберите площадь, материал и комплектацию. Цена пересчитывается сразу, а расчёт можно отправить менеджеру и получить точную смету.</p>
+  </header>
+
+  <div class="grid">
+    <form class="params" id="calc" onsubmit="return false">
+      <fieldset>
+        <legend>Площадь дома</legend>
+        <div class="area-row"><span class="area-val"><span id="areaOut">140</span><small>м²</small></span><span class="fine" id="footOut">пятно застройки 70 м²</span></div>
+        <input type="range" id="area" min="60" max="300" step="5" value="140" aria-label="Площадь дома, м²">
+        <div class="scale"><span>60</span><span>120</span><span>180</span><span>240</span><span>300</span></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Этажность</legend>
+        <div class="opts" id="floors"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Материал стен</legend>
+        <div class="opts" id="walls"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Фундамент</legend>
+        <div class="opts" id="found"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Кровля</legend>
+        <div class="opts" id="roof"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Комплектация</legend>
+        <div class="opts" id="finish"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Дополнительно</legend>
+        <div class="extras" id="extras"></div>
+      </fieldset>
+    </form>
+
+    <aside class="result" aria-live="polite">
+      <div class="total">
+        <span class="lbl">Ориентировочная стоимость</span>
+        <span class="sum" id="sum">—</span>
+        <span class="per" id="per">—</span>
+        <span class="term" id="term">—</span>
+      </div>
+
+      <div class="breakdown">
+        <h3>Из чего складывается</h3>
+        <dl id="bd"></dl>
+      </div>
+
+      <form class="form" id="leadForm" novalidate>
+        <h3>Получить точную смету</h3>
+        <p>Менеджер перезвонит в течение 15 минут в рабочее время и уточнит детали.</p>
+        <div class="field"><label for="name">Имя</label><input id="name" autocomplete="name" value="Андрей"></div>
+        <div class="field"><label for="phone">Телефон</label><input id="phone" type="tel" autocomplete="tel" value="+7 918 000-00-00" inputmode="tel"><span class="err" id="phoneErr"></span></div>
+        <label class="consent" for="consent"><input type="checkbox" id="consent"><span>Даю <u>согласие на обработку персональных данных</u> и принимаю <u>политику конфиденциальности</u></span></label>
+        <span class="err" id="consentErr"></span>
+        <button type="submit">Отправить расчёт</button>
+      </form>
+
+      <div class="form lead" id="lead" hidden>
+        <span class="ok">Заявка отправлена</span>
+        <h3>Так она придёт менеджеру в Telegram</h3>
+        <div class="tg" id="tg"></div>
+        <button type="button" class="link" id="again">Изменить расчёт</button>
+      </div>
+    </aside>
+  </div>
+
+</div>
+
+<script>
+const P = {
+  floors: [
+    {id:'1', t:'1 этаж', d:'больше фундамента и кровли', k:1.08},
+    {id:'2', t:'2 этажа', d:'оптимально по цене за м²', k:1.00},
+    {id:'m', t:'Мансарда', d:'второй этаж под крышей', k:0.97},
+  ],
+  walls: [
+    {id:'gb', t:'Газобетон', d:'самый популярный вариант', p:36000},
+    {id:'kb', t:'Керамоблок', d:'тёплый, без утепления', p:41000},
+    {id:'br', t:'Кирпич', d:'долговечно, дольше строить', p:46000},
+    {id:'fr', t:'Каркас', d:'быстро и недорого', p:30000},
+  ],
+  found: [
+    {id:'lent', t:'Ленточный', d:'для стабильных грунтов', p:0},
+    {id:'plita', t:'Монолитная плита', d:'для слабых и влажных грунтов', p:4200},
+    {id:'svai', t:'Сваи с ростверком', d:'для участка с уклоном', p:2600},
+  ],
+  roof: [
+    {id:'mch', t:'Металлочерепица', d:'базовый вариант', p:0},
+    {id:'soft', t:'Гибкая черепица', d:'тише в дождь', p:1900},
+    {id:'falz', t:'Фальцевая', d:'современный вид', p:2800},
+  ],
+  finish: [
+    {id:'tk', t:'Тёплый контур', d:'коробка, кровля, окна, двери', p:0},
+    {id:'wb', t:'White box', d:'+ инженерия, стяжка, штукатурка', p:11000},
+    {id:'pk', t:'Под ключ', d:'заезжай и живи', p:24000},
+  ],
+  extras: [
+    {id:'terr', t:'Терраса 20 м²', p:420000},
+    {id:'nav', t:'Навес на 2 машины', p:280000},
+    {id:'eng', t:'Скважина и септик', p:390000},
+    {id:'proj', t:'Индивидуальный проект', p:120000},
+  ]
+};
+const S = {floors:'2', walls:'gb', found:'lent', roof:'mch', finish:'wb', extras:new Set(['terr'])};
+const rub = n => Math.round(n).toLocaleString('ru-RU') + ' ₽';
+const round = n => Math.round(n/10000)*10000;
+
+function buildOpts(key){
+  const box = document.getElementById(key);
+  box.innerHTML = P[key].map(o => `
+    <div class="opt"><input type="radio" name="${key}" id="${key}-${o.id}" value="${o.id}" ${S[key]===o.id?'checked':''}>
+    <label for="${key}-${o.id}"><b>${o.t}</b><span>${o.d}</span></label></div>`).join('');
+  box.addEventListener('change', e => { S[key] = e.target.value; calc(); });
+}
+['floors','walls','found','roof','finish'].forEach(buildOpts);
+
+const ex = document.getElementById('extras');
+ex.innerHTML = P.extras.map(o => `
+  <label class="check" for="ex-${o.id}"><input type="checkbox" id="ex-${o.id}" value="${o.id}" ${S.extras.has(o.id)?'checked':''}>
+  <div><span>${o.t}</span><em>+${rub(o.p)}</em></div></label>`).join('');
+ex.addEventListener('change', e => { e.target.checked ? S.extras.add(e.target.value) : S.extras.delete(e.target.value); calc(); });
+
+const area = document.getElementById('area');
+area.addEventListener('input', calc);
+const get = (k) => P[k].find(o => o.id === S[k]);
+
+let last = {};
+function calc(){
+  const A = +area.value;
+  const fl = get('floors'), w = get('walls'), f = get('found'), r = get('roof'), fin = get('finish');
+  const levels = fl.id === '1' ? 1 : (fl.id === 'm' ? 1.6 : 2);
+  const foot = Math.round(A / levels);
+  const box = A * w.p * fl.k;
+  const foundC = foot * (6500 + f.p);
+  const roofC = foot * r.p;
+  const finC = A * fin.p;
+  const exSel = P.extras.filter(o => S.extras.has(o.id));
+  const exC = exSel.reduce((s,o) => s + o.p, 0);
+  const total = box + foundC + roofC + finC + exC;
+  const lo = round(total*0.95), hi = round(total*1.05);
+  const months = Math.round(3 + A/45 + (fin.id==='wb'?1:fin.id==='pk'?2.5:0) + (w.id==='br'?1:w.id==='fr'?-1:0));
+
+  document.getElementById('areaOut').textContent = A;
+  document.getElementById('footOut').textContent = 'пятно застройки ' + foot + ' м²';
+  document.getElementById('sum').textContent = 'от ' + (lo/1e6).toFixed(1).replace('.',',') + ' до ' + (hi/1e6).toFixed(1).replace('.',',') + ' млн ₽';
+  document.getElementById('per').textContent = '≈ ' + rub(total/A) + ' за м²';
+  document.getElementById('term').textContent = 'Срок строительства: ' + months + '–' + (months+1) + ' мес.';
+
+  const rows = [
+    ['Стены и перекрытия', box],
+    ['Фундамент', foundC],
+    [r.id==='mch' ? 'Кровля' : 'Кровля (доплата)', roofC],
+    ['Комплектация «' + fin.t + '»', finC],
+    ...exSel.map(o => [o.t, o.p])
+  ].filter(x => x[1] > 0);
+  document.getElementById('bd').innerHTML = rows.map(([k,v]) => `<dt>${k}</dt><dd>${rub(round(v))}</dd>`).join('');
+
+  last = {A, fl, w, f, r, fin, exSel, lo, hi, months};
+}
+calc();
+
+const form = document.getElementById('leadForm');
+document.getElementById('consent').addEventListener('change', e => { if (e.target.checked) document.getElementById('consentErr').textContent = ''; });
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const phone = document.getElementById('phone');
+  const digits = phone.value.replace(/\D/g,'');
+  const err = document.getElementById('phoneErr');
+  if (digits.length < 11){ phone.setAttribute('aria-invalid','true'); err.textContent = 'Введите номер полностью, например +7 918 123-45-67'; phone.focus(); return; }
+  phone.removeAttribute('aria-invalid'); err.textContent = '';
+  const consent = document.getElementById('consent'), cErr = document.getElementById('consentErr');
+  if (!consent.checked){ cErr.textContent = 'Отметьте согласие на обработку персональных данных, чтобы отправить заявку'; consent.focus(); return; }
+  cErr.textContent = '';
+  const name = document.getElementById('name').value.trim() || 'Без имени';
+  const L = last;
+  document.getElementById('tg').textContent =
+`🏠 Новая заявка с калькулятора
+
+Имя: ${name}
+Телефон: ${phone.value}
+
+Площадь: ${L.A} м², ${L.fl.t.toLowerCase()}
+Стены: ${L.w.t}
+Фундамент: ${L.f.t}
+Кровля: ${L.r.t}
+Комплектация: ${L.fin.t}
+Дополнительно: ${L.exSel.length ? L.exSel.map(o=>o.t).join(', ') : 'нет'}
+
+Расчёт: ${rub(L.lo)} – ${rub(L.hi)}
+Срок: ${L.months}–${L.months+1} мес.`;
+  form.hidden = true;
+  document.getElementById('lead').hidden = false;
+});
+document.getElementById('again').addEventListener('click', () => {
+  document.getElementById('lead').hidden = true; form.hidden = false;
+  document.getElementById('calc').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>
