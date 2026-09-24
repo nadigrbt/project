@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
 :root{
-  --bg:#EDEFEC; --surface:#FFFFFF; --ink:#18201D; --muted:#5B6661; --line:#D3D8D4;
+  --bg:#EDEFEC; --page:#FFFFFF; --page-ink:#18201D; --page-muted:#5B6661; --surface:#FFFFFF; --ink:#18201D; --muted:#5B6661; --line:#D3D8D4;
   --accent:#1F4E8C; --accent-ink:#FFFFFF; --signal:#F2B705; --signal-ink:#1B1A10;
   --chip:#E4E9F2; --ok:#1E7A4B;
   --display:"Montserrat", "Segoe UI", system-ui, sans-serif;
@@ -20,14 +20,14 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --bg:#121614; --surface:#1B211E; --ink:#E8ECE9; --muted:#9AA59F; --line:#2E3733;
+    --bg:#121614; --page:#1B211E; --page-ink:#E8ECE9; --page-muted:#9AA59F; --surface:#1B211E; --ink:#E8ECE9; --muted:#9AA59F; --line:#2E3733;
     --accent:#6FA0E0; --accent-ink:#0D1624; --signal:#F2C230; --signal-ink:#1B1A10;
     --chip:#223044; --ok:#4FC286;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#121614; --surface:#1B211E; --ink:#E8ECE9; --muted:#9AA59F; --line:#2E3733;
+  --bg:#121614; --page:#1B211E; --page-ink:#E8ECE9; --page-muted:#9AA59F; --surface:#1B211E; --ink:#E8ECE9; --muted:#9AA59F; --line:#2E3733;
   --accent:#6FA0E0; --accent-ink:#0D1624; --signal:#F2C230; --signal-ink:#1B1A10;
   --chip:#223044; --ok:#4FC286;
 }
@@ -35,14 +35,15 @@
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0}
-body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);padding-inline:16px;padding-block:20px 48px}
+body{background:var(--page);color:var(--ink);font:16px/1.5 var(--body);padding-inline:16px;padding-block:20px 48px}
 .wrap{max-width:1120px;margin:0 auto;display:grid;gap:24px}
 .demo-bar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);border-bottom:1px dashed var(--line);padding-bottom:12px}
 .logo{display:inline-flex;align-items:center;gap:10px;font-weight:600;color:var(--ink);font-size:14px}
 .logo i{width:28px;height:28px;border:2px dashed var(--muted);border-radius:6px;display:inline-block}
 .tag{background:var(--signal);color:var(--signal-ink);font-weight:600;font-size:12px;padding:3px 8px;border-radius:4px;letter-spacing:.02em}
 header h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,4.2vw,44px);line-height:1.12;margin:0 0 10px;text-wrap:balance;max-width:20ch}
-header p{margin:0;color:var(--muted);max-width:60ch;font-size:17px}
+header{color:var(--page-ink)}
+header p{margin:0;color:var(--page-muted);max-width:60ch;font-size:17px}
 .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start}
 @media (max-width:860px){.grid{grid-template-columns:1fr}}
 .params{display:grid;gap:26px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px}
@@ -57,7 +58,9 @@ input[type=range]{width:100%;accent-color:var(--accent);height:28px}
 .opt{position:relative}
 .opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
 .opt label{display:grid;gap:2px;height:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s}
-.opt label b{font-weight:600}
+.opt label b{font-weight:600;overflow-wrap:anywhere;hyphens:auto;-webkit-hyphens:auto}
+.opt label{min-width:0}
+@media (max-width:480px){.opt label{padding:12px}.opt label b{font-size:15px}}
 .opt label span{font-size:13px;color:var(--muted);line-height:1.35}
 .opt input:checked + label{border-color:var(--accent);background:var(--chip)}
 .opt input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
@@ -109,7 +112,7 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" lang="ru">
   <header>
     <h1>Сколько стоит построить дом в Анапе</h1>
     <p>Выберите площадь, материал и комплектацию. Цена пересчитывается сразу, а расчёт можно отправить менеджеру и получить точную смету.</p>
@@ -119,7 +122,7 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
     <form class="params" id="calc" onsubmit="return false">
       <fieldset>
         <legend>Площадь дома</legend>
-        <div class="area-row"><span class="area-val"><span id="areaOut">140</span><small>м²</small></span><span class="fine" id="footOut">пятно застройки 70 м²</span></div>
+        <div class="area-row"><span class="area-val"><span id="areaOut">140</span><small>м²</small></span><span class="fine" id="footOut">пятно застройки ≈ 80 м²</span></div>
         <input type="range" id="area" min="60" max="300" step="5" value="140" aria-label="Площадь дома, м²">
         <div class="scale"><span>60</span><span>120</span><span>180</span><span>240</span><span>300</span></div>
       </fieldset>
@@ -171,8 +174,8 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
       <form class="form" id="leadForm" novalidate>
         <h3>Получить точную смету</h3>
         <p>Менеджер перезвонит в течение 15 минут в рабочее время и уточнит детали.</p>
-        <div class="field"><label for="name">Имя</label><input id="name" autocomplete="name" value="Андрей"></div>
-        <div class="field"><label for="phone">Телефон</label><input id="phone" type="tel" autocomplete="tel" value="+7 918 000-00-00" inputmode="tel"><span class="err" id="phoneErr"></span></div>
+        <div class="field"><label for="name">Имя</label><input id="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
+        <div class="field"><label for="phone">Телефон</label><input id="phone" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00" inputmode="tel"><span class="err" id="phoneErr"></span></div>
         <label class="consent" for="consent"><input type="checkbox" id="consent"><span>Даю <u>согласие на обработку персональных данных</u> и принимаю <u>политику конфиденциальности</u></span></label>
         <span class="err" id="consentErr"></span>
         <button type="submit">Отправить расчёт</button>
@@ -208,7 +211,7 @@ const P = {
     {id:'svai', t:'Сваи с ростверком', d:'для участка с уклоном', p:2600},
   ],
   roof: [
-    {id:'mch', t:'Металлочерепица', d:'базовый вариант', p:0},
+    {id:'mch', t:'Металло\u00ADчерепица', d:'базовый вариант', p:0},
     {id:'soft', t:'Гибкая черепица', d:'тише в дождь', p:1900},
     {id:'falz', t:'Фальцевая', d:'современный вид', p:2800},
   ],
@@ -252,7 +255,8 @@ function calc(){
   const A = +area.value;
   const fl = get('floors'), w = get('walls'), f = get('found'), r = get('roof'), fin = get('finish');
   const levels = fl.id === '1' ? 1 : (fl.id === 'm' ? 1.6 : 2);
-  const foot = Math.round(A / levels);
+  // общая площадь считается по внутренним помещениям, пятно — по внешнему контуру стен (+~15%)
+  const foot = Math.round(A / levels * 1.15 / 5) * 5;
   const box = A * w.p * fl.k;
   const foundC = foot * (6500 + f.p);
   const roofC = foot * r.p;
@@ -264,7 +268,7 @@ function calc(){
   const months = Math.round(3 + A/45 + (fin.id==='wb'?1:fin.id==='pk'?2.5:0) + (w.id==='br'?1:w.id==='fr'?-1:0));
 
   document.getElementById('areaOut').textContent = A;
-  document.getElementById('footOut').textContent = 'пятно застройки ' + foot + ' м²';
+  document.getElementById('footOut').textContent = 'пятно застройки ≈ ' + foot + ' м²';
   document.getElementById('sum').textContent = 'от ' + (lo/1e6).toFixed(1).replace('.',',') + ' до ' + (hi/1e6).toFixed(1).replace('.',',') + ' млн ₽';
   document.getElementById('per').textContent = '≈ ' + rub(total/A) + ' за м²';
   document.getElementById('term').textContent = 'Срок строительства: ' + months + '–' + (months+1) + ' мес.';
@@ -289,7 +293,7 @@ form.addEventListener('submit', e => {
   const phone = document.getElementById('phone');
   const digits = phone.value.replace(/\D/g,'');
   const err = document.getElementById('phoneErr');
-  if (digits.length < 11){ phone.setAttribute('aria-invalid','true'); err.textContent = 'Введите номер полностью, например +7 918 123-45-67'; phone.focus(); return; }
+  if (digits.length < 11 || !/^[78]/.test(digits)){ phone.setAttribute('aria-invalid','true'); err.textContent = 'Введите номер полностью, например +7 918 123-45-67'; phone.focus(); return; }
   phone.removeAttribute('aria-invalid'); err.textContent = '';
   const consent = document.getElementById('consent'), cErr = document.getElementById('consentErr');
   if (!consent.checked){ cErr.textContent = 'Отметьте согласие на обработку персональных данных, чтобы отправить заявку'; consent.focus(); return; }
@@ -305,7 +309,7 @@ form.addEventListener('submit', e => {
 Площадь: ${L.A} м², ${L.fl.t.toLowerCase()}
 Стены: ${L.w.t}
 Фундамент: ${L.f.t}
-Кровля: ${L.r.t}
+Кровля: ${L.r.t.replace(/\u00AD/g,'')}
 Комплектация: ${L.fin.t}
 Дополнительно: ${L.exSel.length ? L.exSel.map(o=>o.t).join(', ') : 'нет'}
 
