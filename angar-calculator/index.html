@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Калькулятор стоимости строительства ангара, склада или цеха из металлоконструкций">
+<title>Калькулятор стоимости ангара</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#EDEFEC; --page:#FFFFFF; --page-ink:#18201D; --page-muted:#5B6661; --surface:#FFFFFF; --ink:#18201D; --muted:#5B6661; --line:#D3D8D4;
+  --accent:#1F4E8C; --accent-ink:#FFFFFF; --signal:#F2B705; --signal-ink:#1B1A10;
+  --chip:#E4E9F2; --ok:#1E7A4B;
+  --display:"Montserrat", "Segoe UI", system-ui, sans-serif;
+  --body:"Montserrat", "Segoe UI", system-ui, sans-serif;
+  --mono:"Montserrat", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121614; --page:#1B211E; --page-ink:#E8ECE9; --page-muted:#9AA59F; --surface:#1B211E; --ink:#E8ECE9; --muted:#9AA59F; --line:#2E3733;
+    --accent:#6FA0E0; --accent-ink:#0D1624; --signal:#F2C230; --signal-ink:#1B1A10;
+    --chip:#223044; --ok:#4FC286;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121614; --page:#1B211E; --page-ink:#E8ECE9; --page-muted:#9AA59F; --surface:#1B211E; --ink:#E8ECE9; --muted:#9AA59F; --line:#2E3733;
+  --accent:#6FA0E0; --accent-ink:#0D1624; --signal:#F2C230; --signal-ink:#1B1A10;
+  --chip:#223044; --ok:#4FC286;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+body{background:var(--page);color:var(--ink);font:16px/1.5 var(--body);padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:24px}
+.tag{display:inline-block;background:var(--signal);color:var(--signal-ink);font-weight:600;font-size:12px;padding:3px 8px;border-radius:4px;letter-spacing:.02em;margin-bottom:12px}
+header h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,4.2vw,44px);line-height:1.12;margin:0 0 10px;text-wrap:balance;max-width:22ch}
+header{color:var(--page-ink)}
+header p{margin:0;color:var(--page-muted);max-width:62ch;font-size:17px}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.params{display:grid;gap:26px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px}
+@media (max-width:480px){.params{padding:18px}}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:10px;min-width:0}
+legend{font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0}
+.dims{display:grid;gap:18px}
+.dim{display:grid;gap:2px}
+.dim-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.dim-name{font-weight:600;font-size:15px}
+.dim-val{font-family:var(--display);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+.dim-val small{font-family:var(--body);font-size:14px;font-weight:500;color:var(--muted);margin-left:3px}
+.area-sum{display:flex;flex-wrap:wrap;gap:4px 16px;justify-content:space-between;align-items:baseline;padding:12px 14px;background:var(--chip);border-radius:8px}
+.area-sum b{font-family:var(--display);font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent);height:28px;margin:0}
+.scale{display:flex;justify-content:space-between;font:12px var(--mono);color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt label{display:grid;gap:2px;height:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s;min-width:0}
+.opt label b{font-weight:600;overflow-wrap:anywhere;hyphens:auto;-webkit-hyphens:auto}
+@media (max-width:480px){.opt label{padding:12px}.opt label b{font-size:15px}}
+.opt label span{font-size:13px;color:var(--muted);line-height:1.35}
+.opt input:checked + label{border-color:var(--accent);background:var(--chip)}
+.opt input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+.opt input:disabled{cursor:not-allowed}
+.opt input:disabled + label{opacity:.45;cursor:not-allowed}
+.note{font-size:13px;color:var(--muted);margin:0}
+.extras{display:grid;gap:8px}
+.check{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;cursor:pointer}
+.check input{margin-top:4px;accent-color:var(--accent);width:18px;height:18px;flex:none}
+.check div{flex:1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.check em{font-style:normal;font:13px var(--mono);color:var(--muted);white-space:nowrap}
+
+.result{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:grid;gap:18px}
+@media (max-width:860px){.result{position:static}}
+.total{background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:24px;display:grid;gap:6px}
+.total .lbl{font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.total .sum{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,36px);line-height:1.15;font-variant-numeric:tabular-nums}
+.total .per{font:14px var(--mono);opacity:.9}
+.total .term{margin-top:6px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--accent-ink) 25%,transparent);font-size:15px}
+.breakdown{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.breakdown h3{margin:0 0 10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.breakdown dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:8px 16px;font-size:15px}
+.breakdown dd{margin:0;font-family:var(--mono);font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
+.breakdown dt{color:var(--ink)}
+.form{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:12px}
+.form h3{margin:0;font-family:var(--display);font-size:18px;font-weight:500}
+.form p{margin:0;color:var(--muted);font-size:14px}
+.field{display:grid;gap:4px}
+.field label{font-size:13px;color:var(--muted)}
+.field input{font:inherit;padding:11px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.field input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.field input[aria-invalid=true]{border-color:#C0392B}
+.err{color:#C0392B;font-size:13px;min-height:0}
+button{font:600 16px var(--body);padding:14px 18px;border:0;border-radius:8px;background:var(--signal);color:var(--signal-ink);cursor:pointer}
+button:hover{filter:brightness(.96)}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.fine{font-size:12px;color:var(--muted)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.45;color:var(--muted);cursor:pointer}
+.consent input{margin-top:2px;width:18px;height:18px;flex:none;accent-color:var(--accent)}
+.consent u{text-underline-offset:2px;color:var(--ink)}
+
+.lead{display:grid;gap:10px}
+.lead h3{margin:0;font-family:var(--display);font-size:18px;font-weight:500}
+.tg{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font:14px/1.6 var(--body);white-space:pre-wrap;overflow-wrap:anywhere}
+.ok{color:var(--ok);font-weight:600;font-size:14px}
+.link{background:none;color:var(--accent);padding:0;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap" lang="ru">
+  <header>
+    <h1>Сколько стоит построить ангар, склад или цех</h1>
+    <p>Укажите размеры здания, тип каркаса и утепление. Цена пересчитывается сразу, а расчёт можно отправить менеджеру и получить точную смету.</p>
+  </header>
+
+  <div class="grid">
+    <form class="params" id="calc" onsubmit="return false">
+      <fieldset>
+        <legend>Назначение здания</legend>
+        <div class="opts" id="type"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Размеры</legend>
+        <div class="dims">
+          <div class="dim">
+            <div class="dim-row"><span class="dim-name">Ширина (пролёт)</span><span class="dim-val"><span id="wOut">24</span><small>м</small></span></div>
+            <input type="range" id="w" min="12" max="48" step="3" value="24" aria-label="Ширина здания, м">
+            <div class="scale"><span>12</span><span>24</span><span>36</span><span>48</span></div>
+          </div>
+          <div class="dim">
+            <div class="dim-row"><span class="dim-name">Длина</span><span class="dim-val"><span id="lOut">48</span><small>м</small></span></div>
+            <input type="range" id="l" min="18" max="120" step="6" value="48" aria-label="Длина здания, м">
+            <div class="scale"><span>18</span><span>52</span><span>86</span><span>120</span></div>
+          </div>
+          <div class="dim">
+            <div class="dim-row"><span class="dim-name">Высота до низа ферм</span><span class="dim-val"><span id="hOut">8</span><small>м</small></span></div>
+            <input type="range" id="h" min="4" max="14" step="1" value="8" aria-label="Высота здания, м">
+            <div class="scale"><span>4</span><span>9</span><span>14</span></div>
+          </div>
+          <div class="area-sum"><span>Площадь здания</span><b id="areaOut">1 152 м²</b></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Тип каркаса</legend>
+        <div class="opts" id="frame"></div>
+        <p class="note" id="frameNote" hidden>Для пролёта больше 24 м подходит только металлокаркас.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Стены и кровля</legend>
+        <div class="opts" id="wall"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Фундамент</legend>
+        <div class="opts" id="found"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Регион строительства</legend>
+        <div class="opts" id="region"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Дополнительно</legend>
+        <div class="extras" id="extras"></div>
+      </fieldset>
+    </form>
+
+    <aside class="result" aria-live="polite">
+      <div class="total">
+        <span class="lbl">Ориентировочная стоимость под ключ</span>
+        <span class="sum" id="sum">—</span>
+        <span class="per" id="per">—</span>
+        <span class="term" id="term">—</span>
+      </div>
+
+      <div class="breakdown">
+        <h3>Из чего складывается</h3>
+        <dl id="bd"></dl>
+      </div>
+
+      <form class="form" id="leadForm" novalidate>
+        <h3>Получить точную смету</h3>
+        <p>Инженер перезвонит в течение 30 минут в рабочее время, уточнит нагрузки и условия участка.</p>
+        <div class="field"><label for="name">Имя</label><input id="name" autocomplete="name" placeholder="Как к вам обращаться"></div>
+        <div class="field"><label for="company">Компания</label><input id="company" autocomplete="organization" placeholder="Необязательно"></div>
+        <div class="field"><label for="phone">Телефон</label><input id="phone" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00" inputmode="tel"><span class="err" id="phoneErr"></span></div>
+        <label class="consent" for="consent"><input type="checkbox" id="consent"><span>Даю <u>согласие на обработку персональных данных</u> и принимаю <u>политику конфиденциальности</u></span></label>
+        <span class="err" id="consentErr"></span>
+        <button type="submit">Отправить расчёт</button>
+      </form>
+
+      <div class="form lead" id="lead" hidden>
+        <span class="ok">Заявка отправлена</span>
+        <h3>Так она придёт менеджеру в Telegram</h3>
+        <div class="tg" id="tg"></div>
+        <button type="button" class="link" id="again">Изменить расчёт</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+// Все цены и коэффициенты — демонстрационные. На реальном сайте они редактируются в админке.
+const P = {
+  type: [
+    {id:'hangar', t:'Ангар', d:'техника, хранение, сельхоз', k:1.00},
+    {id:'sklad',  t:'Склад', d:'стеллажное и напольное хранение', k:1.03},
+    {id:'ceh',    t:'Цех', d:'усиленный каркас под оборудование', k:1.10},
+  ],
+  frame: [
+    {id:'metal', t:'Металлокаркас', d:'сварной, пролёты до 48 м', p:6500, maxW:48},
+    {id:'lstk',  t:'ЛСТК', d:'лёгкий и быстрый, до 24 м', p:4500, maxW:24},
+    {id:'arch',  t:'Арочный', d:'бескаркасный, самый бюджетный', p:3200, maxW:24},
+  ],
+  wall: [
+    {id:'prof', t:'Холодный', d:'профлист без утепления', p:1300},
+    {id:'s100', t:'Утеплённый', d:'сэндвич-панели 100 мм', p:3600},
+    {id:'s150', t:'Тёплый', d:'сэндвич-панели 150 мм', p:4400},
+  ],
+  found: [
+    {id:'stolb', t:'Столбчатый', d:'под колонны каркаса', p:2200},
+    {id:'lent',  t:'Ленточный', d:'под цоколь и тяжёлые стены', p:3800},
+    {id:'plita', t:'Монолитная плита', d:'сразу с основанием пола', p:6500},
+  ],
+  region: [
+    {id:'msk', t:'Москва и область', d:'доставка и монтаж включены', k:1.00},
+    {id:'spb', t:'Петербург и область', d:'доставка и монтаж включены', k:0.97},
+  ],
+  extras: [
+    {id:'gate',  t:'Секционные ворота 4×4 м, 2 шт.', p:420000},
+    {id:'floor', t:'Бетонный пол с топпингом', m2:3200},
+    {id:'crane', t:'Кран-балка 5 т', p:1900000},
+    {id:'proj',  t:'Проект КМ, КМД и фундаментов', m2:400, min:150000},
+  ]
+};
+const st = {type:'sklad', frame:'metal', wall:'s100', found:'stolb', region:'msk', extras:new Set(['gate'])};
+const rub = n => Math.round(n).toLocaleString('ru-RU') + ' ₽';
+const round = (n, s=10000) => Math.round(n/s)*s;
+const mln = n => (n/1e6).toFixed(1).replace('.', ',');
+const get = k => P[k].find(o => o.id === st[k]);
+const exPrice = (o, S) => o.p ?? Math.max(o.min || 0, S * o.m2);
+
+function buildOpts(key){
+  const box = document.getElementById(key);
+  box.innerHTML = P[key].map(o => `
+    <div class="opt"><input type="radio" name="${key}" id="${key}-${o.id}" value="${o.id}" ${st[key]===o.id?'checked':''}>
+    <label for="${key}-${o.id}"><b>${o.t}</b><span>${o.d}</span></label></div>`).join('');
+  box.addEventListener('change', e => { st[key] = e.target.value; calc(); });
+}
+['type','frame','wall','found','region'].forEach(buildOpts);
+
+const ex = document.getElementById('extras');
+ex.innerHTML = P.extras.map(o => `
+  <label class="check" for="ex-${o.id}"><input type="checkbox" id="ex-${o.id}" value="${o.id}" ${st.extras.has(o.id)?'checked':''}>
+  <div><span>${o.t}</span><em id="exp-${o.id}"></em></div></label>`).join('');
+ex.addEventListener('change', e => { e.target.checked ? st.extras.add(e.target.value) : st.extras.delete(e.target.value); calc(); });
+
+const wIn = document.getElementById('w'), lIn = document.getElementById('l'), hIn = document.getElementById('h');
+[wIn, lIn, hIn].forEach(i => i.addEventListener('input', calc));
+
+function syncFrames(W){
+  let blocked = false;
+  P.frame.forEach(o => {
+    const inp = document.getElementById('frame-' + o.id);
+    inp.disabled = W > o.maxW;
+    if (inp.disabled) blocked = true;
+  });
+  if (W > get('frame').maxW){
+    st.frame = 'metal';
+    document.getElementById('frame-metal').checked = true;
+  }
+  document.getElementById('frameNote').hidden = !blocked;
+}
+
+let last = {};
+function calc(){
+  const W = +wIn.value, L = +lIn.value, H = +hIn.value;
+  syncFrames(W);
+  const ty = get('type'), fr = get('frame'), wl = get('wall'), fd = get('found'), rg = get('region');
+  const S = W * L;
+
+  // Каркас: дороже с ростом высоты и пролёта
+  const kH = 1 + (H - 6) * 0.05;
+  const kSpan = W > 24 ? 1 + (W - 24) * 0.012 : 1;
+  const frameC = S * fr.p * kH * kSpan * ty.k;
+
+  // Ограждающие конструкции: стены + кровля (у арочного — дуга и два торца)
+  const envArea = fr.id === 'arch'
+    ? L * W * 1.45 + 2 * W * H * 0.75
+    : 2 * (W + L) * H + S * 1.05;
+  const envC = envArea * wl.p;
+
+  const foundC = S * fd.p;
+  const montC = (frameC + envC) * 0.18 * rg.k;
+
+  const exSel = P.extras.filter(o => st.extras.has(o.id));
+  const exC = exSel.reduce((s, o) => s + exPrice(o, S), 0);
+  P.extras.forEach(o => document.getElementById('exp-' + o.id).textContent = '+' + rub(round(exPrice(o, S))));
+
+  const total = frameC + envC + foundC + montC + exC;
+  const lo = round(total * 0.93, 100000), hi = round(total * 1.07, 100000);
+  const months = Math.max(2, Math.round(
+    1.5 + S / 700
+    + (wl.id !== 'prof' ? 0.5 : 0)
+    + (fd.id === 'plita' ? 0.7 : 0)
+    + (fr.id !== 'metal' ? -0.5 : 0)
+    + (st.extras.has('crane') ? 0.5 : 0)
+  ));
+
+  document.getElementById('wOut').textContent = W;
+  document.getElementById('lOut').textContent = L;
+  document.getElementById('hOut').textContent = H;
+  document.getElementById('areaOut').textContent = S.toLocaleString('ru-RU') + ' м²';
+  document.getElementById('sum').textContent = 'от ' + mln(lo) + ' до ' + mln(hi) + ' млн ₽';
+  document.getElementById('per').textContent = '≈ ' + rub(round(total / S, 100)) + ' за м²';
+  document.getElementById('term').textContent = 'Срок производства и монтажа: ' + months + '–' + (months + 1) + ' мес.';
+
+  const rows = [
+    ['Каркас (' + fr.t + ')', frameC],
+    ['Стены и кровля', envC],
+    ['Фундамент', foundC],
+    ['Доставка и монтаж', montC],
+    ...exSel.map(o => [o.t, exPrice(o, S)])
+  ];
+  document.getElementById('bd').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${rub(round(v))}</dd>`).join('');
+
+  last = {W, L, H, S, ty, fr, wl, fd, rg, exSel, lo, hi, months};
+}
+calc();
+
+const form = document.getElementById('leadForm');
+document.getElementById('consent').addEventListener('change', e => { if (e.target.checked) document.getElementById('consentErr').textContent = ''; });
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const phone = document.getElementById('phone');
+  const digits = phone.value.replace(/\D/g, '');
+  const err = document.getElementById('phoneErr');
+  if (digits.length < 11 || !/^[78]/.test(digits)){ phone.setAttribute('aria-invalid','true'); err.textContent = 'Введите номер полностью, например +7 921 123-45-67'; phone.focus(); return; }
+  phone.removeAttribute('aria-invalid'); err.textContent = '';
+  const consent = document.getElementById('consent'), cErr = document.getElementById('consentErr');
+  if (!consent.checked){ cErr.textContent = 'Отметьте согласие на обработку персональных данных, чтобы отправить заявку'; consent.focus(); return; }
+  cErr.textContent = '';
+  const name = document.getElementById('name').value.trim() || 'Без имени';
+  const company = document.getElementById('company').value.trim() || 'не указана';
+  const L = last;
+  document.getElementById('tg').textContent =
+`🏗 Новая заявка с калькулятора
+
+Имя: ${name}
+Компания: ${company}
+Телефон: ${phone.value}
+
+Объект: ${L.ty.t}, ${L.rg.t}
+Размеры: ${L.W} × ${L.L} м, высота ${L.H} м (${L.S.toLocaleString('ru-RU')} м²)
+Каркас: ${L.fr.t}
+Стены и кровля: ${L.wl.t.toLowerCase()}, ${L.wl.d}
+Фундамент: ${L.fd.t}
+Дополнительно: ${L.exSel.length ? L.exSel.map(o => o.t).join(', ') : 'нет'}
+
+Расчёт: ${rub(L.lo)} – ${rub(L.hi)}
+Срок: ${L.months}–${L.months + 1} мес.`;
+  form.hidden = true;
+  document.getElementById('lead').hidden = false;
+});
+document.getElementById('again').addEventListener('click', () => {
+  document.getElementById('lead').hidden = true; form.hidden = false;
+  document.getElementById('calc').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>
