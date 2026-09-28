@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Админка цен</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Конструктор двери · управление</p>
+      <h1>Админка цен</h1>
+      <p class="lede">Меняйте цены и скрывайте варианты. Кнопка «Сохранить в GitHub» записывает файл prices.json в репозиторий, и сайт обновляется через 1–2 минуты.</p>
+    </div>
+    <a class="tool" href="./">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+      К калькулятору
+    </a>
+  </header>
+
+  <section class="conn" aria-labelledby="connTitle">
+    <div class="conn-head">
+      <h2 id="connTitle">Подключение к GitHub</h2>
+      <span class="pill" id="connState">Не подключено</span>
+    </div>
+    <p class="note">Нужен токен с доступом к этому репозиторию (права Contents: Read and write). Как его получить, написано в README.</p>
+    <form class="conn-grid" id="connForm" autocomplete="off">
+      <label>Владелец<input id="gOwner" type="text" placeholder="username" required></label>
+      <label>Репозиторий<input id="gRepo" type="text" placeholder="door-calculator" required></label>
+      <label>Ветка<input id="gBranch" type="text" value="main" required></label>
+      <label>Файл цен<input id="gPath" type="text" value="prices.json" required></label>
+      <label class="wide">Токен GitHub<input id="gToken" type="password" placeholder="github_pat_…" required></label>
+      <label class="check"><input id="gRemember" type="checkbox"> Запомнить на этом устройстве</label>
+      <div class="conn-actions">
+        <button type="submit" class="btn primary" id="gConnect">Подключиться</button>
+        <button type="button" class="btn" id="gForget">Выйти и забыть токен</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="admin" id="admin" aria-label="Цены и варианты">
+    <div class="admin-bar">
+      <div>
+        <h2>Цены и варианты</h2>
+        <p id="adminStatus">Загружаю цены…</p>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn primary" id="aSave">Сохранить в GitHub</button>
+        <button type="button" class="btn" id="aDownload">Скачать prices.json</button>
+        <button type="button" class="btn" id="aCancel">Отменить правки</button>
+        <button type="button" class="btn" id="aDefaults">Вернуть исходные цены</button>
+      </div>
+    </div>
+    <div class="admin-grid" id="adminGrid"></div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/door-core.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

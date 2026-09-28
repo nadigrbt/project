@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Конструктор двери</title>
+<meta name="description" content="Соберите входную дверь: покрытие, фрезеровка, стекло, фурнитура. Цена считается сразу.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Входная металлическая дверь</p>
+      <h1>Конструктор двери</h1>
+      <p class="lede">Каждый выбор меняет один слой изображения: полотно, фрезеровку, стекло, ручку и так далее. Нажмите «Слои в 3D», чтобы увидеть, из чего собрана картинка.</p>
+    </div>
+  </header>
+  <main class="app">
+    <section class="preview" aria-label="Предпросмотр">
+      <div class="preview-card">
+        <div class="pv-main">
+          <div class="pv-head">
+            <div><span class="k">Проём</span><span id="pvSize" class="mono"></span></div>
+            <div class="pv-total"><span class="k">Итого</span><span id="pvTotal"></span></div>
+          </div>
+          <div class="scene" id="scene"><div class="stage" id="stage"></div></div>
+          <div class="pv-tools">
+            <button type="button" class="tool" id="explode" aria-pressed="false">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M8 1.5 14.5 5 8 8.5 1.5 5z"/><path d="M1.5 8 8 11.5 14.5 8"/><path d="M1.5 11 8 14.5 14.5 11"/></svg>
+              Слои в 3D
+            </button>
+            <span class="hint" id="lastChange">Выберите параметр справа</span>
+          </div>
+        </div>
+        <div class="layers">
+          <h2>Слои изображения</h2>
+          <p>Сверху вниз. Наведите на слой, чтобы выделить его на картинке.</p>
+          <ol id="layerList"></ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="config" id="config" aria-label="Параметры двери"></section>
+  </main>
+</div>
+<textarea id="copyArea" aria-hidden="true" tabindex="-1"></textarea>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/door-core.js"></script>
+<script src="assets/calculator.js"></script>
+</body>
+</html>
