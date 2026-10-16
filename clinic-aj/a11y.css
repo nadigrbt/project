@@ -128,11 +128,13 @@ html.a11y.a11y-noimg body video { display: none !important; }
 html.a11y .header { flex-wrap: wrap; height: auto; gap: 12px 24px; padding-top: 12px; padding-bottom: 12px; }
 html.a11y .header__nav { flex-wrap: wrap; gap: 8px 24px; margin-left: 0; }
 html.a11y .header .a11y-btn { margin-left: 0; height: auto; padding: 6px 14px; border: 2px solid var(--a11y-fg) !important; }
-/* «Обычная версия» выделена заливкой: цвета схемы меняются местами
-   (тёмная кнопка на светлом фоне и наоборот), контраст остаётся максимальным */
+/* «Обычная версия» — винная кнопка с белым текстом (решение владельца 16.10).
+   Белый на винном — контраст 7,7:1 (норма WCAG 4,5:1). Рамка цветом текста схемы,
+   чтобы кнопку было видно и на чёрном фоне (вино на чёрном — всего 2,7:1). */
 html.a11y body .header .a11y-btn,
-html.a11y body .header .a11y-btn * { background-color: var(--a11y-fg) !important; color: var(--a11y-bg) !important; }
-html.a11y body .header .a11y-btn svg { color: var(--a11y-bg) !important; }
+html.a11y body .header .a11y-btn * { background-color: #784443 !important; color: #fff !important; }
+html.a11y body .header .a11y-btn svg { color: #fff !important; }
+html.a11y body .header .a11y-btn { border-color: var(--a11y-fg) !important; transition: none; }
 html.a11y body .header .a11y-btn:focus-visible { outline: 3px solid var(--a11y-fg) !important; outline-offset: 3px; }
 html.a11y .a11y-btn__text { position: static; width: auto; height: auto; clip: auto; }
 html.a11y .header__phone { margin-left: 0; margin-right: 0; }
