@@ -79,7 +79,7 @@ const photos: { key: ImageKey; alt: string }[] = [
 
       <div class="cs-hero__visual" aria-hidden="true">
         <img class="cs-hero__letters" src={img('heroLetters')} alt="" width="1200" height="608" />
-        <img class="cs-hero__arch" src={img('cosm2')} alt="" width="1100" height="886" fetchpriority="high" />
+        <img class="cs-hero__doctors" src={img('heroDoctors')} alt="" width="600" height="838" fetchpriority="high" />
       </div>
     </div>
 
@@ -246,7 +246,7 @@ const photos: { key: ImageKey; alt: string }[] = [
   .cs-hero__visual { position: relative; z-index: 1; }
   .cs-hero__visual img { position: absolute; bottom: 0; max-width: none; }
   .cs-hero__letters { left: 50%; width: 1000px; transform: translateX(-50%); }
-  .cs-hero__woman { left: 0; width: 360px; }
+  .cs-hero__doctors { left: 50%; width: 420px; transform: translateX(-44%); }
   .cs-hero__device { right: 0; width: 260px; }
 
   .cs-benefits { border-top: 1px solid var(--line); }
@@ -361,7 +361,7 @@ const photos: { key: ImageKey; alt: string }[] = [
   /* ---------- Планшет ---------- */
   @media (max-width: 1199px) {
     .cs-hero__letters { width: 820px; }
-    .cs-hero__woman { width: 300px; }
+    .cs-hero__doctors { width: 360px; }
     .cs-hero__device { width: 210px; }
     .cs-benefits__list { grid-template-columns: 1fr 1fr; }
   }
@@ -377,7 +377,7 @@ const photos: { key: ImageKey; alt: string }[] = [
     .cs-btn { width: 100%; }
     .cs-hero__visual { height: 340px; margin-top: 32px; }
     .cs-hero__letters { width: 640px; }
-    .cs-hero__woman { width: 250px; left: -10px; }
+    .cs-hero__doctors { width: 240px; }
     .cs-hero__device { width: 170px; right: -10px; }
     .cs-benefits__list { grid-template-columns: 1fr; gap: 18px; }
     .cs-about, .cs-problems { padding: 60px 0; }
@@ -393,16 +393,6 @@ const photos: { key: ImageKey; alt: string }[] = [
   }
 
   /* ---------- Только для /cosmetology ---------- */
-  .cs-hero__arch {
-    position: absolute;
-    right: 8%;
-    bottom: 0;
-    width: 340px;
-    height: 460px;
-    border-radius: 999px 999px 0 0;
-    object-fit: cover;
-    object-position: 52% center;
-  }
   .cs-intro { max-width: 760px; }
   .cs-intro p + p { margin-top: 16px; }
 
@@ -442,10 +432,9 @@ const photos: { key: ImageKey; alt: string }[] = [
   .cs-all a { color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
 
   @media (max-width: 1199px) {
-    .cs-hero__arch { width: 300px; height: 420px; right: 4%; }
   }
   @media (max-width: 959px) {
-    .cs-hero__arch { width: 240px; height: 320px; right: 50%; transform: translateX(50%); }
+  
     .cs-nav { padding: 60px 0 48px; }
     .cs-nav__list, .cs-devices__grid { grid-template-columns: 1fr; }
     .cs-card { padding: 28px 22px; }
