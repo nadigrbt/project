@@ -1,0 +1,189 @@
+/* ============================================================
+   A&J — общие стили
+   Цвета и размеры сняты с сайта на Тильде (сетка 1200 px).
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   GT Eesti Pro — шрифт, который был на Тильде.
+   Он платный (Grilli Type). Купите web-лицензию с кириллицей
+   и положите файлы в public/fonts/ с такими именами:
+     GTEestiPro-Thin.woff2       (100)
+     GTEestiPro-UltraLight.woff2 (200)
+     GTEestiPro-Light.woff2      (300)
+     GTEestiPro-Regular.woff2    (400)
+     GTEestiPro-Medium.woff2     (500)
+   Пока файлов нет, сайт показывает Jost.
+   ------------------------------------------------------------ */
+@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-Thin.woff2') format('woff2'); font-weight: 100; font-display: swap; }
+@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-UltraLight.woff2') format('woff2'); font-weight: 200; font-display: swap; }
+@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+
+:root {
+  /* ---- Палитра сайта: 4 цвета ---- */
+  --ivory: #F1EAE0;      /* светлый фон секций */
+  --white: #FFFFFF;
+  --wine: #784443;       /* акцент: кнопки, ссылки, полосы */
+  --graphite: #262323;   /* текст, тёмные кнопки */
+
+  /* Производные от палитры — менять не нужно */
+  --cream: var(--ivory);
+  --ink: var(--graphite);
+  --ink-2: var(--graphite);
+  --muted: #5C5352;      /* второстепенный текст (графит, приглушённый) */
+  --line: #D9CEC1;       /* тонкие линии (ivory темнее) */
+  --accent: var(--wine);
+
+  /* Заголовки, меню, кнопки */
+  --font: 'GT Eesti Pro', 'Jost', 'Helvetica Neue', Arial, sans-serif;
+  /* Основной текст */
+  --font-text: 'Commissioner', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Толщины шрифта. На Тильде был GT Eesti Pro, у Jost штрихи тоньше,
+     поэтому значения подобраны «на глаз» под оригинал. */
+  --w-thin: 200;   /* крупные заголовки, пункты услуг */
+  --w-light: 300;  /* основной текст */
+  --w-regular: 400;
+  --w-medium: 500;
+
+  /* Основной текст (абзацы, списки, адреса). Заголовки задаются отдельно. */
+  --text: 18px;
+  --lh: 1.5;
+
+  --container: 1200px;
+  --gutter: 20px;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  font-family: var(--font-text);
+  font-weight: var(--w-light);
+  font-size: var(--text);
+  line-height: var(--lh);
+  letter-spacing: 0;
+  color: var(--ink);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Всё, что набирается шрифтом заголовков (Jost) */
+h1, h2, h3,
+.section-title,
+.hero__title,
+.svc__name,
+.promo__title,
+.contacts__ask-title,
+.contacts__phone a,
+.header__nav,
+.header__phone,
+.mmenu__nav,
+.mmenu__phone,
+.arrow-link,
+.btn-outline,
+.footer__nav {
+  font-family: var(--font);
+  letter-spacing: 0.5px;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+p { margin: 0; }
+h1, h2, h3 { margin: 0; font-weight: var(--w-thin); }
+button { font: inherit; letter-spacing: inherit; }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Заголовок секции с линией справа ---------- */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 36px;
+  line-height: 56px;
+  font-weight: var(--w-thin);
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--title-line, var(--ink-2));
+}
+
+/* ---------- Текстовая ссылка со стрелкой («Записаться онлайн ⟶») ---------- */
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  line-height: 31px;
+  font-weight: var(--w-regular);
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.arrow-link__text {
+  padding: 5px 0 5px;
+  border-bottom: 1px solid var(--ink-2);
+}
+.arrow-link__arrow {
+  width: 50px;
+  height: 6px;
+  transition: transform 0.25s ease;
+}
+.arrow-link:hover .arrow-link__arrow { transform: translateX(6px); }
+
+/* ---------- Кнопка-«пилюля» с обводкой ---------- */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  height: 50px;
+  padding: 0 20px;
+  border: 1px solid var(--ink-2);
+  border-radius: 30px;
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: var(--w-regular);
+  letter-spacing: normal;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { background: var(--ink-2); color: var(--white); }
+
+/* ---------- Соцсети ---------- */
+.socials { display: flex; align-items: center; gap: 24px; list-style: none; margin: 0; padding: 0; }
+.socials a { display: block; transition: opacity 0.2s; }
+.socials a:hover { opacity: 0.7; }
+
+:focus-visible { outline: 2px solid var(--wine); outline-offset: 3px; }
+
+/* Когда загружен GT Eesti Pro — толщины как на Тильде */
+.gt-eesti {
+  --w-thin: 200;
+  --w-light: 200;
+  --w-regular: 400;
+  --w-medium: 500;
+}

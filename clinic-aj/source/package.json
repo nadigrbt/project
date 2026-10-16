@@ -1,0 +1,21 @@
+{
+  "name": "clinic-aj",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "images": "node scripts/fetch-images.mjs",
+    "preview-build": "node scripts/build-preview.mjs"
+  },
+  "dependencies": {
+    "@fontsource/commissioner": "^5.3.0",
+    "@fontsource/jost": "^5.3.0",
+    "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5"
+  }
+}

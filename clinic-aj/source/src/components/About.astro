@@ -1,0 +1,117 @@
+---
+import Socials from './Socials.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+
+// Порядок как на Тильде: верхний ряд — 2 фото справа, нижний — 3 фото.
+const photos = [
+  { key: 'about4', alt: 'Процедура в клинике A&J' },
+  { key: 'about1', alt: 'Кабинет клиники A&J' },
+  { key: 'about3', alt: 'Консультация в клинике A&J' },
+  { key: 'about2', alt: 'Аппаратная процедура на лицо' },
+  { key: 'about5', alt: 'Интерьер клиники A&J' },
+] as const;
+---
+<section class="about" id="about">
+  <img class="about__bg" src={img('aboutBg')} alt="" width="805" height="672" loading="lazy" aria-hidden="true" />
+  <div class="about__rule" aria-hidden="true"></div>
+
+  <div class="container about__inner">
+    <div class="about__text">
+      <h2 class="section-title about__title">О нашей клинике</h2>
+      <p class="about__intro">Клиника с медицинской лицензией, со специалистами с медицинским образованием и&nbsp;сертифицированным оборудованием</p>
+      <p class="about__schedule">График работы клиники:<br />{site.schedule}</p>
+      <p class="about__promo">В клинике постоянно проходят различные акции. Следите за нашими соц сетями!</p>
+      <p class="about__legal">
+        {site.legalName}<br />
+        ИНН {site.inn}<br />
+        Медицинская лицензия:<br />
+        {site.license}
+      </p>
+      <Socials variant="beige" size={42} gap={32} class="about__socials" />
+      <a class="arrow-link about__cta" href="#contact">
+        <span class="arrow-link__text">Самостоятельно записаться на процедуру</span>
+        <img class="arrow-link__arrow" src={img('arrow')} alt="" width="50" height="6" />
+      </a>
+    </div>
+
+    <ul class="about__photos">
+      {photos.map((p) => (
+        <li><img src={img(p.key)} alt={p.alt} width="200" height="200" loading="lazy" /></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .about {
+    position: relative;
+    overflow: hidden;
+    background: var(--cream);
+    min-height: 640px;
+  }
+  .about__bg {
+    position: absolute;
+    top: 0;
+    left: 50%; /* на Тильде картинка начиналась с середины сетки 1200 px */
+    width: 805px;
+    pointer-events: none;
+  }
+  .about__rule {
+    position: absolute;
+    top: 232px; /* линия под вступлением */
+    left: 0;
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--ink-2) 0%, var(--cream) 100%);
+  }
+  .about__inner { position: relative; padding-top: 61px; padding-bottom: 64px; }
+
+  .about__text { max-width: 500px; }
+  .about__title { --title-line: var(--line); width: 874px; max-width: none; gap: 40px; }
+  .about__intro { margin-top: 16px; }
+  .about__schedule { margin-top: 44px; }
+  .about__promo { margin-top: 20px; max-width: 440px; font-weight: var(--w-regular); }
+  .about__legal { margin-top: 20px; }
+  .about__text :global(.about__socials) { margin-top: 31px; margin-left: -3px; }
+  .about__cta { margin-top: 20px; font-size: 18px; line-height: 28px; }
+
+  .about__photos {
+    position: absolute;
+    top: 158px;
+    right: var(--gutter);
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .about__photos li:first-child { grid-column: 2; }
+  .about__photos img { width: 200px; height: 200px; object-fit: cover; }
+
+  @media (max-width: 1199px) {
+    .about__title { width: auto; }
+    .about__photos { grid-template-columns: repeat(3, 150px); gap: 14px; }
+    .about__photos img { width: 150px; height: 150px; }
+    .about__bg { left: 45%; }
+  }
+  @media (max-width: 959px) {
+    .about__inner { padding-top: 60px; }
+    .about__title { font-size: 28px; }
+    .about__rule { display: none; }
+    .about__schedule { margin-top: 28px; }
+    .about__photos {
+      position: static;
+      margin-top: 44px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .about__photos li:first-child { grid-column: auto; }
+    .about__photos li:last-child { grid-column: span 2; }
+    .about__photos img { width: 100%; height: auto; aspect-ratio: 1; }
+    .about__photos li:last-child img { aspect-ratio: 2 / 1; }
+    .about__cta .arrow-link__arrow { display: none; }
+    .about__bg { left: 30%; top: auto; bottom: 0; opacity: 0.6; }
+  }
+</style>

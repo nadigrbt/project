@@ -1,0 +1,95 @@
+---
+import '@fontsource/jost/200.css';
+import '@fontsource/jost/300.css';
+import '@fontsource/jost/400.css';
+import '@fontsource/jost/500.css';
+import '@fontsource/commissioner/300.css';
+import '@fontsource/commissioner/400.css';
+import '@fontsource/commissioner/500.css';
+import '../styles/global.css';
+import MobileMenu from '../components/MobileMenu.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+
+interface Props {
+  title: string;
+  description: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogTitle = title, ogDescription = description, ogImage } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site).href;
+const og = ogImage ?? new URL(img('og'), Astro.site).href;
+---
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Тестовая копия на GitHub Pages не должна попадать в поиск (npm run preview-build) */}
+    {import.meta.env.PUBLIC_NOINDEX === '1' && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="format-detection" content="telephone=no" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <!-- Если файлы GT Eesti Pro лежат в public/fonts, включаем толщины как на Тильде -->
+    <script is:inline>
+      document.fonts && document.fonts.load('200 16px "GT Eesti Pro"').then(function (f) {
+        if (f.length) document.documentElement.classList.add('gt-eesti');
+      });
+    </script>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:image" content={og} />
+
+    <link rel="icon" type="image/svg+xml" href={img('faviconLight')} media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/svg+xml" href={img('faviconDark')} media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href={img('favicon')} />
+    <link rel="apple-touch-icon" href={img('appleIcon')} />
+  </head>
+  <body>
+    <slot />
+
+    <MobileMenu />
+    <CookieBanner />
+
+    <!-- Версия для слабовидящих (lidrekon.ru) -->
+    <a id="specialButton" class="special-btn" href="#" aria-label="Версия для слабовидящих">
+      <img src="https://lidrekon.ru/images/special.png" alt="Версия для слабовидящих" title="Версия для слабовидящих" width="44" height="27" />
+    </a>
+    <script is:inline src="https://lidrekon.ru/slep/js/jquery.js" defer></script>
+    <script is:inline src="https://lidrekon.ru/slep/js/uhpv-full.min.js" defer></script>
+
+    <!-- Яндекс.Метрика (с задержкой 2 с, как было на Тильде) -->
+    <script is:inline define:vars={{ id: site.metrikaId }}>
+      window.METRIKA_ID = id;
+      setTimeout(function () {
+        (function (m, e, t, r, i, k, a) {
+          m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+          m[i].l = 1 * new Date();
+          k = e.createElement(t); a = e.getElementsByTagName(t)[0];
+          k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+        ym(id, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+      }, 2000);
+    </script>
+    <noscript><div><img src={`https://mc.yandex.ru/watch/${site.metrikaId}`} style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+
+    <style>
+      .special-btn {
+        position: fixed;
+        left: 12px;
+        bottom: 12px;
+        z-index: 900;
+        display: block;
+      }
+      .special-btn img { width: 44px; height: auto; }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+---
+import { mainNav, site } from '../data/site';
+import { img } from '../data/images';
+---
+<div class="mmenu" id="mobile-menu" hidden>
+  <div class="mmenu__overlay" data-menu-close></div>
+  <aside class="mmenu__panel" role="dialog" aria-modal="true" aria-label="Меню">
+    <button class="mmenu__close" type="button" aria-label="Закрыть меню" data-menu-close></button>
+
+    <nav class="mmenu__nav">
+      {mainNav.map((l) => <a href={l.href} data-menu-close>{l.label}</a>)}
+    </nav>
+
+    <a class="mmenu__phone" href={site.phone.href}>{site.phone.display}</a>
+
+    <ul class="socials mmenu__socials">
+      <li><a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram"><img src={img('ig')} alt="" width="30" height="30" /></a></li>
+      <li><a href={site.social.vk} target="_blank" rel="noopener" aria-label="ВКонтакте"><img src={img('vk')} alt="" width="30" height="30" /></a></li>
+      <li><a href={site.social.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={img('tg')} alt="" width="30" height="30" /></a></li>
+      <li><a class="mmenu__max" href={site.social.max} target="_blank" rel="noopener" aria-label="MAX">MAX</a></li>
+    </ul>
+
+    <a class="btn-outline mmenu__cta" href="/#contact" data-menu-close>Записаться</a>
+  </aside>
+</div>
+
+<script>
+  const menu = document.getElementById('mobile-menu')!;
+  const openers = document.querySelectorAll<HTMLButtonElement>('[data-menu-open]');
+
+  function setOpen(open: boolean) {
+    if (open) {
+      menu.hidden = false;
+      requestAnimationFrame(() => menu.classList.add('is-open'));
+    } else {
+      menu.classList.remove('is-open');
+      setTimeout(() => (menu.hidden = true), 300);
+    }
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    openers.forEach((b) => b.setAttribute('aria-expanded', String(open)));
+  }
+
+  openers.forEach((b) => b.addEventListener('click', () => setOpen(true)));
+  menu.querySelectorAll('[data-menu-close]').forEach((el) => el.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) setOpen(false); });
+</script>
+
+<style>
+  .mmenu { position: fixed; inset: 0; z-index: 1000; }
+  .mmenu__overlay {
+    position: absolute; inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .mmenu__panel {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: min(360px, 88vw);
+    padding: 80px 32px 40px;
+    background: var(--cream);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  .mmenu.is-open .mmenu__overlay { opacity: 1; }
+  .mmenu.is-open .mmenu__panel { transform: none; }
+
+  .mmenu__close {
+    position: absolute; top: 24px; right: 24px;
+    width: 30px; height: 30px;
+    border: 0; background: none; cursor: pointer;
+  }
+  .mmenu__close::before,
+  .mmenu__close::after {
+    content: ''; position: absolute; left: 3px; top: 14px;
+    width: 24px; height: 2px; background: var(--ink);
+    transform: rotate(45deg);
+  }
+  .mmenu__close::after { transform: rotate(-45deg); }
+
+  .mmenu__nav { display: grid; gap: 22px; }
+  .mmenu__nav a { font-size: 20px; text-decoration: none; }
+  .mmenu__phone { display: inline-block; margin-top: 40px; font-size: 22px; font-weight: var(--w-medium); text-decoration: none; }
+  .mmenu__socials { margin-top: 28px; gap: 18px; }
+  .mmenu__max {
+    display: grid !important;
+    place-items: center;
+    width: 30px; height: 30px;
+    border-radius: 7px;
+    background: var(--graphite);
+    color: #fff;
+    font-size: 9px;
+    font-weight: var(--w-medium);
+    text-decoration: none;
+  }
+  .mmenu__cta { margin-top: 36px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mmenu__panel, .mmenu__overlay { transition: none; }
+  }
+</style>

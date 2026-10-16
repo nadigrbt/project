@@ -1,0 +1,54 @@
+<div class="cookie" id="cookie" hidden>
+  <p>Мы обязаны Вас проинформировать, что используем cookie</p>
+  <button type="button" data-cookie-ok>Ок, согласен</button>
+</div>
+
+<script>
+  const KEY = 'aj-cookie-ok';
+  const box = document.getElementById('cookie')!;
+  let accepted = false;
+  try { accepted = localStorage.getItem(KEY) === '1'; } catch {}
+  if (!accepted) box.hidden = false;
+
+  box.querySelector('[data-cookie-ok]')!.addEventListener('click', () => {
+    try { localStorage.setItem(KEY, '1'); } catch {}
+    box.hidden = true;
+  });
+</script>
+
+<style>
+  .cookie {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 950;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    max-width: calc(100vw - 40px);
+    padding: 14px 20px;
+    background: var(--ivory);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    font-size: 13px;
+    letter-spacing: normal;
+    font-weight: var(--w-regular);
+    color: var(--graphite);
+  }
+  .cookie[hidden] { display: none; }
+  .cookie button {
+    flex: none;
+    padding: 6px 16px;
+    border: 1px solid var(--graphite);
+    border-radius: 5px;
+    background: transparent;
+    color: var(--graphite);
+    font-weight: var(--w-medium);
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .cookie button:hover { background: var(--graphite); color: var(--white); }
+
+  @media (max-width: 640px) {
+    .cookie { left: 20px; right: 20px; gap: 16px; }
+  }
+</style>

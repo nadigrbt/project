@@ -1,0 +1,78 @@
+---
+import Socials from './Socials.astro';
+import { legalLinks, site } from '../data/site';
+import { img } from '../data/images';
+
+const nav = [
+  { label: 'Услуги', href: '/#uslugi' },
+  { label: 'О клинике', href: '/#about' },
+  { label: 'Задать вопрос', href: '/#contact', underline: true },
+];
+---
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a href="/" aria-label="A&J — на главную">
+        <img src={img('footerLogo')} alt="A&J — эстетическая косметология" width="160" height="119" loading="lazy" />
+      </a>
+      <Socials size={30} gap={20} class="footer__socials" />
+      <p class="footer__note">Все фото, видео и другие персональные данные, размещены на сайте с разрешением, условий запрета не установлено.</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Разделы">
+      {nav.map((l) => <a class:list={{ 'is-underlined': l.underline }} href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <div class="footer__legal">
+      <nav aria-label="Документы">
+        {legalLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+      <p class="footer__dev">
+        Разработка и <a href={site.developer.url} target="_blank" rel="noopener">{site.developer.label}</a>
+        <img src={img('developer')} alt="" width="81" height="81" loading="lazy" />
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { padding: 96px 0 60px; background: var(--white); }
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 501px 231px 1fr;
+  }
+  .footer__brand img { width: 160px; }
+  .footer__brand :global(.footer__socials) { margin-top: 40px; }
+  .footer__note { margin-top: 28px; max-width: 414px; font-size: 13px; line-height: 20px; letter-spacing: normal; }
+
+  .footer__nav,
+  .footer__legal nav { display: grid; justify-items: start; align-content: start; gap: 15px; padding-top: 6px; }
+  .footer__nav a,
+  .footer__legal a { font-size: 16px; line-height: 25px; letter-spacing: normal; color: var(--ink-2); text-decoration: none; }
+  .footer__nav a { font-weight: var(--w-light); }
+  .footer__legal nav a { font-weight: var(--w-thin); }
+  .footer__nav a:hover,
+  .footer__legal nav a:hover { opacity: 0.6; }
+  .footer__nav .is-underlined { border-bottom: 1px solid var(--ink-2); }
+
+  .footer__dev {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 58px;
+    font-size: 15px;
+    line-height: 23px;
+    letter-spacing: normal;
+  }
+  .footer__dev a { color: inherit; text-decoration: underline; }
+  .footer__dev img { width: 40px; height: 40px; object-fit: contain; }
+
+  @media (max-width: 1199px) {
+    .footer__grid { grid-template-columns: 1.2fr 0.7fr 1.6fr; gap: 30px; }
+  }
+  @media (max-width: 959px) {
+    .footer { padding-top: 70px; }
+    .footer__grid { grid-template-columns: 1fr; gap: 40px; }
+    .footer__dev { margin-top: 30px; }
+  }
+</style>

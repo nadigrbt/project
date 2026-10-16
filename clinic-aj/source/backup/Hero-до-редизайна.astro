@@ -1,0 +1,145 @@
+---
+import Header from './Header.astro';
+import Socials from './Socials.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+
+const benefits = [
+  '> 30 видов услуг',
+  'Ведущие специалисты в&nbsp;области косметологии',
+  'Современное проф. оборудование',
+  'Индивидуальный подход для&nbsp;каждого пациента',
+];
+const links = [
+  { label: 'Записаться онлайн', href: site.bookingUrl, external: true },
+  { label: 'Контакты', href: '#contact' },
+  { label: 'Блог', href: '/blog' },
+];
+---
+<section class="hero">
+  <Header />
+
+  <div class="hero__top container">
+    <div class="hero__text">
+      <h1 class="hero__title">Клиника эстетической косметологии<br />в Мурманске</h1>
+      <p class="hero__lead">Клиника с медицинской лицензией. Высококвалифицированные специалисты и&nbsp;сертифицированное оборудование.</p>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <img class="hero__letters" src={img('heroLetters')} alt="" width="601" height="305" />
+      <img class="hero__doctors" src={img('heroDoctors')} alt="" width="252" height="352" fetchpriority="high" />
+    </div>
+
+    <ul class="hero__benefits">
+      {benefits.map((b) => (
+        <li><img src={img('star')} alt="" width="15" height="15" /><span set:html={b} /></li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="hero__band">
+    <div class="container hero__band-inner">
+      <div class="hero__links">
+        {links.map((l) => (
+          <a class="arrow-link" href={l.href} {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}>
+            <span class="arrow-link__text">{l.label}</span>
+            <img class="arrow-link__arrow" src={img('arrow')} alt="" width="50" height="6" />
+          </a>
+        ))}
+        <p class="hero__blog-note">Для вас мы завели блог, где отвечаем на ваши популярные вопросы</p>
+      </div>
+      <Socials class="hero__socials" size={36} gap={24} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; background: var(--white); }
+
+  /* ---------- Верхняя часть: текст, фото, преимущества ---------- */
+  .hero__top {
+    position: relative;
+    display: grid;
+    grid-template-columns: 470px 1fr 280px;
+    height: 434px; /* 500 px до полосы минус шапка */
+  }
+  .hero__title {
+    margin-top: 52px;
+    font-size: 45px;
+    line-height: 59px;
+    font-weight: var(--w-thin);
+  }
+  .hero__lead {
+    margin-top: 33px;
+    max-width: 420px;
+    font-size: var(--text);
+    line-height: var(--lh);
+  }
+
+  .hero__visual { position: relative; }
+  .hero__letters,
+  .hero__doctors { position: absolute; bottom: 0; }
+  .hero__letters { left: -190px; width: 601px; }
+  .hero__doctors { left: 44px; width: 252px; }
+
+  .hero__benefits {
+    list-style: none;
+    margin: 72px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 30px;
+    align-content: start;
+    font-size: var(--text);
+    line-height: 1.35;
+  }
+  .hero__benefits li { display: flex; gap: 10px; }
+  .hero__benefits li img { flex: none; margin-top: 5px; }
+  .hero__benefits li:nth-child(2) span,
+  .hero__benefits li:nth-child(4) span { max-width: 240px; }
+  .hero__benefits li:nth-child(3) span { max-width: 200px; }
+
+  /* ---------- Бежевая полоса со ссылками ---------- */
+  .hero__band {
+    background: var(--white);
+    border-top: 1px solid var(--line);
+    min-height: 287px;
+  }
+  .hero__band-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 37px;
+    padding-bottom: 40px;
+  }
+  .hero__links { display: grid; justify-items: start; gap: 22px; }
+  .hero__blog-note { margin-top: -19px; font-size: var(--text); line-height: var(--lh); }
+  .hero__band-inner :global(.hero__socials) { margin-top: 38px; width: 260px; }
+
+  /* ---------- Планшет ---------- */
+  @media (max-width: 1199px) {
+    .hero__top { grid-template-columns: 1fr 1fr 230px; height: 434px; }
+    .hero__title { font-size: 38px; line-height: 50px; }
+    .hero__letters { left: 50%; transform: translateX(-50%); width: 480px; }
+    .hero__doctors { left: 50%; transform: translateX(-30%); width: 210px; }
+    .hero__band-inner :global(.hero__socials) { width: 230px; }
+  }
+
+  /* ---------- Мобильный ---------- */
+  @media (max-width: 959px) {
+    .hero__top {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+    .hero__title { margin-top: 40px; font-size: 32px; line-height: 44px; }
+    .hero__lead { margin-top: 24px; }
+    .hero__benefits { order: 2; margin-top: 50px; gap: 28px; }
+    .hero__visual { order: 3; height: 330px; margin-top: 40px; }
+    .hero__letters { width: 100%; max-width: 480px; }
+    .hero__doctors { width: 200px; transform: translateX(-50%); }
+
+    .hero__band-inner { flex-direction: column; gap: 0; padding-top: 50px; padding-bottom: 70px; }
+    .hero__links { gap: 26px; }
+    .hero__blog-note { display: none; }
+    .hero__band-inner :global(.hero__socials) { margin-top: 50px; width: auto; }
+  }
+</style>

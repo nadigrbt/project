@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /api/
+
+Host: https://clinic-aj.ru
+Sitemap: https://clinic-aj.ru/sitemap.xml

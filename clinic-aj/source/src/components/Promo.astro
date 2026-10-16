@@ -1,0 +1,148 @@
+---
+import { site } from '../data/site';
+import { img } from '../data/images';
+---
+<section class="promo">
+  <div class="promo__top">
+    <div class="container promo__top-inner">
+        <div class="promo__text">
+          <p class="promo__eyebrow">Впервые в Мурманске</p>
+          <h2 class="promo__title">Volnewmer</h2>
+          <p class="promo__lead">Аппарат нового поколения для безоперационной подтяжки лица и улучшения качества кожи.</p>
+          <a class="promo__btn" href="/volnewmer">Узнать о процедуре</a>
+        </div>
+        <div class="promo__visual" aria-hidden="true">
+          <img class="promo__woman" src={img('promoWoman')} alt="" width="700" height="700" loading="lazy" />
+          <img class="promo__device" src={img('promoDevice')} alt="" width="800" height="800" loading="lazy" />
+        </div>
+    </div>
+  </div>
+
+  <div class="promo__band">
+    <div class="container promo__band-inner">
+        <div class="promo__band-text">
+          <h3 class="promo__band-title">Анализы прямо в клинике</h3>
+          <p class="promo__band-sub">Чек-ап организма перед курсом процедур · лаборатория «Хеликс» · Карла Либкнехта, 28 · вторник, четверг, суббота с 09:00 до 11:00</p>
+        </div>
+        <a class="promo__band-btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на чек-ап</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Блок во всю ширину экрана: фон тянется от края до края, содержимое — по сетке 1200 px */
+  .promo { position: relative; z-index: 2; }
+
+  /* ---------- Volnewmer ---------- */
+  .promo__top { background: var(--ivory); }
+  .promo__top-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+  .promo__text {
+    flex: 1 1 440px;
+    min-width: 0;
+    padding: 88px 0 88px;
+  }
+  .promo__eyebrow {
+    font-size: 13px;
+    font-weight: var(--w-medium);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--wine);
+  }
+  .promo__title {
+    margin-top: 14px;
+    font-family: var(--font);
+    font-weight: var(--w-thin);
+    font-size: clamp(56px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -1px;
+    color: var(--graphite);
+  }
+  .promo__lead {
+    margin-top: 22px;
+    max-width: 440px;
+    color: var(--muted);
+  }
+  .promo__btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 54px;
+    margin-top: 30px;
+    padding: 0 30px;
+    border-radius: 999px;
+    background: var(--graphite);
+    color: var(--ivory);
+    font-family: var(--font);
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  .promo__btn:hover { background: var(--wine); }
+
+  .promo__visual {
+    position: relative;
+    flex: 1 1 460px;
+    min-width: 0;
+    min-height: 480px;
+  }
+  .promo__woman,
+  .promo__device {
+    position: absolute;
+    bottom: 0;
+    height: auto;
+    pointer-events: none;
+  }
+  .promo__woman { left: 0; width: 66%; max-width: 420px; }
+  .promo__device { right: 4%; width: 46%; max-width: 300px; }
+
+  /* ---------- Анализы ---------- */
+  .promo__band { background: var(--wine); color: var(--white); }
+  .promo__band-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 40px;
+    padding-top: 40px;
+    padding-bottom: 44px;
+  }
+  .promo__band-text { flex: 1 1 520px; min-width: 0; }
+  .promo__band-title {
+    font-family: var(--font);
+    font-weight: var(--w-thin);
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.15;
+  }
+  .promo__band-sub {
+    margin-top: 10px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .promo__band-btn {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 54px;
+    padding: 0 30px;
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--wine);
+    font-family: var(--font);
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .promo__band-btn:hover { background: var(--ivory); }
+
+  @media (max-width: 959px) {
+    .promo__text { padding: 48px 0 8px; }
+    .promo__visual { min-height: 300px; }
+    .promo__band-inner { padding-top: 32px; padding-bottom: 36px; }
+    .promo__band-btn { width: 100%; justify-content: center; }
+  }
+</style>

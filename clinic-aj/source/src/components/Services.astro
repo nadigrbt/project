@@ -1,0 +1,94 @@
+---
+import { services } from '../data/services';
+---
+<section class="services" id="uslugi">
+  <div class="container">
+    <h2 class="section-title services__title">Наши услуги</h2>
+
+    <div class="services__list">
+      {services.map((s) => (
+        <details class="svc" open={s.open}>
+          <summary class="svc__head">
+            <span class="svc__name">→ {s.title}</span>
+            <span class="svc__icon" aria-hidden="true"></span>
+          </summary>
+          {s.body.trim() && <div class="svc__body" set:html={s.body} />}
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    background: var(--cream);
+    padding: 80px 0 0;
+  }
+  .services__title {
+    --title-line: var(--line);
+    font-size: 34px;
+    line-height: 53px;
+  }
+  .services__list { padding-top: 26px; }
+
+  .svc { border-top: 1px solid rgba(0, 0, 0, 0.08); }
+  .svc:last-child { border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+
+  .svc__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 17px 0;
+    list-style: none;
+    cursor: pointer;
+  }
+  .svc__head::-webkit-details-marker { display: none; }
+  .svc__name {
+    font-size: 32px;
+    line-height: 43px;
+    font-weight: var(--w-thin);
+    letter-spacing: 0;
+  }
+
+  .svc__icon {
+    position: relative;
+    flex: none;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+  .svc__icon::before,
+  .svc__icon::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 22px;
+    height: 1.5px;
+    background: var(--ink);
+    transform: translate(-50%, -50%);
+  }
+  .svc__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .svc[open] .svc__icon { transform: rotate(45deg); }
+
+  .svc__body {
+    padding: 4px 0 34px;
+    max-width: 1100px;
+    font-size: var(--text);
+    line-height: 1.6;
+    font-weight: var(--w-light);
+  }
+  .svc__body :global(p + p),
+  .svc__body :global(ul + p) { margin-top: 22px; }
+  .svc__body :global(ul) { margin: 0; padding-left: 20px; }
+  .svc__body :global(strong) { font-weight: var(--w-medium); }
+  .svc__body :global(a) { color: var(--accent); }
+
+  @media (max-width: 959px) {
+    .services { padding-top: 60px; }
+    .services__title { font-size: 28px; }
+    .svc__name { font-size: 22px; line-height: 30px; }
+    .svc__body { font-size: 17px; line-height: 1.55; }
+  }
+</style>

@@ -1,0 +1,4 @@
+# Настройки формы нельзя открыть из браузера
+<Files "config.php">
+  Require all denied
+</Files>

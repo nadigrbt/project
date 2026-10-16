@@ -1,0 +1,248 @@
+---
+import { site } from '../data/site';
+---
+<section class="contacts" id="contact">
+  <div class="container">
+    <h2 class="section-title">Контакты</h2>
+
+    <div class="contacts__grid">
+      <div class="contacts__info">
+        <p class="contacts__sub">Три локации в Мурманске — один высокий стандарт заботы.</p>
+        <ul class="contacts__list">
+          <li class="contacts__phone"><a href={site.phone.href}>{site.phone.display}</a></li>
+          {site.addresses.map((a) => <li>{a}</li>)}
+        </ul>
+      </div>
+
+      <div class="contacts__ask">
+        <h3 class="contacts__ask-title">Хотите задать вопрос?</h3>
+        <p class="contacts__ask-sub">Оставьте ваши контактные данные и наш администратор свяжется с вами в самое ближайшее время</p>
+
+        <form class="form" action="/api/send.php" method="post" data-form novalidate>
+          <label class="form__field">
+            <span class="visually-hidden">Ваше имя</span>
+            <input type="text" name="name" placeholder="Ваше имя" autocomplete="name" maxlength="80" />
+          </label>
+
+          <label class="form__field form__field--phone">
+            <span class="visually-hidden">Телефон</span>
+            <span class="form__prefix" aria-hidden="true"><span class="form__flag"></span>+7</span>
+            <input type="tel" name="phone" placeholder="(000) 000-00-00" autocomplete="tel-national" inputmode="tel" required data-phone />
+          </label>
+
+          <label class="form__field">
+            <span class="visually-hidden">Ваш вопрос</span>
+            <textarea name="message" placeholder="Ваш вопрос" rows="1" maxlength="2000"></textarea>
+          </label>
+
+          <!-- ловушка для спам-ботов: люди это поле не видят -->
+          <input class="form__trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <label class="form__consent">
+            <input type="checkbox" name="consent" value="1" required />
+            <span class="form__check" aria-hidden="true"></span>
+            <span>Я согласен на <a href="/agreement" target="_blank">обработку персональных данных</a> и принимаю условия <a href="/policy" target="_blank">политики конфиденциальности</a></span>
+          </label>
+
+          <button class="btn-outline form__submit" type="submit">Отправить</button>
+          <p class="form__status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <h2 class="section-title contacts__booking-title">Онлайн запись</h2>
+    <div class="contacts__booking">
+      <p>Вы можете записаться самостоятельно, выбрав филиал, специалиста, процедуру и&nbsp;дату.</p>
+      <a class="btn-outline" href={site.bookingUrl} target="_blank" rel="noopener">Записаться</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Маска телефона: (912) 345-67-89
+  document.querySelectorAll<HTMLInputElement>('[data-phone]').forEach((input) => {
+    input.addEventListener('input', () => {
+      let d = input.value.replace(/\D/g, '');
+      if (d.length > 10 && (d[0] === '7' || d[0] === '8')) d = d.slice(1);
+      d = d.slice(0, 10);
+      let out = '';
+      if (d.length) out = '(' + d.slice(0, 3);
+      if (d.length >= 4) out += ') ' + d.slice(3, 6);
+      if (d.length >= 7) out += '-' + d.slice(6, 8);
+      if (d.length >= 9) out += '-' + d.slice(8, 10);
+      input.value = out;
+    });
+  });
+
+  // Отправка формы без перезагрузки страницы
+  document.querySelectorAll<HTMLFormElement>('[data-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.form__status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.className = 'form__status';
+
+      const phone = (form.elements.namedItem('phone') as HTMLInputElement).value.replace(/\D/g, '');
+      const consent = (form.elements.namedItem('consent') as HTMLInputElement).checked;
+      if (phone.length !== 10) return show('Укажите номер телефона полностью', true);
+      if (!consent) return show('Нужно согласие на обработку персональных данных', true);
+
+      button.disabled = true;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data.error || 'send failed');
+        form.reset();
+        show('Спасибо! Администратор свяжется с вами в ближайшее время.');
+        const w = window as any;
+        w.ym?.(w.METRIKA_ID, 'reachGoal', 'form_question'); // цель «Вопрос с сайта» в Метрике
+      } catch {
+        show('Не получилось отправить. Позвоните нам: 78-70-30', true);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    function show(text: string, isError = false) {
+      status.textContent = text;
+      status.classList.toggle('is-error', isError);
+    }
+  });
+</script>
+
+<style>
+  .contacts { padding: 80px 0 0; background: var(--white); }
+
+  .contacts__grid {
+    display: grid;
+    grid-template-columns: 440px 601px;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  /* ---------- Адреса ---------- */
+  .contacts__sub { max-width: 440px; }
+  .contacts__list { list-style: none; margin: 37px 0 0; padding: 0; display: grid; gap: 25px; }
+  .contacts__list li {
+    position: relative;
+    padding-left: 19px;
+  }
+  .contacts__list li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 11px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+  .contacts__phone { margin-bottom: -7px; }
+  .contacts__phone a {
+    font-size: 30px;
+    line-height: 42px;
+    font-weight: var(--w-medium);
+    text-decoration: none;
+  }
+  .contacts__list li.contacts__phone::before { top: 18px; }
+
+  /* ---------- Форма ---------- */
+  .contacts__ask-title { font-size: 26px; line-height: 36px; font-weight: var(--w-thin); }
+  .contacts__ask-sub { margin-top: 15px; max-width: 540px; }
+
+  .form { margin-top: 31px; display: grid; gap: 12px; }
+  .form__field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 50px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .form__field input,
+  .form__field textarea {
+    flex: 1;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: var(--text);
+    color: var(--ink);
+    outline: none;
+    resize: none;
+  }
+  .form__field input::placeholder,
+  .form__field textarea::placeholder { color: rgba(0, 0, 0, 0.55); }
+  .form__field:focus-within { border-bottom-color: var(--wine); }
+
+  .form__prefix { display: flex; align-items: center; gap: 8px; color: var(--ink); }
+  .form__flag {
+    width: 18px; height: 12px;
+    background: linear-gradient(#fff 0 33.3%, #0039a6 33.3% 66.6%, #d52b1e 66.6%);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+
+  .form__trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+  .form__consent {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: var(--w-regular);
+    letter-spacing: normal;
+    cursor: pointer;
+  }
+  .form__consent input { position: absolute; opacity: 0; width: 20px; height: 20px; margin: 0; }
+  .form__check {
+    flex: none;
+    width: 20px; height: 20px;
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    display: grid;
+    place-items: center;
+  }
+  .form__consent input:checked + .form__check::after {
+    content: '';
+    width: 10px; height: 5px;
+    border-left: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+    transform: translateY(-2px) rotate(-45deg);
+  }
+  .form__consent input:focus-visible + .form__check { outline: 2px solid var(--wine); outline-offset: 2px; }
+  .form__consent a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }
+
+  .form__submit { margin-top: 10px; border-radius: 50px; }
+  .form__submit:disabled { opacity: 0.5; cursor: wait; }
+  .form__status { min-height: 20px; font-size: 14px; }
+  .form__status.is-error { color: #b3261e; }
+
+  /* ---------- Онлайн-запись ---------- */
+  .contacts__booking-title { margin-top: 84px; }
+  .contacts__booking {
+    display: grid;
+    grid-template-columns: 440px 601px;
+    justify-content: space-between;
+    align-items: start;
+    margin-top: 14px;
+  }
+  .contacts__booking p { max-width: 440px; }
+  .contacts__booking .btn-outline { margin-left: -2px; }
+
+  @media (max-width: 1199px) {
+    .contacts__grid,
+    .contacts__booking { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+  @media (max-width: 959px) {
+    .contacts { padding-top: 60px; }
+    .contacts .section-title { font-size: 28px; }
+    .contacts__grid,
+    .contacts__booking { grid-template-columns: 1fr; gap: 50px; }
+    .contacts__booking { gap: 24px; }
+    .contacts__booking-title { margin-top: 70px; }
+  }
+</style>

@@ -1,0 +1,32 @@
+---
+import { site } from '../data/site';
+import { img } from '../data/images';
+
+interface Props {
+  /** dark — серые иконки (шапка, подвал), beige — бежевые (блок «О клинике») */
+  variant?: 'dark' | 'beige';
+  size?: number;
+  gap?: number;
+  class?: string;
+}
+const { variant = 'dark', size = 36, gap = 24, class: cls } = Astro.props;
+
+const icons = variant === 'dark'
+  ? { ig: img('ig'), vk: img('vk'), tg: img('tg') }
+  : { ig: img('aboutIg'), vk: img('aboutVk'), tg: img('aboutTg') };
+
+const items = [
+  { href: site.social.instagram, src: icons.ig, label: 'Instagram' },
+  { href: site.social.vk, src: icons.vk, label: 'ВКонтакте' },
+  { href: site.social.telegram, src: icons.tg, label: 'Telegram' },
+];
+---
+<ul class:list={['socials', cls]} style={`gap:${gap}px`}>
+  {items.map((i) => (
+    <li>
+      <a href={i.href} target="_blank" rel="noopener" aria-label={i.label}>
+        <img src={i.src} alt="" width={size} height={size} loading="lazy" />
+      </a>
+    </li>
+  ))}
+</ul>

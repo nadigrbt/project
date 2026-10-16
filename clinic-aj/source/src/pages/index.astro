@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Promo from '../components/Promo.astro';
+import Services from '../components/Services.astro';
+import Education from '../components/Education.astro';
+import Gallery from '../components/Gallery.astro';
+import About from '../components/About.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base
+  title="Клиника эстетической косметологии и дерматологии A&J в Мурманске"
+  description="Косметологи и дерматологи клиники A&J предоставляют широкий спектр услуг по аппаратной, инъекционной и эстетической косметологии с медицинской лицензией в центре города | Запишитесь онлайн или по номеру 78-70-30"
+  ogTitle="Медицинская клиника и эстетическая косметология A&J"
+  ogDescription="Медицина и косметология в Мурманске. Специалисты с медицинским образованием. Лицензионное современное оборудование"
+>
+  <main>
+    <Hero />
+    <Promo />
+    <Services />
+    <Education />
+    <Gallery />
+    <About />
+    <Contacts />
+  </main>
+  <Footer />
+</Base>
