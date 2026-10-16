@@ -34,6 +34,19 @@ const devices = [
   { id: 'lpg', href: '/lpg', title: 'LPG-массаж Cellu M6 Alliance', forWhat: 'Целлюлит, отёки, тонус кожи.', text: 'Аппаратный массаж компании LPG Systems (Франция): вакуумные насадки улучшают кровообращение и тонус кожи, помогают уменьшить отёчность. Заметный результат обычно появляется после нескольких процедур.' },
   { id: 'micro', href: '/micro', title: 'Микротоки Bio-Ultimate Platinum DELUXE', forWhat: 'Тонус мышц лица и шеи, отёчность, цвет лица.', text: 'Слабые токи стимулируют мышцы и кровообращение. Процедура комфортная и не требует длительного восстановления.' },
 ];
+// Карусель на первом экране: порядок как в макете, стартовый аппарат — Volnewmer (индекс 1)
+const slides: { id: string; name: string; text: string; key: ImageKey; w: number; h: number }[] = [
+  { id: 'lpg', name: 'LPG-массаж Cellu M6 Alliance', text: 'Аппаратный массаж лица и тела: кровообращение, тонус кожи, отёки, целлюлит.', key: 'deviceLpg', w: 582, h: 760 },
+  { id: 'volnewmer', name: 'RF-лифтинг Volnewmer', text: 'Подтяжка и уплотнение кожи лица и шеи без операции.', key: 'deviceVolnewmer', w: 222, h: 760 },
+  { id: 'liftera', name: 'SMAS-лифтинг Liftera', text: 'Ультразвуковая подтяжка овала лица и шеи.', key: 'deviceLiftera', w: 380, h: 760 },
+  { id: 'heleo', name: 'LED-терапия Heleo4', text: 'Свет разных цветов для кожи: акне и общее состояние.', key: 'deviceHeleo', w: 652, h: 760 },
+  { id: 'morpheus', name: 'Morpheus 8', text: 'Игольчатый RF-лифтинг: тонус и упругость кожи лица и тела.', key: 'deviceMorpheus', w: 403, h: 760 },
+  { id: 'lumecca', name: 'InMode Lumecca', text: 'Фотоомоложение: пигментация, покраснения, тон кожи.', key: 'deviceLumecca', w: 405, h: 760 },
+  { id: 'mediostar', name: 'MeDioStar Monolith', text: 'Диодный лазер: эпиляция и омоложение кожи.', key: 'deviceMediostar', w: 430, h: 760 },
+  { id: 'neogen', name: 'NeoGen', text: 'Плазменное омоложение: рельеф и упругость кожи.', key: 'deviceNeogen', w: 334, h: 760 },
+  { id: 'micro', name: 'Bio-Ultimate Platinum', text: 'Микротоки: тонус мышц лица, отёчность.', key: 'deviceMicro', w: 700, h: 391 },
+].map((x) => ({ ...x, href: '' }));
+slides.forEach((x) => { x.href = devices.find((d) => d.id === x.id)!.href; });
 const steps = [
   { title: 'Консультация', text: 'Врач соберёт анамнез, выслушает пожелания и оценит состояние кожи.' },
   { title: 'Индивидуальный план', text: 'Подберём аппарат или сочетание процедур и домашний уход под вашу задачу.' },
@@ -60,26 +73,43 @@ const photos: { key: ImageKey; alt: string }[] = [
     <Header />
 
     <div class="container cs-hero__top">
-      <div class="cs-hero__text">
-        <nav class="cs-crumbs" aria-label="Хлебные крошки">
-          <a href="/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">Аппаратная косметология</span>
-        </nav>
-        <p class="cs-eyebrow">Аппаратная косметология</p>
-        <h1 class="cs-hero__title">Лицо и тело <span>современные аппараты под вашу задачу</span></h1>
-        <p class="cs-hero__lead">Подтяжка, омоложение, работа с пигментацией, акне и целлюлитом. Врач подберёт процедуру на консультации, чтобы подчеркнуть вашу естественную красоту.</p>
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">Аппаратная косметология</span>
+      </nav>
+      <p class="cs-eyebrow">Аппаратная косметология</p>
+      <h1 class="cs-hero__title">Лицо и тело <span>современные аппараты под вашу задачу</span></h1>
+      <p class="cs-hero__lead">Подтяжка, омоложение, работа с пигментацией, акне и целлюлитом. Врач подберёт процедуру на консультации, чтобы подчеркнуть вашу естественную красоту.</p>
+    </div>
 
-        <div class="cs-actions">
-          <a class="cs-btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на консультацию</a>
-          <a class="cs-phone" href={site.phone.href}>
-            <span class="cs-phone__label">или позвоните</span>
-            <span class="cs-phone__num">{site.phone.display}</span>
+    <div class="cs-show" id="cs-show">
+      <img class="cs-show__letters" src={img('heroLetters')} alt="" width="1200" height="608" aria-hidden="true" />
+      <button type="button" class="cs-show__arr cs-show__arr--l" id="cs-prev" aria-label="Предыдущий аппарат" hidden>&#8592;</button>
+      <button type="button" class="cs-show__arr cs-show__arr--r" id="cs-next" aria-label="Следующий аппарат" hidden>&#8594;</button>
+      <div class="cs-show__track" id="cs-track" role="region" aria-roledescription="карусель" aria-label="Аппараты клиники" tabindex="0">
+        {slides.map((x, i) => (
+          <a class="cs-show__slide" href={x.href} data-i={i} data-name={x.name} data-text={x.text} aria-label={x.name}>
+            <img src={img(x.key)} alt={x.name} width={x.w} height={x.h} loading={i < 3 ? 'eager' : 'lazy'} />
           </a>
-        </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="container cs-hero__bottom">
+      <div class="cs-cap" aria-live="polite">
+        <p class="cs-cap__name" id="cs-name">{slides[1].name}</p>
+        <p class="cs-cap__text" id="cs-text">{slides[1].text}</p>
+        <a class="cs-card__link" id="cs-link" href={slides[1].href}>Подробнее о процедуре →</a>
+      </div>
+      <div class="cs-dots" id="cs-dots">
+        {slides.map((x, i) => <button type="button" aria-label={x.name} aria-current={i === 1 ? 'true' : 'false'} data-i={i}></button>)}
       </div>
 
-      <div class="cs-hero__visual" aria-hidden="true">
-        <img class="cs-hero__letters" src={img('heroLetters')} alt="" width="1200" height="608" />
-        <img class="cs-hero__device" src={img('promoDevice')} alt="" width="800" height="800" fetchpriority="high" />
+      <div class="cs-actions">
+        <a class="cs-btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на консультацию</a>
+        <a class="cs-phone" href={site.phone.href}>
+          <span class="cs-phone__label">или позвоните</span>
+          <span class="cs-phone__num">{site.phone.display}</span>
+        </a>
       </div>
     </div>
 
@@ -181,6 +211,8 @@ const photos: { key: ImageKey; alt: string }[] = [
     <Contacts />
   </main>
   <Footer />
+
+  <script is:inline src="/cosmetology-carousel.js?v=1" defer></script>
 </Base>
 
 <style>
@@ -203,21 +235,84 @@ const photos: { key: ImageKey; alt: string }[] = [
 
   /* ---------- Первый экран ---------- */
   .cs-hero { position: relative; overflow: hidden; background: var(--white); }
-  .cs-hero__top {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: 40px;
-    min-height: 600px;
-  }
-  .cs-hero__text { position: relative; z-index: 2; padding: 40px 0 64px; }
-  .cs-crumbs { display: flex; gap: 10px; margin-bottom: 36px; font-size: var(--fs-small); color: var(--muted); }
+  .cs-hero__top { display: flex; flex-direction: column; align-items: center; padding-top: 40px; text-align: center; }
+  .cs-crumbs { display: flex; justify-content: center; gap: 10px; margin-bottom: 36px; font-size: var(--fs-small); color: var(--muted); }
   .cs-crumbs a { text-decoration: none; }
   .cs-crumbs a:hover { color: var(--wine); }
-  .cs-hero__title { margin-top: 28px; font-size: var(--fs-h1); line-height: 1.12; font-weight: var(--w-thin); }
+  .cs-hero .cs-eyebrow { justify-content: center; }
+  .cs-hero .cs-eyebrow::after { content: ''; width: 40px; height: 1px; background: currentColor; }
+  .cs-hero__title { margin-top: 20px; font-size: var(--fs-h1); line-height: 1.12; font-weight: var(--w-thin); }
   .cs-hero__title span { display: block; color: var(--wine); font-size: var(--fs-h2); line-height: 1.25; margin-top: 8px; }
-  .cs-hero__lead { margin-top: 28px; max-width: 460px; color: var(--muted); }
+  .cs-hero__lead { margin-top: 24px; max-width: 520px; color: var(--muted); }
 
-  .cs-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 20px 32px; margin-top: 40px; }
+  /* ---------- Карусель аппаратов ---------- */
+  .cs-show { position: relative; margin-top: 16px; }
+  .cs-show__letters { position: absolute; left: 50%; bottom: 0; width: 66%; max-width: 1000px; height: auto; transform: translateX(-50%); opacity: 0.9; pointer-events: none; }
+  .cs-show__track {
+    --sw: 340px;
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-inline: calc(50% - var(--sw) / 2);
+  }
+  .cs-show__track::-webkit-scrollbar { display: none; }
+  .cs-show__track:focus-visible { outline: 2px solid var(--wine); outline-offset: -2px; }
+  .cs-show__slide {
+    flex: 0 0 var(--sw);
+    height: 470px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 24px 22px;
+    position: relative;
+    scroll-snap-align: center;
+    opacity: 0.38;
+    transform: scale(0.72);
+    transform-origin: 50% 100%;
+    transition: opacity 0.35s, transform 0.35s;
+  }
+  .cs-show__slide.is-on { opacity: 1; transform: scale(1); }
+  .cs-show__slide img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 18px 18px rgba(38, 35, 35, 0.18)); }
+  .cs-show__slide::after { content: ''; position: absolute; left: 18%; right: 18%; bottom: 10px; height: 14px; border-radius: 50%; background: radial-gradient(closest-side, rgba(38, 35, 35, 0.18), transparent); }
+  .cs-show__arr {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 52px;
+    height: 52px;
+    margin-top: -26px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--wine);
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--wine);
+    font-family: var(--font);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .cs-show__arr[hidden] { display: none; }
+  .cs-show__arr:hover { background: var(--wine); color: var(--white); }
+  .cs-show__arr:focus-visible { outline: 2px solid var(--graphite); outline-offset: 2px; }
+  .cs-show__arr--l { left: max(16px, calc(50% - 560px)); }
+  .cs-show__arr--r { right: max(16px, calc(50% - 560px)); }
+
+  .cs-hero__bottom { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .cs-cap { min-height: 150px; padding-top: 8px; }
+  .cs-cap__name { font-family: var(--font); font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-light); }
+  .cs-cap__text { margin: 8px auto 0; max-width: 520px; color: var(--muted); }
+  .cs-cap .cs-card__link { display: inline-block; margin-top: 12px; padding-top: 0; }
+  .cs-dots { display: flex; justify-content: center; padding: 6px 0 18px; }
+  .cs-dots button { width: 24px; height: 24px; padding: 8px; border: 0; background: var(--line); background-clip: content-box; border-radius: 12px; cursor: pointer; transition: width 0.2s; }
+  .cs-dots button[aria-current='true'] { width: 38px; background: var(--wine); background-clip: content-box; }
+
+  .cs-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 20px 32px; margin-top: 8px; padding-bottom: 48px; }
   .cs-btn,
   .cs-cta__btn {
     display: inline-flex;
@@ -238,12 +333,6 @@ const photos: { key: ImageKey; alt: string }[] = [
   .cs-phone__label { font-size: var(--fs-small); color: var(--muted); }
   .cs-phone__num { font-family: var(--font); font-size: var(--fs-h3); letter-spacing: 0.5px; }
   .cs-phone:hover .cs-phone__num { color: var(--wine); }
-
-  /* Девушка и аппарат на фоне большого логотипа A&J — как врачи на главной */
-  .cs-hero__visual { position: relative; z-index: 1; }
-  .cs-hero__visual img { position: absolute; bottom: 0; max-width: none; }
-  .cs-hero__letters { left: 50%; width: 1000px; transform: translateX(-50%); }
-  .cs-hero__device { left: 50%; width: 520px; transform: translateX(-50%); }
 
   .cs-benefits { border-top: 1px solid var(--line); }
   .cs-benefits__list {
@@ -356,23 +445,26 @@ const photos: { key: ImageKey; alt: string }[] = [
 
   /* ---------- Планшет ---------- */
   @media (max-width: 1199px) {
-    .cs-hero__letters { width: 820px; }
-    .cs-hero__device { width: 440px; }
+    .cs-show__slide { height: 420px; }
     .cs-benefits__list { grid-template-columns: 1fr 1fr; }
   }
 
   /* ---------- Мобильный ---------- */
   @media (max-width: 959px) {
-    .cs-hero__top { grid-template-columns: 1fr; gap: 0; min-height: 0; }
-    .cs-hero__text { padding: 24px 0 0; }
+    .cs-hero__top { padding-top: 24px; }
     .cs-crumbs { margin-bottom: 24px; }
     .cs-eyebrow { letter-spacing: 1.5px; }
     .cs-hero__title { margin-top: 18px; font-size: var(--fs-h1); }
     main :global(.section-title) { font-size: var(--fs-h2); line-height: 1.25; }
     .cs-btn { width: 100%; }
-    .cs-hero__visual { height: 340px; margin-top: 32px; }
-    .cs-hero__letters { width: 640px; }
-    .cs-hero__device { width: 340px; }
+    .cs-actions { width: 100%; }
+    .cs-show__track { --sw: 68%; }
+    .cs-show__slide { height: 330px; padding: 0 10px 18px; }
+    .cs-show__arr { width: 44px; height: 44px; margin-top: -22px; font-size: 18px; }
+    .cs-show__arr--l { left: 6px; }
+    .cs-show__arr--r { right: 6px; }
+    .cs-show__letters { width: 120%; }
+    .cs-cap { min-height: 170px; }
     .cs-benefits__list { grid-template-columns: 1fr; gap: 18px; }
     .cs-about, .cs-problems { padding: 60px 0; }
     .cs-about__grid, .cs-results__inner, .cs-med { grid-template-columns: 1fr; gap: 32px; }
@@ -432,4 +524,6 @@ const photos: { key: ImageKey; alt: string }[] = [
     .cs-card { padding: 28px 22px; }
     .cs-devices { padding-bottom: 56px; }
   }
+  @media (prefers-reduced-motion: reduce) { .cs-show__slide, .cs-dots button { transition: none; } }
 </style>
+
