@@ -3,9 +3,7 @@
         if (f.length) document.documentElement.classList.add('gt-eesti');
       });
     </script><meta property="og:type" content="website"><meta property="og:url" content="https://clinic-aj.ru/volnewmer"><meta property="og:title" content="RF-лифтинг Volnewmer в Мурманске | Клиника эстетической косметологии A&amp;J"><meta property="og:description" content="Volnewmer — RF-лифтинг нового поколения: подтяжка и уплотнение кожи без операции. Теперь в клинике A&amp;J в Мурманске."><meta property="og:image" content="https://clinic-aj.ru/images/og.jpg"><link rel="icon" type="image/svg+xml" href="/project/clinic-aj/images/favicon-light.svg" media="(prefers-color-scheme: light)"><link rel="icon" type="image/svg+xml" href="/project/clinic-aj/images/favicon-dark.svg" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/svg+xml" href="/project/clinic-aj/images/favicon.svg"><link rel="apple-touch-icon" href="/project/clinic-aj/images/apple-touch-icon.png"><link rel="stylesheet" href="/project/clinic-aj/assets/Footer.ETsL5ale.css"><link rel="stylesheet" href="/project/clinic-aj/assets/index.DsSsVTgo.css"><style>
-  /* Шкала размеров шрифта страницы: 6 размеров (на телефоне — меньше крупные) */
-  :root { --fs-h1: 58px; --fs-h2: 36px; --fs-h3: 24px; --fs-body: 18px; --fs-small: 15px; --fs-xs: 13px; }
-  @media (max-width: 959px) { :root { --fs-h1: 36px; --fs-h2: 28px; --fs-h3: 20px; } }
+  /* Размеры шрифта — только из общей шкалы --fs-* (styles/global.css), 5 размеров */
 
   /* Общие элементы — как на первом экране главной */
   .vr-eyebrow {
@@ -13,7 +11,7 @@
     align-items: center;
     gap: 14px;
     font-family: var(--font);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-small);
     font-weight: var(--w-regular);
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -48,7 +46,7 @@
     padding: 0 36px;
     border-radius: 999px;
     font-family: var(--font);
-    font-size: 16px;
+    font-size: var(--fs-body);
     letter-spacing: 0.5px;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
@@ -56,7 +54,7 @@
   .vr-btn { background: var(--wine); color: var(--white); }
   .vr-btn:hover { background: var(--graphite); }
   .vr-phone { display: grid; text-decoration: none; line-height: 1.2; }
-  .vr-phone__label { font-size: var(--fs-xs); color: var(--muted); }
+  .vr-phone__label { font-size: var(--fs-small); color: var(--muted); }
   .vr-phone__num { font-family: var(--font); font-size: var(--fs-h3); letter-spacing: 0.5px; }
   .vr-phone:hover .vr-phone__num { color: var(--wine); }
 
@@ -110,7 +108,7 @@
     font-size: var(--fs-h3);
     font-weight: var(--w-thin);
   }
-  .vr-problems__num { flex: none; font-size: var(--fs-xs); color: var(--wine); letter-spacing: 1px; }
+  .vr-problems__num { flex: none; font-size: var(--fs-small); color: var(--wine); letter-spacing: 1px; }
 
   /* ---------- Результат (винная полоса) ---------- */
   .vr-results { background: var(--wine); color: var(--white); }
@@ -171,13 +169,12 @@
   .vr-cta__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 40px; padding-top: 48px; padding-bottom: 52px; }
   .vr-cta__title { font-size: var(--fs-h2); line-height: 1.15; }
   .vr-cta__sub { margin-top: 10px; color: rgba(241, 234, 224, 0.8); }
-  .vr-cta__warn { margin-top: 8px; font-size: var(--fs-xs); letter-spacing: 0.5px; text-transform: uppercase; color: rgba(241, 234, 224, 0.6); }
+  .vr-cta__warn { margin-top: 8px; font-size: var(--fs-small); letter-spacing: 0.5px; text-transform: uppercase; color: rgba(241, 234, 224, 0.6); }
   .vr-cta__btn { background: var(--ivory); color: var(--graphite); }
   .vr-cta__btn:hover { background: var(--wine); color: var(--white); }
 
   /* ---------- Планшет ---------- */
   @media (max-width: 1199px) {
-    .vr-hero__title { font-size: 46px; } /* планшет: промежуточный размер заголовка */
     .vr-hero__letters { width: 820px; }
     .vr-hero__woman { width: 300px; }
     .vr-hero__device { width: 210px; }
