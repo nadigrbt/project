@@ -79,7 +79,7 @@ const photos: { key: ImageKey; alt: string }[] = [
 
       <div class="cs-hero__visual" aria-hidden="true">
         <img class="cs-hero__letters" src={img('heroLetters')} alt="" width="1200" height="608" />
-        <img class="cs-hero__doctors" src={img('heroDoctors')} alt="" width="600" height="838" fetchpriority="high" />
+        <img class="cs-hero__device" src={img('promoDevice')} alt="" width="800" height="800" fetchpriority="high" />
       </div>
     </div>
 
@@ -243,8 +243,7 @@ const photos: { key: ImageKey; alt: string }[] = [
   .cs-hero__visual { position: relative; z-index: 1; }
   .cs-hero__visual img { position: absolute; bottom: 0; max-width: none; }
   .cs-hero__letters { left: 50%; width: 1000px; transform: translateX(-50%); }
-  .cs-hero__doctors { left: 50%; width: 420px; transform: translateX(-44%); }
-  .cs-hero__device { right: 0; width: 260px; }
+  .cs-hero__device { left: 50%; width: 520px; transform: translateX(-50%); }
 
   .cs-benefits { border-top: 1px solid var(--line); }
   .cs-benefits__list {
@@ -358,8 +357,7 @@ const photos: { key: ImageKey; alt: string }[] = [
   /* ---------- Планшет ---------- */
   @media (max-width: 1199px) {
     .cs-hero__letters { width: 820px; }
-    .cs-hero__doctors { width: 360px; }
-    .cs-hero__device { width: 210px; }
+    .cs-hero__device { width: 440px; }
     .cs-benefits__list { grid-template-columns: 1fr 1fr; }
   }
 
@@ -374,8 +372,7 @@ const photos: { key: ImageKey; alt: string }[] = [
     .cs-btn { width: 100%; }
     .cs-hero__visual { height: 340px; margin-top: 32px; }
     .cs-hero__letters { width: 640px; }
-    .cs-hero__doctors { width: 240px; }
-    .cs-hero__device { width: 170px; right: -10px; }
+    .cs-hero__device { width: 340px; }
     .cs-benefits__list { grid-template-columns: 1fr; gap: 18px; }
     .cs-about, .cs-problems { padding: 60px 0; }
     .cs-about__grid, .cs-results__inner, .cs-med { grid-template-columns: 1fr; gap: 32px; }
