@@ -239,7 +239,9 @@ import { site } from '../data/site';
   }
   @media (max-width: 959px) {
     .contacts { padding-top: 60px; }
-    .contacts .section-title { font-size: var(--fs-h2); }
+    /* на телефоне заголовки чуть жирнее (решение владельца 16.10) */
+    .contacts .section-title { font-size: var(--fs-h2); font-weight: var(--w-light); }
+    .contacts__ask-title { font-weight: var(--w-light); }
     .contacts__grid,
     .contacts__booking { grid-template-columns: 1fr; gap: 50px; }
     .contacts__booking { gap: 24px; }
