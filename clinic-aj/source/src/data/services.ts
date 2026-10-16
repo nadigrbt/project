@@ -10,7 +10,6 @@ export interface ServiceGroup {
 export const services: ServiceGroup[] = [
   {
     title: 'Прием анализов крови',
-    open: true,
     body: `
 <p>Теперь сдать анализы можно прямо в клинике на <u>Карла Либкнехта, 28.</u><br>
 Забор проводим у нас, материалы отправляем в лабораторию Хеликс.</p>
