@@ -1,0 +1,185 @@
+---
+// Страница /volnewmer — перенос с Тильды один в один (тексты, порядок блоков, фото).
+// Исправлено только явное: заголовок для поиска (на Тильде был от страницы «Омоложение рук»),
+// «A&G» → «A&J», кнопка «Записаться» вела на несуществующий якорь; добавлено предупреждение о противопоказаниях (38-ФЗ).
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import About from '../components/About.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import { img } from '../data/images';
+
+const problems = [
+  'Снижение упругости кожи лица и шеи',
+  'Нечеткий овал лица',
+  'Возрастное провисание тканей',
+  'Морщины и складки',
+  'Дряблость кожи',
+  'Возрастные изменения в области подбородка и шеи',
+  'Потеря тонуса кожи после похудения',
+];
+const results = [
+  'Более четкий контур лица',
+  'Подтянутую и упругую кожу',
+  'Уменьшение выраженности морщин',
+  'Улучшение качества и плотности кожи',
+  'Более свежий и молодой внешний вид',
+];
+const indications = [
+  'Возрастные изменения кожи',
+  'Снижение тургора и эластичности',
+  'Появление морщин',
+  'Нечеткий овал лица',
+  'Дряблость кожи лица и шеи',
+  'Профилактика возрастных изменений',
+];
+const contraindications = [
+  'Беременность и период лактации',
+  'Онкологические заболевания',
+  'Острые инфекционные заболевания',
+  'Кардиостимулятор и некоторые металлические импланты',
+  'Воспалительные процессы в зоне воздействия',
+];
+---
+<Base
+  title="RF-лифтинг Volnewmer в Мурманске | Клиника эстетической косметологии A&J"
+  description="Volnewmer — современная технология радиочастотного лифтинга (RF-лифтинга): подтяжка и омоложение кожи без операции. Первый в Мурманске — в клинике A&J. Запишитесь онлайн или по номеру 78-70-30"
+>
+  <Header />
+
+  <main>
+    <nav class="container vn-crumbs" aria-label="Хлебные крошки">
+      <a href="/">Главная страница</a>
+      <span class="vn-crumbs__sep" aria-hidden="true">→</span>
+      <a href="/cosmetology" aria-current="page">Аппаратная косметология</a>
+    </nav>
+
+    <section class="vn-cover">
+      <div class="container vn-cover__text">
+        <h1 class="vn-cover__title">RF-лифтинг нового поколения —Volnewmer. Первый в&nbsp;Мурманске</h1>
+        <p class="vn-cover__descr">
+          Омоложение и подтяжка кожи без операции<br /><br />
+          <strong>A&amp;J – клиника эстетической косметологии</strong>
+        </p>
+        <a class="btn-outline vn-cover__btn" href="#contact">Записаться</a>
+      </div>
+      <div class="container">
+        <div class="vn-cover__img" role="img" aria-label="Аппарат Volnewmer и процедура RF-лифтинга" style={`background-image: url('${img('volBanner')}')`}></div>
+      </div>
+    </section>
+
+    <section class="container vn-text">
+      <p><strong>Volnewmer (Волньюмер)</strong> — современная технология радиочастотного лифтинга (RF-лифтинга), которая помогает улучшить качество кожи, повысить её упругость и добиться выраженного эффекта подтяжки без хирургического вмешательства и длительного восстановления.</p>
+      <p>Во время процедуры контролируемая радиочастотная энергия прогревает глубокие слои кожи, стимулируя естественную выработку коллагена и эластина. В результате кожа становится более плотной, подтянутой и выглядит заметно моложе.</p>
+
+      <h2>Какие проблемы помогает решить Volnewmer</h2>
+      <ul>{problems.map((t) => <li>{t}</li>)}</ul>
+
+      <h2>Результаты процедуры</h2>
+      <p class="vn-text__tight">После курса процедур пациенты отмечают:</p>
+      <ul>{results.map((t) => <li>{t}</li>)}</ul>
+      <p class="vn-text__tight">Эффект нарастает постепенно по мере выработки нового коллагена и может сохраняться длительное время.</p>
+
+      <h2>Преимущества Volnewmer</h2>
+      <p class="vn-text__tight"><strong>1) Без операции</strong><br />Процедура позволяет добиться выраженного лифтинг-эффекта без разрезов, наркоза и длительной реабилитации.</p>
+      <p class="vn-text__tight">2) <strong>Комфортность</strong><br />Современная система контроля температуры обеспечивает комфортное проведение процедуры.</p>
+      <p class="vn-text__tight"><strong>3) Минимальный период восстановления</strong><br />После процедуры можно быстро вернуться к привычному образу жизни.</p>
+      <p class="vn-text__tight"><strong>4) Подходит для разных зон</strong><br />Технология эффективно применяется для лица, шеи и других участков тела, где требуется улучшение качества кожи и повышение её тонуса.</p>
+
+      <h2>Как проходит процедура</h2>
+      <p class="vn-text__tight">Перед процедурой врач-косметолог проводит консультацию, оценивает состояние кожи и определяет оптимальные параметры воздействия.<br />Во время процедуры специалист обрабатывает выбранную зону специальной насадкой аппарата. Пациент ощущает приятное тепло. После завершения процедуры можно сразу вернуться к обычным делам.</p>
+
+      <h2>Показания</h2>
+      <ul>{indications.map((t) => <li>{t}</li>)}</ul>
+
+      <h2>Противопоказания</h2>
+      <ul>{contraindications.map((t) => <li>{t}</li>)}</ul>
+      <p class="vn-text__tight">Точный перечень противопоказаний определяется врачом на консультации.</p>
+      <p class="vn-text__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
+    </section>
+
+    <section class="container vn-photos" aria-label="Фото процедуры Volnewmer">
+      <img class="vn-photos__big" src={img('vol1')} alt="Процедура Volnewmer: врач обрабатывает лицо насадкой аппарата" width="900" height="1200" loading="lazy" />
+      <img src={img('vol2')} alt="Насадка Volnewmer на линии подбородка" width="600" height="800" loading="lazy" />
+      <img src={img('vol3')} alt="Экран аппарата Volnewmer" width="600" height="800" loading="lazy" />
+      <img src={img('vol4')} alt="Аппарат Volnewmer в кабинете клиники" width="600" height="800" loading="lazy" />
+      <img src={img('vol5')} alt="Процедура Volnewmer в клинике A&J" width="600" height="585" loading="lazy" />
+    </section>
+
+    <About />
+    <Contacts />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  /* ---------- Хлебные крошки ---------- */
+  .vn-crumbs {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 22px;
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: var(--w-light);
+  }
+  .vn-crumbs a { text-decoration: none; transition: color 0.2s; }
+  .vn-crumbs a:hover { color: var(--muted); }
+  .vn-crumbs__sep { color: #858585; font-size: 12px; }
+
+  /* ---------- Первый экран: заголовок по центру, под ним баннер ---------- */
+  .vn-cover { padding-top: 60px; }
+  .vn-cover__text { max-width: 820px; text-align: center; }
+  .vn-cover__title {
+    font-size: 40px;
+    line-height: 1.23;
+    font-weight: var(--w-regular);
+  }
+  .vn-cover__descr { margin-top: 32px; font-size: 16px; line-height: 1.55; }
+  .vn-cover__descr strong { font-weight: var(--w-medium); }
+  .vn-cover__btn { width: auto; min-width: 140px; height: 42px; margin-top: 36px; }
+  .vn-cover__img {
+    height: 400px;
+    margin-top: 40px;
+    background: var(--ivory) center / cover no-repeat;
+  }
+
+  /* ---------- Текст о процедуре ---------- */
+  .vn-text { padding-top: 60px; font-size: 20px; line-height: 1.55; }
+  .vn-text p + p { margin-top: 31px; }
+  .vn-text strong { font-weight: var(--w-medium); }
+  .vn-text h2 {
+    margin-top: 46px;
+    font-family: var(--font-text);
+    font-size: 20px;
+    line-height: 1.55;
+    font-weight: var(--w-medium);
+    letter-spacing: 0;
+  }
+  .vn-text ul { margin: 0; padding-left: 22px; }
+  .vn-text .vn-text__tight,
+  .vn-text p + .vn-text__tight { margin-top: 0; }
+  .vn-text ul + .vn-text__tight { margin-top: 10px; }
+
+  .vn-text .vn-text__warn { margin-top: 24px; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
+
+  /* ---------- Фото: большое слева, 4 маленьких справа ---------- */
+  .vn-photos {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  .vn-photos img { width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
+  .vn-photos__big { grid-row: span 2; }
+
+  @media (max-width: 959px) {
+    .vn-cover__title { font-size: 28px; }
+    .vn-cover__img { height: 220px; }
+    .vn-text { font-size: 18px; }
+    .vn-text h2 { font-size: 18px; margin-top: 36px; }
+    .vn-photos { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .vn-photos__big { grid-column: span 2; grid-row: auto; }
+  }
+</style>
