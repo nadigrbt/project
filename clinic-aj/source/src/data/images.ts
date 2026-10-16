@@ -48,6 +48,12 @@ export const images = {
   vol4:          { file: 'volnewmer-4.webp',   remote: `${T}/tild3761-6233-4666-a137-386631646231/IMG_5108.JPG`, width: 600 },
   vol5:          { file: 'volnewmer-5.webp',   remote: `${T}/tild6330-6332-4832-b432-666131653736/__2026-07-08_220054.png`, width: 600 },
 
+  // Страница /cosmetology
+  cosmBanner:    { file: 'cosmetology-banner.webp', remote: `${T}/tild3865-3133-4632-a265-653833636133/__2023-05-26__145152.png`, width: 1480 },
+  cosm1:         { file: 'cosmetology-1.webp', remote: `${T}/tild6433-6665-4439-b738-633664303839/2026-05-10_133744HEI.jpeg`, width: 900 },
+  cosm2:         { file: 'cosmetology-2.webp', remote: `${T}/tild6434-3765-4237-a132-626633663530/__2023-05-26__144420.png`, width: 1100 },
+  cosm3:         { file: 'cosmetology-3.webp', remote: `${T}/tild3661-6666-4432-a339-393436383762/__2026-06-24_154829.png`, width: 700 },
+
   // Фото клиники для блока-галереи (свои, не с Тильды)
   clinicLounge:     { file: 'clinic-lounge.webp' },
   clinicLogo:       { file: 'clinic-logo-flowers.webp' },
