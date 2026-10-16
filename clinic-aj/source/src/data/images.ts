@@ -40,6 +40,14 @@ export const images = {
   appleIcon:     { file: 'apple-touch-icon.png', remote: `${T}/tild6237-3737-4130-b965-373233396138/kosmetologiya_murman.png`, width: 192 },
   og:            { file: 'og.jpg',             remote: `${T}/tild3133-3666-4639-b434-376539316537/AJ_logo.jpg`, width: 1200 },
 
+  // Страница /volnewmer
+  volBanner:     { file: 'volnewmer-banner.webp', remote: `${T}/tild3134-6538-4434-b462-663963316666/__2026-06-17_121952.png`, width: 1680 },
+  vol1:          { file: 'volnewmer-1.webp',   remote: `${T}/tild6166-3566-4461-b735-643638343133/IMG_5018.JPG`, width: 900 },
+  vol2:          { file: 'volnewmer-2.webp',   remote: `${T}/tild6234-3438-4633-a164-656436633931/IMG_5025.JPG`, width: 600 },
+  vol3:          { file: 'volnewmer-3.webp',   remote: `${T}/tild3066-3930-4166-a531-633030333064/IMG_5046.JPG`, width: 600 },
+  vol4:          { file: 'volnewmer-4.webp',   remote: `${T}/tild3761-6233-4666-a137-386631646231/IMG_5108.JPG`, width: 600 },
+  vol5:          { file: 'volnewmer-5.webp',   remote: `${T}/tild6330-6332-4832-b432-666131653736/__2026-07-08_220054.png`, width: 600 },
+
   // Фото клиники для блока-галереи (свои, не с Тильды)
   clinicLounge:     { file: 'clinic-lounge.webp' },
   clinicLogo:       { file: 'clinic-logo-flowers.webp' },

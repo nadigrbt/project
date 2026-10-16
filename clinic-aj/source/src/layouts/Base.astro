@@ -18,9 +18,11 @@ interface Props {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  /** Черновик или вариант редизайна: не показывать в поиске */
+  noindex?: boolean;
 }
 
-const { title, description, ogTitle = title, ogDescription = description, ogImage } = Astro.props;
+const { title, description, ogTitle = title, ogDescription = description, ogImage, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site).href;
 const og = ogImage ?? new URL(img('og'), Astro.site).href;
 ---
@@ -30,7 +32,7 @@ const og = ogImage ?? new URL(img('og'), Astro.site).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {/* Тестовая копия на GitHub Pages не должна попадать в поиск (npm run preview-build) */}
-    {import.meta.env.PUBLIC_NOINDEX === '1' && <meta name="robots" content="noindex, nofollow" />}
+    {(noindex || import.meta.env.PUBLIC_NOINDEX === '1') && <meta name="robots" content="noindex, nofollow" />}
     <meta name="format-detection" content="telephone=no" />
     <title>{title}</title>
     <meta name="description" content={description} />
