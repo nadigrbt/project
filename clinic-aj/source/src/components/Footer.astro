@@ -43,12 +43,12 @@ const nav = [
   }
   .footer__brand img { width: 160px; }
   .footer__brand :global(.footer__socials) { margin-top: 40px; }
-  .footer__note { margin-top: 28px; max-width: 414px; font-size: 13px; line-height: 20px; letter-spacing: normal; }
+  .footer__note { margin-top: 28px; max-width: 414px; font-size: var(--fs-small); line-height: 20px; letter-spacing: normal; }
 
   .footer__nav,
   .footer__legal nav { display: grid; justify-items: start; align-content: start; gap: 15px; padding-top: 6px; }
   .footer__nav a,
-  .footer__legal a { font-size: 16px; line-height: 25px; letter-spacing: normal; color: var(--ink-2); text-decoration: none; }
+  .footer__legal a { font-size: var(--fs-small); line-height: 25px; letter-spacing: normal; color: var(--ink-2); text-decoration: none; }
   .footer__nav a { font-weight: var(--w-light); }
   .footer__legal nav a { font-weight: var(--w-thin); }
   .footer__nav a:hover,
@@ -60,7 +60,7 @@ const nav = [
     align-items: center;
     gap: 8px;
     margin-top: 58px;
-    font-size: 15px;
+    font-size: var(--fs-small);
     line-height: 23px;
     letter-spacing: normal;
   }

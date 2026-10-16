@@ -140,7 +140,7 @@ import { site } from '../data/site';
   }
   .contacts__phone { margin-bottom: -7px; }
   .contacts__phone a {
-    font-size: 30px;
+    font-size: var(--fs-h3);
     line-height: 42px;
     font-weight: var(--w-medium);
     text-decoration: none;
@@ -148,7 +148,7 @@ import { site } from '../data/site';
   .contacts__list li.contacts__phone::before { top: 18px; }
 
   /* ---------- Форма ---------- */
-  .contacts__ask-title { font-size: 26px; line-height: 36px; font-weight: var(--w-thin); }
+  .contacts__ask-title { font-size: var(--fs-h3); line-height: 36px; font-weight: var(--w-thin); }
   .contacts__ask-sub { margin-top: 15px; max-width: 540px; }
 
   .form { margin-top: 31px; display: grid; gap: 12px; }
@@ -191,7 +191,7 @@ import { site } from '../data/site';
     display: flex;
     gap: 12px;
     margin-top: 12px;
-    font-size: 13px;
+    font-size: var(--fs-small);
     line-height: 20px;
     font-weight: var(--w-regular);
     letter-spacing: normal;
@@ -218,7 +218,7 @@ import { site } from '../data/site';
 
   .form__submit { margin-top: 10px; border-radius: 50px; }
   .form__submit:disabled { opacity: 0.5; cursor: wait; }
-  .form__status { min-height: 20px; font-size: 14px; }
+  .form__status { min-height: 20px; font-size: var(--fs-small); }
   .form__status.is-error { color: #b3261e; }
 
   /* ---------- Онлайн-запись ---------- */
@@ -239,7 +239,9 @@ import { site } from '../data/site';
   }
   @media (max-width: 959px) {
     .contacts { padding-top: 60px; }
-    .contacts .section-title { font-size: 28px; }
+    /* на телефоне заголовки чуть жирнее (решение владельца 16.10) */
+    .contacts .section-title { font-size: var(--fs-h2); font-weight: var(--w-light); }
+    .contacts__ask-title { font-weight: var(--w-light); }
     .contacts__grid,
     .contacts__booking { grid-template-columns: 1fr; gap: 50px; }
     .contacts__booking { gap: 24px; }

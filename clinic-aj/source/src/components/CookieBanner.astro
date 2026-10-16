@@ -29,7 +29,7 @@
     padding: 14px 20px;
     background: var(--ivory);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-    font-size: 13px;
+    font-size: var(--fs-small);
     letter-spacing: normal;
     font-weight: var(--w-regular);
     color: var(--graphite);
@@ -43,12 +43,13 @@
     background: transparent;
     color: var(--graphite);
     font-weight: var(--w-medium);
-    font-size: 13px;
+    font-size: var(--fs-small);
     cursor: pointer;
   }
   .cookie button:hover { background: var(--graphite); color: var(--white); }
 
   @media (max-width: 640px) {
-    .cookie { left: 20px; right: 20px; gap: 16px; }
+    /* На телефоне — плашка во всю ширину, прижата к самому низу экрана */
+    .cookie { left: 0; right: 0; bottom: 0; max-width: none; gap: 16px; padding: 14px 20px calc(14px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12); }
   }
 </style>
