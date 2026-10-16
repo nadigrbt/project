@@ -69,7 +69,9 @@
   }
 
   document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-a11y-toggle],[data-a11y-size],[data-a11y-theme],[data-a11y-img]');
+    // Только кнопки: у <html> тоже есть data-a11y-size/theme, его ловить нельзя,
+    // иначе перестают работать все ссылки на странице.
+    var t = e.target.closest('button[data-a11y-toggle],button[data-a11y-size],button[data-a11y-theme],button[data-a11y-img]');
     if (!t) return;
     e.preventDefault();
     if (t.hasAttribute('data-a11y-toggle')) {
