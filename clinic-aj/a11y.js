@@ -5,6 +5,19 @@
 // размер шрифта, цвет и картинки. Вернуться — той же кнопкой с глазом в шапке
 // (в этом режиме на ней написано «Обычная версия»).
 // Настройки запоминаются в браузере (localStorage, ключ aj-a11y).
+// При обновлении страницы (F5, «обновить») открываем её сверху, а не там, где браузер запомнил прокрутку.
+// Переходы «назад» и ссылки с #якорем не затрагиваем.
+try {
+  var navEntry = performance.getEntriesByType('navigation')[0];
+  if ('scrollRestoration' in history && navEntry && navEntry.type === 'reload' && !location.hash) {
+    history.scrollRestoration = 'manual';
+    var toTop = function () { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); }; // без плавной прокрутки
+    toTop();
+    window.addEventListener('load', toTop);
+    window.addEventListener('pagehide', function () { history.scrollRestoration = 'auto'; });
+  }
+} catch (e) {}
+
 (function () {
   var KEY = 'aj-a11y';
   var html = document.documentElement;
