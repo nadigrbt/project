@@ -14,6 +14,12 @@ import { img } from '../data/images';
 
   <a class="header__phone" href={site.phone.href}>{site.phone.display}</a>
 
+  <!-- Версия для слабовидящих: та же кнопка возвращает обычную версию (public/a11y.js, a11y.css) -->
+  <button class="a11y-btn" type="button" data-a11y-toggle aria-label="Версия для слабовидящих" title="Версия для слабовидящих">
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg>
+    <span class="a11y-btn__text">Для слабовидящих</span>
+  </button>
+
   <button class="header__burger" type="button" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
     <span></span><span></span><span></span>
   </button>
