@@ -114,7 +114,10 @@ const photos: { key: ImageKey; alt: string }[] = [
           <p class="vr-about__p">Во время процедуры контролируемая радиочастотная энергия прогревает глубокие слои кожи, стимулируя естественную выработку коллагена и&nbsp;эластина.</p>
           <p class="vr-placeholder">[Сколько процедур в курсе и с каким интервалом — уточнить у врача]</p>
         </div>
-        <img class="vr-about__img" src={img('vol1')} alt="Процедура Volnewmer: врач обрабатывает лицо насадкой аппарата" width="900" height="1200" loading="lazy" />
+        <figure class="vr-about__media">
+          <img class="vr-about__img" src={img('vol1')} alt="Процедура Volnewmer: врач обрабатывает лицо насадкой аппарата" width="900" height="1200" loading="lazy" />
+          <figcaption class="vr-about__badge">Первый в&nbsp;Мурманске</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -177,16 +180,6 @@ const photos: { key: ImageKey; alt: string }[] = [
       </div>
     </section>
 
-    <!-- Кто проводит -->
-    <section class="container vr-doctor">
-      <div class="vr-doctor__photo" aria-hidden="true">[фото врача]</div>
-      <div>
-        <p class="vr-eyebrow">Кто проводит процедуру</p>
-        <h2 class="vr-title">[Имя врача]</h2>
-        <p class="vr-doctor__role">[Должность, стаж, обучение работе на&nbsp;Volnewmer]</p>
-        <p class="vr-doctor__where">Volnewmer есть в&nbsp;филиале: [адрес — уточнить]</p>
-      </div>
-    </section>
 
     <!-- Запись -->
     <section class="vr-cta">
@@ -286,7 +279,27 @@ const photos: { key: ImageKey; alt: string }[] = [
   .vr-about__grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 64px; align-items: center; }
   .vr-about__p { margin-top: 24px; }
   .vr-about__p strong { font-weight: var(--w-medium); }
-  .vr-about__img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 240px 240px 0 0; }
+  /* Фото в тонкой винной рамке со сдвигом и плашкой — без арки */
+  .vr-about__media { position: relative; margin: 0 24px 24px 0; }
+  .vr-about__media::before {
+    content: '';
+    position: absolute;
+    inset: 24px -24px -24px 24px;
+    border: 1px solid var(--wine);
+  }
+  .vr-about__img { position: relative; width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 62%; }
+  .vr-about__badge {
+    position: absolute;
+    left: -24px;
+    bottom: 40px;
+    padding: 14px 22px;
+    background: var(--wine);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
 
   /* ---------- Проблемы ---------- */
   .vr-problems { padding: 88px 0 72px; }
@@ -364,19 +377,6 @@ const photos: { key: ImageKey; alt: string }[] = [
   .vr-med__card li::marker { color: var(--wine); }
   .vr-med__card p { margin-top: 16px; font-size: 15px; color: var(--muted); }
 
-  /* ---------- Врач (заглушка) ---------- */
-  .vr-doctor { display: grid; grid-template-columns: 280px 1fr; gap: 48px; align-items: center; padding-bottom: 88px; }
-  .vr-doctor__photo {
-    display: grid;
-    place-items: center;
-    aspect-ratio: 4 / 5;
-    border: 1px dashed var(--wine);
-    border-radius: 140px 140px 0 0;
-    color: var(--wine);
-    font-size: 15px;
-  }
-  .vr-doctor__role { margin-top: 16px; color: var(--muted); }
-  .vr-doctor__where { margin-top: 16px; }
 
   /* ---------- Запись (тёмная полоса) ---------- */
   .vr-cta { background: var(--graphite); color: var(--ivory); margin-bottom: 80px; }
@@ -410,8 +410,10 @@ const photos: { key: ImageKey; alt: string }[] = [
     .vr-hero__device { width: 170px; right: -10px; }
     .vr-benefits__list { grid-template-columns: 1fr; gap: 18px; }
     .vr-about, .vr-problems { padding: 60px 0; }
-    .vr-about__grid, .vr-results__inner, .vr-med, .vr-doctor { grid-template-columns: 1fr; gap: 32px; }
-    .vr-about__img { max-width: 420px; }
+    .vr-about__grid, .vr-results__inner, .vr-med { grid-template-columns: 1fr; gap: 32px; }
+    .vr-about__media { max-width: 420px; margin: 0 16px 16px 0; }
+    .vr-about__media::before { inset: 16px -16px -16px 16px; }
+    .vr-about__badge { left: 0; bottom: 24px; font-size: 11px; padding: 10px 16px; }
     .vr-problems__list { grid-template-columns: 1fr; }
     .vr-problems__list li, .vr-results__list li { font-size: 19px; }
     .vr-results__inner { padding-top: 56px; padding-bottom: 56px; }
@@ -420,8 +422,6 @@ const photos: { key: ImageKey; alt: string }[] = [
     .vr-photos__list { grid-template-columns: 1fr 1fr; gap: 10px; }
     .vr-med { padding-top: 60px; padding-bottom: 60px; }
     .vr-med__card { padding: 28px 22px; }
-    .vr-doctor { padding-bottom: 60px; }
-    .vr-doctor__photo { max-width: 240px; }
     .vr-cta__btn { width: 100%; }
   }
 </style>
