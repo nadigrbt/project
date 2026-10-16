@@ -1,7 +1,7 @@
 ---
 // Страница /volnewmer — перенос с Тильды один в один (тексты, порядок блоков, фото).
 // Исправлено только явное: заголовок для поиска (на Тильде был от страницы «Омоложение рук»),
-// «A&G» → «A&J», кнопка «Записаться» вела на несуществующий якорь.
+// «A&G» → «A&J», кнопка «Записаться» вела на несуществующий якорь; добавлено предупреждение о противопоказаниях (38-ФЗ).
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import About from '../components/About.astro';
@@ -95,6 +95,7 @@ const contraindications = [
       <h2>Противопоказания</h2>
       <ul>{contraindications.map((t) => <li>{t}</li>)}</ul>
       <p class="vn-text__tight">Точный перечень противопоказаний определяется врачом на консультации.</p>
+      <p class="vn-text__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
     </section>
 
     <section class="container vn-photos" aria-label="Фото процедуры Volnewmer">
@@ -159,6 +160,8 @@ const contraindications = [
   .vn-text .vn-text__tight,
   .vn-text p + .vn-text__tight { margin-top: 0; }
   .vn-text ul + .vn-text__tight { margin-top: 10px; }
+
+  .vn-text .vn-text__warn { margin-top: 24px; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
 
   /* ---------- Фото: большое слева, 4 маленьких справа ---------- */
   .vn-photos {
