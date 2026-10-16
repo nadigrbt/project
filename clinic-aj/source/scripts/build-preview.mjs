@@ -35,11 +35,11 @@ walk(tmp);
 
 // Страницы, которые ещё не перенесены с Тильды, на тестовой копии ведут на рабочий
 // сайт clinic-aj.ru, чтобы не было «страница не найдена». Готовые страницы
-// ссылаются друг на друга внутри тестовой копии.
+// ссылаются друг на друга внутри тестовой копии (с .html — так GitHub Pages открывает их наверняка).
 const ready = new Set(readdirSync(tmp).filter((n) => n.endsWith('.html')).map((n) => n.slice(0, -5)));
 const linkUnready = (text) =>
   text.replace(new RegExp(`href="${BASE}/([a-z0-9_-]+)(#[^"]*)?"`, 'gi'), (m, slug, hash = '') =>
-    ready.has(slug) ? m : `href="https://clinic-aj.ru/${slug}${hash}"`);
+    ready.has(slug) ? `href="${BASE}/${slug}.html${hash}"` : `href="https://clinic-aj.ru/${slug}${hash}"`);
 for (const name of readdirSync(tmp)) {
   if (name.endsWith('.html')) writeFileSync(join(tmp, name), linkUnready(readFileSync(join(tmp, name), 'utf8')));
 }
