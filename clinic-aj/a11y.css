@@ -1,0 +1,141 @@
+/* ============================================================
+   Версия для слабовидящих (см. a11y.js).
+   Цвета режима (чёрный/белый/синий/голубой) — исключение из палитры
+   сайта: это стандартные схемы для слабовидящих.
+   ============================================================ */
+
+/* ---------- Кнопка с глазом в шапке ---------- */
+.a11y-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  height: 40px;
+  padding: 0 7px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: none;
+  color: var(--graphite);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.a11y-btn:hover,
+.a11y-btn:focus-visible { border-color: currentColor; }
+.a11y-btn svg { flex: none; }
+.a11y-btn__text {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Место в шапке: компьютер — справа после телефона, телефон — перед бургером */
+@media (max-width: 1199px) { .header .a11y-btn { margin-left: 28px; } }
+@media (max-width: 959px) {
+  .header .a11y-btn { margin-left: auto; }
+  .header .a11y-btn + .header__burger { margin-left: 16px; }
+}
+
+/* ---------- Панель настроек (только в версии для слабовидящих) ---------- */
+.a11y-panel[hidden] { display: none; }
+.a11y-panel { border-bottom: 2px solid; }
+.a11y-panel__in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 20px;
+}
+.a11y-panel__group { display: flex; align-items: center; gap: 8px; }
+.a11y-panel button {
+  min-width: 48px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid;
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.a11y-panel button[aria-pressed="true"] { outline: 3px solid; outline-offset: 2px; }
+html.a11y .a11y-panel .a11y-sw--bw   { background-color: #fff !important; color: #000 !important; border-color: #000 !important; }
+html.a11y .a11y-panel .a11y-sw--wb   { background-color: #000 !important; color: #fff !important; border-color: #fff !important; }
+html.a11y .a11y-panel .a11y-sw--blue { background-color: #9dd1ff !important; color: #063462 !important; border-color: #063462 !important; }
+
+/* ---------- Сам режим ---------- */
+html.a11y { --a11y-fs: 22px; }
+html.a11y[data-a11y-size="2"] { --a11y-fs: 26px; }
+html.a11y[data-a11y-size="3"] { --a11y-fs: 30px; }
+
+html.a11y[data-a11y-theme="bw"]   { --a11y-bg: #fff;    --a11y-fg: #000; }
+html.a11y[data-a11y-theme="wb"]   { --a11y-bg: #000;    --a11y-fg: #fff; }
+html.a11y[data-a11y-theme="blue"] { --a11y-bg: #9dd1ff; --a11y-fg: #063462; }
+
+/* Шрифт: простой, крупный, с увеличенными интервалами */
+html.a11y body,
+html.a11y body * {
+  font-family: Arial, 'Helvetica Neue', sans-serif !important;
+  font-size: var(--a11y-fs) !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0.02em !important;
+  font-weight: 400 !important;
+}
+html.a11y body h1,
+html.a11y body h1 * { font-size: calc(var(--a11y-fs) * 1.7) !important; line-height: 1.25 !important; font-weight: 700 !important; }
+html.a11y body h2,
+html.a11y body h2 *,
+html.a11y body .section-title { font-size: calc(var(--a11y-fs) * 1.4) !important; line-height: 1.3 !important; font-weight: 700 !important; }
+html.a11y body h3 { font-size: calc(var(--a11y-fs) * 1.2) !important; font-weight: 700 !important; }
+html.a11y body strong,
+html.a11y body b { font-weight: 700 !important; }
+
+/* Цвета: один фон и один цвет текста на всё */
+html.a11y,
+html.a11y body,
+html.a11y body *:not(svg):not(svg *):not(img) {
+  background-color: var(--a11y-bg) !important;
+  background-image: none !important;
+  color: var(--a11y-fg) !important;
+  border-color: var(--a11y-fg) !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+html.a11y body svg { color: var(--a11y-fg) !important; }
+html.a11y body a { text-decoration: underline !important; }
+html.a11y body :focus-visible { outline: 3px solid var(--a11y-fg) !important; outline-offset: 3px; }
+/* Декоративные линии у заголовков — цветом текста */
+html.a11y .section-title::after,
+html.a11y [class*="eyebrow"]::before { background-color: var(--a11y-fg) !important; height: 2px; }
+
+/* Кнопки и линии бургер-меню — заметные, цветом текста */
+html.a11y body button,
+html.a11y body [class*="btn"]:not([class*="btn__"]) { border: 2px solid var(--a11y-fg) !important; }
+html.a11y .header__burger { border: 0 !important; }
+html.a11y .header__burger span { background-color: var(--a11y-fg) !important; }
+
+/* Большие декоративные буквы A&J на фоне убираем */
+html.a11y [class*="letters"] { display: none !important; }
+
+/* Картинки: в цвете не показываем (только ч/б), по кнопке — скрываем совсем */
+html.a11y body img { filter: grayscale(1); }
+html.a11y.a11y-noimg body img,
+html.a11y.a11y-noimg body picture,
+html.a11y.a11y-noimg body video { display: none !important; }
+
+/* Шапка с крупным текстом переносится на несколько строк */
+html.a11y .header { flex-wrap: wrap; height: auto; gap: 12px 24px; padding-top: 12px; padding-bottom: 12px; }
+html.a11y .header__nav { flex-wrap: wrap; gap: 8px 24px; margin-left: 0; }
+html.a11y .header .a11y-btn { margin-left: 0; height: auto; padding: 6px 14px; border: 2px solid var(--a11y-fg) !important; }
+html.a11y .a11y-btn__text { position: static; width: auto; height: auto; clip: auto; }
+html.a11y .header__phone { margin-left: 0; margin-right: 0; }
+@media (max-width: 959px) {
+  html.a11y .header__logo { flex-basis: 100%; }
+  html.a11y .header .a11y-btn { margin-left: 0; }
+  html.a11y .header .a11y-btn__text { font-size: min(var(--a11y-fs), 22px) !important; }
+  html.a11y .header .a11y-btn + .header__burger { margin-left: auto; }
+}
+/* Логотип на тёмном фоне — светлым */
+html.a11y[data-a11y-theme="wb"] .header__logo img,
+html.a11y[data-a11y-theme="wb"] .footer__brand img { filter: grayscale(1) invert(1); }

@@ -54,6 +54,11 @@ const og = ogImage ?? new URL(img('og'), Astro.site).href;
     <link rel="icon" type="image/svg+xml" href={img('faviconDark')} media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href={img('favicon')} />
     <link rel="apple-touch-icon" href={img('appleIcon')} />
+    <link rel="stylesheet" href="/a11y.css" />
+    {/* Версия для слабовидящих включается до отрисовки, чтобы страница не «мигала» */}
+    <script is:inline>
+      try { var a = JSON.parse(localStorage.getItem('aj-a11y') || '{}'); if (a.on) { var h = document.documentElement; h.classList.add('a11y'); h.setAttribute('data-a11y-size', a.size || 1); h.setAttribute('data-a11y-theme', a.theme || 'bw'); if (a.img === false) h.classList.add('a11y-noimg'); } } catch (e) {}
+    </script>
   </head>
   <body>
     <slot />
@@ -61,12 +66,8 @@ const og = ogImage ?? new URL(img('og'), Astro.site).href;
     <MobileMenu />
     <CookieBanner />
 
-    <!-- Версия для слабовидящих (lidrekon.ru) -->
-    <a id="specialButton" class="special-btn" href="#" aria-label="Версия для слабовидящих">
-      <img src="https://lidrekon.ru/images/special.png" alt="Версия для слабовидящих" title="Версия для слабовидящих" width="44" height="27" />
-    </a>
-    <script is:inline src="https://lidrekon.ru/slep/js/jquery.js" defer></script>
-    <script is:inline src="https://lidrekon.ru/slep/js/uhpv-full.min.js" defer></script>
+    <!-- Версия для слабовидящих: кнопка с глазом в шапке, панель и настройки — public/a11y.js -->
+    <script is:inline src="/a11y.js" defer></script>
 
     <!-- Яндекс.Метрика (с задержкой 2 с, как было на Тильде) -->
     <script is:inline define:vars={{ id: site.metrikaId }}>
@@ -83,15 +84,5 @@ const og = ogImage ?? new URL(img('og'), Astro.site).href;
     </script>
     <noscript><div><img src={`https://mc.yandex.ru/watch/${site.metrikaId}`} style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 
-    <style>
-      .special-btn {
-        position: fixed;
-        left: 12px;
-        bottom: 12px;
-        z-index: 900;
-        display: block;
-      }
-      .special-btn img { width: 44px; height: auto; }
-    </style>
   </body>
 </html>

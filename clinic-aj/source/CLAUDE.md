@@ -7,7 +7,8 @@
 - Astro, статическая сборка (`npm run build` → `dist/`), хостинг Timeweb (Apache, `public/.htaccess`).
 - Адреса страниц как на Тильде: `/lpg`, `/smas` … (`build.format: 'file'` + rewrite в .htaccess).
 - Форма «Задать вопрос» → `public/api/send.php` (Telegram и/или почта, настройки в `public/api/config.php`).
-- Яндекс.Метрика 94733259, виджет для слабовидящих lidrekon, cookie-плашка — в `src/layouts/Base.astro`.
+- Яндекс.Метрика 94733259, cookie-плашка — в `src/layouts/Base.astro`.
+- Версия для слабовидящих — своя (с 16.10 вместо виджета lidrekon.ru): `public/a11y.js` и `public/a11y.css`. Кнопка с глазом в шапке (`Header.astro`) справа, на телефоне перед бургером; в режиме для слабовидящих на ней «Обычная версия», и она же возвращает обычный сайт. Сверху панель: шрифт А/А+/А++, цвет (ч/б, б/ч, синий), картинки вкл/выкл; настройки в localStorage `aj-a11y`. Цвета режима — исключение из палитры.
 - Картинки: `npm run images` скачивает их с Тильды в `public/images` (список в `src/data/images.ts`).
 
 ## Где что
