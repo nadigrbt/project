@@ -52,8 +52,6 @@ const posts: Post[] = [
                 <span class="sl-row__num">{String(i + 1).padStart(2, '0')}</span>
                 <p class="sl-row__tag">{p.tag}</p>
                 <h2>{p.title}</h2>
-              </div>
-              <div class="sl-row__body">
                 <div class="sl-row__links">
                   <a href={`/${p.slug}`}>Читать статью →</a>
                   {p.href && <a href={p.href}>{p.hrefText}</a>}
@@ -303,4 +301,6 @@ const posts: Post[] = [
     .sl-rows { margin-top: 40px; }
     .sl-row { grid-template-columns: 1fr; gap: 20px; padding: 32px 0; }
   }
+  .sl-rows .sl-row { grid-template-columns: 1fr; gap: 0; }
+  .sl-rows .sl-row__links { margin-top: 24px; }
 </style>
