@@ -1,0 +1,45 @@
+---
+// Блок «Другие направления клиники» — общий для страниц направлений. Список — в data/directions.ts.
+// current — адрес страницы, на которой стоит блок (её в списке не показываем).
+import { directions } from '../data/directions';
+interface Props { current?: string }
+const { current } = Astro.props;
+const list = directions.filter((d) => d.href !== current);
+---
+<section class="container dr" aria-labelledby="dr-title">
+  <p class="dr__eyebrow">Другие направления</p>
+  <h2 class="dr__title" id="dr-title">Что ещё мы делаем в клинике</h2>
+  <ul class="dr__list">
+    {list.map((d) => (
+      <li>
+        <a class="dr__card" href={d.href}>
+          <span class="dr__name">{d.title}</span>
+          <span class="dr__text">{d.text}</span>
+          <span class="dr__go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .dr { padding-bottom: 88px; }
+  .dr__eyebrow { display: flex; align-items: center; gap: 14px; font-family: var(--font); font-size: var(--fs-small); font-weight: var(--w-regular); letter-spacing: 2px; text-transform: uppercase; color: var(--wine); }
+  .dr__eyebrow::before { content: ''; width: 40px; height: 1px; background: currentColor; }
+  .dr__title { margin-top: 20px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
+  .dr__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .dr__card { position: relative; display: flex; flex-direction: column; height: 100%; padding: 32px 32px 28px; background: var(--ivory); text-decoration: none; transition: background-color 0.25s, color 0.25s; }
+  .dr__name { font-family: var(--font); font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-light); }
+  .dr__text { margin-top: 12px; color: var(--muted); transition: color 0.25s; }
+  .dr__go { margin-top: auto; padding-top: 24px; font-family: var(--font); font-size: var(--fs-h3); line-height: 1; color: var(--wine); transition: color 0.25s, transform 0.25s; }
+  .dr__card:hover, .dr__card:focus-visible { background: var(--wine); color: var(--white); }
+  .dr__card:hover .dr__text, .dr__card:focus-visible .dr__text { color: rgba(255, 255, 255, 0.85); }
+  .dr__card:hover .dr__go, .dr__card:focus-visible .dr__go { color: var(--white); transform: translateX(6px); }
+  .dr__card:focus-visible { outline: 2px solid var(--graphite); outline-offset: 2px; }
+  @media (max-width: 959px) {
+    .dr { padding-bottom: 60px; }
+    .dr__list { grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
+    .dr__card { padding: 24px 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .dr__card, .dr__go { transition: none; } }
+</style>

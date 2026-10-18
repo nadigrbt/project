@@ -6,6 +6,7 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Contacts from '../components/Contacts.astro';
 import Footer from '../components/Footer.astro';
+import Directions from '../components/Directions.astro';
 import { site } from '../data/site';
 import { img, type ImageKey } from '../data/images';
 
@@ -177,7 +178,7 @@ const photos: { key: ImageKey; alt: string }[] = [
       </div>
     </section>
 
-    <p class="vr-more">Другие направления клиники: <a href="/cosmetology">аппаратная косметология</a> и <a href="/injections">инъекционная косметология</a></p>
+    <Directions />
 
     <!-- Запись -->
     <section class="vr-cta">
@@ -351,8 +352,6 @@ const photos: { key: ImageKey; alt: string }[] = [
   /* ---------- Показания / противопоказания ---------- */
   .vr-med { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 88px; padding-bottom: 88px; }
   .vr-med__card { padding: 40px; background: var(--ivory); }
-  .vr-more { margin: -40px auto 80px; padding: 0 16px; text-align: center; font-family: var(--font); }
-  .vr-more a { color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
   .vr-med__card--alt { background: var(--white); border: 1px solid var(--line); }
   .vr-med__card h2 { font-size: var(--fs-h3); }
   .vr-med__card ul { margin: 20px 0 0; padding-left: 20px; }
