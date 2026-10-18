@@ -220,8 +220,10 @@
   /* ---------- Об аппарате ---------- */
   .dv { padding-top: 72px; }
   .dv__card { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 48px; align-items: center; padding: 40px 48px; background: var(--ivory); }
-  .dv__pic { display: grid; place-items: center; }
-  .dv__pic img { display: block; width: auto; max-width: 100%; height: 380px; object-fit: contain; }
+  .dv__pic { display: grid; place-items: center; perspective: 900px; }
+  .dv__pic img { display: block; width: auto; max-width: 100%; height: 380px; object-fit: contain; transform-origin: 50% 50%; animation: dv-swing 7s ease-in-out infinite; }
+  @keyframes dv-swing { 0%, 100% { transform: rotateY(-22deg); } 50% { transform: rotateY(22deg); } }
+  @media (prefers-reduced-motion: reduce) { .dv__pic img { animation: none; } }
   .dv__text h2 { margin-top: 12px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
   .dv__text > p { margin-top: 16px; max-width: 620px; }
   .dv__list { margin: 24px 0 0; padding: 0; }
