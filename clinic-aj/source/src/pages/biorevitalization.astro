@@ -65,7 +65,7 @@ const contra = [
 
     <div class="container">
       <nav class="cs-crumbs" aria-label="Хлебные крошки">
-        <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/injections">Инъекционная косметология</a><span aria-hidden="true">/</span><span aria-current="page">Биоревитализация</span>
+        <a class="cs-crumbs__home" href="/">Главная</a><span class="cs-crumbs__home" aria-hidden="true">/</span><a href="/injections">Инъекционная косметология</a><span aria-hidden="true">/</span><span aria-current="page">Биоревитализация</span>
       </nav>
     </div>
 
@@ -219,6 +219,7 @@ const contra = [
   /* ---------- Первый экран ---------- */
   .cs-hero { position: relative; overflow: hidden; background: var(--white); }
   .cs-crumbs { display: flex; gap: 10px; padding-top: 40px; font-size: var(--fs-small); color: var(--muted); }
+  .cs-crumbs > * { white-space: nowrap; }
   .cs-crumbs a { text-decoration: none; }
   .cs-crumbs a:hover { color: var(--wine); }
   .in-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 40px; align-items: end; padding-top: 28px; padding-bottom: 0; }
@@ -381,6 +382,9 @@ const contra = [
   }
   @media (max-width: 959px) {
     .cs-crumbs { padding-top: 24px; }
+    .cs-crumbs { gap: 8px; }
+    .cs-crumbs__home { display: none; }
+    .cs-crumbs > [aria-current] { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
     .cs-eyebrow { letter-spacing: 1.5px; }
     .in-hero { grid-template-columns: 1fr; gap: 16px; padding-top: 20px; }
     .in-hero__text { padding-bottom: 0; }
