@@ -42,22 +42,16 @@ const contra = [
       </nav>
     </div>
 
-    <div class="container in-hero">
-      <div class="in-hero__text">
-        <p class="cs-eyebrow">Специальные предложения</p>
-        <h1 class="cs-hero__title">Акции октября <span>актуально до конца месяца</span></h1>
-        <p class="cs-hero__lead">Комплексы процедур для лица и тела на специальных условиях. Подберём подходящую процедуру на консультации.</p>
-        <div class="cs-actions">
-          <a class="cs-btn" href="#contact">Записаться на консультацию</a>
-          <a class="cs-phone" href={site.phone.href}>
-            <span class="cs-phone__label">или позвоните</span>
-            <span class="cs-phone__num">{site.phone.display}</span>
-          </a>
-        </div>
-      </div>
-      <div class="in-hero__visual" aria-hidden="true">
-        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" />
-        <img class="in-hero__woman" src={img('promoWoman')} alt="" width="700" height="700" fetchpriority="high" />
+    <div class="container sl-hero">
+      <p class="cs-eyebrow">Специальные предложения</p>
+      <h1 class="cs-hero__title">Акции октября</h1>
+      <p class="cs-hero__lead">Комплексы процедур для лица и тела на специальных условиях. Актуально до конца месяца. Подберём подходящую процедуру на консультации.</p>
+      <div class="cs-actions">
+        <a class="cs-btn" href="#contact">Записаться на консультацию</a>
+        <a class="cs-phone" href={site.phone.href}>
+          <span class="cs-phone__label">или позвоните</span>
+          <span class="cs-phone__num">{site.phone.display}</span>
+        </a>
       </div>
     </div>
   </section>
@@ -69,28 +63,33 @@ const contra = [
           <strong>Акции действуют до конца октября</strong>
           <span>{showPrices ? 'Условия и запись уточняйте у администратора.' : 'Стоимость и условия акций уточняйте у администратора по телефону или при онлайн-записи.'} Имеются противопоказания. Необходима консультация специалиста.</span>
         </div>
-        <ul class="cs-devices__grid sl-list">
-          {promos.map((p) => (
-            <li class={`sl-card${p.wide ? ' sl-card--wide' : ''}`} id={p.id}>
-              <p class="sl-card__tag">{p.tag}</p>
-              <h3>{p.title}</h3>
-              <p>{p.lead}</p>
-              {p.items && <ul>{p.items.map((i) => <li><strong>{i.name}</strong> — {i.text}</li>)}</ul>}
-              {!p.items && p.bullets && <ul>{p.bullets.map((b) => <li>{b}</li>)}</ul>}
-              {showPrices && (
-                <div class="sl-prices">
-                  {p.prices.map(([label, price, old]) => (
-                    <div><span>{label}</span><span>{old && <s>{old}</s>}{price}</span></div>
-                  ))}
+        <ol class="sl-rows">
+          {promos.map((p, i) => (
+            <li class="sl-row" id={p.id}>
+              <div class="sl-row__head">
+                <span class="sl-row__num">{String(i + 1).padStart(2, '0')}</span>
+                <p class="sl-row__tag">{p.tag}</p>
+                <h2>{p.title}</h2>
+              </div>
+              <div class="sl-row__body">
+                <p>{p.lead}</p>
+                {p.items && <ul>{p.items.map((it) => <li><strong>{it.name}</strong> — {it.text}</li>)}</ul>}
+                {!p.items && p.bullets && <ul>{p.bullets.map((bl) => <li>{bl}</li>)}</ul>}
+                {showPrices && (
+                  <div class="sl-prices">
+                    {p.prices.map(([label, price, old]) => (
+                      <div><span>{label}</span><span>{old && <s>{old}</s>}{price}</span></div>
+                    ))}
+                  </div>
+                )}
+                <div class="sl-row__links">
+                  <a href="#contact">Записаться на консультацию →</a>
+                  {p.href && <a href={p.href}>{p.hrefText}</a>}
                 </div>
-              )}
-              <div class="sl-card__links">
-                <a class="sl-card__link" href="#contact">Записаться на консультацию →</a>
-                {p.href && <a class="sl-card__link" href={p.href}>{p.hrefText}</a>}
               </div>
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
     </section>
 
@@ -296,25 +295,29 @@ const contra = [
   .cs-cta__btn:hover { background: var(--wine); color: var(--white); }
 
   /* ---------- Акции ---------- */
-  .sl-note { display: grid; gap: 6px; margin-top: 40px; padding: 24px 28px; background: var(--ivory); }
+  .sl-hero { max-width: 820px; padding-top: 64px; padding-bottom: 72px; text-align: center; }
+  .sl-hero .cs-eyebrow { justify-content: center; }
+  .sl-hero .cs-hero__lead { margin-left: auto; margin-right: auto; }
+  .sl-hero .cs-actions { justify-content: center; }
+  .sl-note { display: grid; gap: 6px; padding: 24px 28px; background: var(--ivory); }
   .sl-note strong { font-family: var(--font); font-size: var(--fs-h3); font-weight: var(--w-regular); }
   .sl-note span { color: var(--muted); }
-  .sl-card { display: flex; flex-direction: column; padding: 36px; border: 1px solid var(--line); }
-  .sl-card__tag { font-size: var(--fs-small); letter-spacing: 1.5px; text-transform: uppercase; color: var(--wine); }
-  .sl-card h3 { margin-top: 10px; font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-regular); }
-  .sl-card p { margin-top: 12px; color: var(--muted); }
-  .sl-card ul { margin: 14px 0 0; padding-left: 20px; }
-  .sl-card li { padding: 3px 0; color: var(--muted); }
-  .sl-card li::marker { color: var(--wine); }
-  .sl-card li strong { font-weight: var(--w-regular); color: var(--graphite); }
-  .sl-prices { display: grid; gap: 6px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .sl-rows { margin: 56px 0 0; padding: 0; list-style: none; border-bottom: 1px solid var(--line); }
+  .sl-row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; padding: 44px 0; border-top: 1px solid var(--line); scroll-margin-top: 90px; }
+  .sl-row__num { font-family: var(--font); font-size: var(--fs-h3); font-weight: var(--w-thin); color: var(--wine); }
+  .sl-row__tag { margin-top: 10px; font-size: var(--fs-small); letter-spacing: 1.5px; text-transform: uppercase; color: var(--wine); }
+  .sl-row h2 { margin-top: 10px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
+  .sl-row__body p { color: var(--muted); }
+  .sl-row__body ul { margin: 16px 0 0; padding-left: 20px; }
+  .sl-row__body li { padding: 3px 0; color: var(--muted); }
+  .sl-row__body li::marker { color: var(--wine); }
+  .sl-row__body li strong { font-weight: var(--w-regular); color: var(--graphite); }
+  .sl-prices { display: grid; gap: 6px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); max-width: 420px; }
   .sl-prices div { display: flex; justify-content: space-between; gap: 16px; font-family: var(--font); }
   .sl-prices s { color: var(--muted); margin-right: 8px; }
-  .sl-card__links { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-top: auto; padding-top: 22px; }
-  .sl-card__link { font-family: var(--font); color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
-  .sl-card__link:hover { color: var(--graphite); }
-  .sl-card--wide { grid-column: 1 / -1; background: var(--ivory); border-color: var(--ivory); }
-  .sl-card--wide p, .sl-card--wide li { color: var(--graphite); }
+  .sl-row__links { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 22px; }
+  .sl-row__links a { font-family: var(--font); color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
+  .sl-row__links a:hover { color: var(--graphite); }
 
   @media (max-width: 1199px) {
     .cs-benefits__list { grid-template-columns: 1fr 1fr; }
@@ -344,7 +347,9 @@ const contra = [
     .cs-med { gap: 16px; padding-bottom: 60px; }
     .cs-med__card { padding: 28px 22px; }
     .cs-cta__btn { width: 100%; }
-    .sl-card { padding: 28px 22px; }
+    .sl-hero { padding-top: 40px; padding-bottom: 48px; }
     .sl-note { padding: 20px 22px; }
+    .sl-rows { margin-top: 40px; }
+    .sl-row { grid-template-columns: 1fr; gap: 20px; padding: 32px 0; }
   }
 </style>
