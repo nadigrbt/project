@@ -1,6 +1,6 @@
 ---
 // Страница /sale — «Акции» в новом дизайне (шкала шрифтов --fs-*). Акции октября прислала владелец 18.10 (в тексте были цены).
-// Цены по главному правилу сайта скрыты: showPrices = false; чтобы показать, поставить true (после решения владельца).
+// Цены показаны с разрешения владельца (18.10, только на /sale): showPrices = true; поставить false, чтобы скрыть.
 // Тексты освежены: убраны обещания результата («убрать», «уменьшить пигментацию»), у препаратов ничего не обещаем (38-ФЗ).
 // Копию Тильды не делаем (решение владельца 18.10).
 import Base from '../layouts/Base.astro';
@@ -11,7 +11,7 @@ import Directions from '../components/Directions.astro';
 import { site } from '../data/site';
 import { img } from '../data/images';
 
-const showPrices = false;
+const showPrices = true;
 type Promo = { id: string; tag: string; title: string; lead: string; items?: { name: string; text: string }[]; bullets?: string[]; prices: [string, string, string?][]; href?: string; hrefText?: string; wide?: boolean };
 const promos: Promo[] = [
   { id: 'lumecca', tag: 'Для тех, кто впервые делает Lumecca у нас', title: 'Lumecca', lead: 'IPL-фотоомоложение: свет воздействует на пигмент и поверхностные сосуды. Помогает работать с пигментацией и сосудистой сеткой.', bullets: ['Лицо', 'Лицо и шея', 'Лицо, шея и декольте'], prices: [['Лицо', '7 000 ₽'], ['Лицо + шея', '10 500 ₽'], ['Лицо + шея + декольте', '13 000 ₽']], href: '/cosmetology', hrefText: 'Об аппаратной косметологии →' },
