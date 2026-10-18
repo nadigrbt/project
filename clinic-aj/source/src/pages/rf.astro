@@ -16,7 +16,7 @@ const videoUrl = 'https://cd75615.tw1.ru/rf.mp4';
 const benefits = [
   { title: 'Консультация перед процедурой', text: 'Врач оценит состояние кожи, подберёт параметры и расскажет о противопоказаниях.' },
   { title: 'Специалисты с медицинским образованием', text: 'Врачи и косметологи постоянно учатся и работают индивидуально.' },
-  { title: 'Сертифицированное оборудование', text: 'Аппарат Morpheus 8 производства InMode.' },
+  { title: 'Сертифицированное оборудование', text: 'Аппарат Morpheus 8 производства InMode (Израиль).' },
   { title: 'Три адреса в Мурманске', text: 'Принимаем ежедневно с 9:00 до 21:00, без выходных.' },
 ];
 const how = [
@@ -105,6 +105,25 @@ const contra = [
         <p class="cs-eyebrow">О процедуре</p>
         <h2 class="cs-title">Что такое игольчатый RF-лифтинг</h2>
         <p class="cs-intro__text">Игольчатый RF-лифтинг — процедура, в которой микроиглы и радиочастотная энергия воздействуют на кожу и подкожные слои. Метод применяют для кожи лица, шеи, декольте и тела. Результат у каждого свой: он зависит от состояния кожи и параметров, которые подбирает врач.</p>
+    </section>
+
+    <section class="container dv">
+      <div class="dv__card">
+        <div class="dv__pic"><img src={img('deviceMorpheus')} alt="Аппарат Morpheus 8 для игольчатого RF-лифтинга" width="380" height="760" loading="lazy" /></div>
+        <div class="dv__text">
+          <p class="cs-eyebrow">Об аппарате</p>
+          <h2>Morpheus 8</h2>
+          <p>Аппарат для игольчатого RF-лифтинга InMode: радиочастотная энергия подаётся в кожу через микроиглы. Для лица и тела используются разные насадки, врач подбирает насадку и параметры.</p>
+          <dl class="dv__list">
+          <div><dt>Название</dt><dd>Morpheus 8 (InMode)</dd></div>
+          <div><dt>Производитель</dt><dd>InMode Ltd, Израиль</dd></div>
+          <div><dt>Технология</dt><dd>Микроигольчатая терапия и радиочастотное воздействие</dd></div>
+          <div><dt>Насадки</dt><dd>Для лица и для тела; для тела есть насадка с иглами до 7 мм</dd></div>
+          <div><dt>Зоны</dt><dd>Лицо, шея, декольте, тело (по рекомендации врача)</dd></div>
+          <div><dt>Регистрация</dt><dd>[номер РЗН — владелец дошлёт]</dd></div>
+          </dl>
+        </div>
+      </div>
     </section>
 
     <section class="container bio-block">
@@ -415,4 +434,21 @@ const contra = [
     .bio-pair li { padding: 24px 22px; }
   }
   @media (max-width: 959px) { .sf-photos { padding-top: 56px; } .sf-photos__list { grid-template-columns: 1fr; } }
+  /* ---------- Об аппарате ---------- */
+  .dv { padding-top: 72px; }
+  .dv__card { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 48px; align-items: center; padding: 40px 48px; background: var(--ivory); }
+  .dv__pic { display: grid; place-items: center; }
+  .dv__pic img { display: block; width: auto; max-width: 100%; height: 380px; object-fit: contain; }
+  .dv__text h2 { margin-top: 12px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
+  .dv__text > p { margin-top: 16px; max-width: 620px; }
+  .dv__list { margin: 24px 0 0; padding: 0; }
+  .dv__list > div { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .dv__list dt { color: var(--muted); }
+  .dv__list dd { margin: 0; }
+  @media (max-width: 959px) {
+    .dv { padding-top: 56px; }
+    .dv__card { grid-template-columns: 1fr; gap: 24px; padding: 28px 20px; }
+    .dv__pic img { height: 280px; }
+    .dv__list > div { grid-template-columns: 1fr; gap: 4px; }
+  }
 </style>
