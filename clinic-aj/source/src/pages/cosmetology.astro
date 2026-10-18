@@ -88,7 +88,7 @@ const photos: { key: ImageKey; alt: string }[] = [
     </div>
 
     <div class="cs-show" id="cs-show">
-      <img class="cs-show__letters" src={img('heroLetters')} alt="" width="1200" height="608" aria-hidden="true" />
+      <img class="cs-show__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
       <button type="button" class="cs-show__arr cs-show__arr--l" id="cs-prev" aria-label="Предыдущий аппарат" hidden>&#8592;</button>
       <button type="button" class="cs-show__arr cs-show__arr--r" id="cs-next" aria-label="Следующий аппарат" hidden>&#8594;</button>
       <div class="cs-show__track" id="cs-track" role="region" aria-roledescription="карусель" aria-label="Аппараты клиники" tabindex="0">
@@ -256,7 +256,7 @@ const photos: { key: ImageKey; alt: string }[] = [
 
   /* ---------- Карусель аппаратов ---------- */
   .cs-show { position: relative; margin-top: 56px; }
-  .cs-show__letters { position: absolute; left: 50%; bottom: 0; width: 66%; max-width: 1000px; height: auto; transform: translateX(-50%); opacity: 0.9; pointer-events: none; }
+  .cs-show__letters { position: absolute; left: 50%; bottom: 0; width: 50%; max-width: 760px; height: auto; transform: translateX(-50%); opacity: 0.9; pointer-events: none; }
   .cs-show__track {
     --sw: 340px;
     position: relative;
@@ -473,7 +473,7 @@ const photos: { key: ImageKey; alt: string }[] = [
     .cs-show__arr { width: 44px; height: 44px; margin-top: -22px; font-size: 18px; }
     .cs-show__arr--l { left: 6px; }
     .cs-show__arr--r { right: 6px; }
-    .cs-show__letters { width: 120%; }
+    .cs-show__letters { width: 92%; max-width: none; }
     .cs-cap { min-height: 170px; }
     .cs-benefits__list { grid-template-columns: 1fr; gap: 18px; }
     .cs-about, .cs-problems { padding: 60px 0; }
