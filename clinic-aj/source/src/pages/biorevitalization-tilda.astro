@@ -7,6 +7,7 @@ import About from '../components/About.astro';
 import Contacts from '../components/Contacts.astro';
 import Footer from '../components/Footer.astro';
 
+const videoUrl = 'https://cd75615.tw1.ru/biorevitalization.mp4';
 const paras = [
   'Биоревитализация — это процедура, направленная на интенсивное увлажнение, питание и восстановление кожи с помощью гиалуроновой кислоты.',
   'Этот натуральный компонент активно участвует в процессах регенерации тканей, улучшая общее состояние кожи и возвращая ей свежесть и сияние.',
@@ -41,6 +42,7 @@ const paras = [
 
     <section class="container ct-text">
       {paras.map((p) => <p>{p}</p>)}
+      <video class="ct-video" src={videoUrl} controls playsinline preload="metadata" aria-label="Видео о биоревитализации"></video>
       <p class="ct-text__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
     </section>
 
@@ -64,6 +66,7 @@ const paras = [
   
 
   .ct-text { padding-top: 60px; padding-bottom: 70px; font-size: 20px; line-height: 1.55; }
+  .ct-video { display: block; width: 360px; max-width: 100%; aspect-ratio: 9 / 16; margin: 40px auto 0; background: var(--ivory); }
   .ct-text p + p { margin-top: 31px; }
   .ct-text .ct-text__warn { font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
 
