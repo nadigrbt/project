@@ -63,6 +63,10 @@ export const images = {
   inj5:          { file: 'injections-5.webp', remote: `${T}/tild3366-3565-4864-a631-666235366364/__2023-06-29__215122.png`, width: 1200 },
   inj6:          { file: 'injections-6.webp', remote: `${T}/tild6436-3733-4933-a530-366265613362/photo.png`, width: 700 },
 
+  // Фото результатов СФЕРОгель (свои, разрешение владельца 18.10; глаза закрыты)
+  sfero1: { file: 'sfero-1.webp' },
+  sfero2: { file: 'sfero-2.webp' },
+
   // Фото клиники для блока-галереи (свои, не с Тильды)
   clinicLounge:     { file: 'clinic-lounge.webp' },
   clinicLogo:       { file: 'clinic-logo-flowers.webp' },
