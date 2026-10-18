@@ -102,7 +102,25 @@ const contra = [
         <p class="cs-eyebrow">О процедуре</p>
         <h2 class="cs-title">Что такое SMAS-лифтинг</h2>
         <p class="cs-intro__text">Ультразвуковой SMAS-лифтинг — процедура, в которой фокусированный ультразвук воздействует на глубокие слои тканей лица и шеи. Результат у каждого свой: он зависит от состояния кожи и параметров, которые подбирает врач.</p>
-        <p class="sm-reg">Аппарат Liftera, производитель Asterasys Co., Ltd (Республика Корея). № РЗН 2022/18925 от 23 июля 2025 года.</p>
+    </section>
+
+    <section class="container dv">
+      <div class="dv__card">
+        <div class="dv__pic"><img src={img('deviceLiftera')} alt="Аппарат Liftera для ультразвукового SMAS-лифтинга" width="380" height="760" loading="lazy" /></div>
+        <div class="dv__text">
+          <p class="cs-eyebrow">Об аппарате</p>
+          <h2>Liftera</h2>
+          <p>Аппарат для ультразвукового SMAS-лифтинга Asterasys: фокусированный ультразвук воздействует на глубокие слои тканей лица и шеи. Врач выбирает насадку и параметры под вашу задачу.</p>
+          <dl class="dv__list">
+          <div><dt>Название</dt><dd>Liftera (Asterasys)</dd></div>
+          <div><dt>Производитель</dt><dd>Asterasys Co., Ltd, Республика Корея</dd></div>
+          <div><dt>Технология</dt><dd>HIFU — высокоинтенсивный фокусированный ультразвук</dd></div>
+          <div><dt>Глубина воздействия</dt><dd>Картриджи рассчитаны на разную глубину (по данным производителя, от 1,5 до 4,5 мм), нужную глубину выбирает врач</dd></div>
+          <div><dt>Зоны</dt><dd>Лицо и шея</dd></div>
+          <div><dt>Регистрация</dt><dd>№ РЗН 2022/18925 от 23 июля 2025 года</dd></div>
+          </dl>
+        </div>
+      </div>
     </section>
 
     <section class="container bio-block">
@@ -413,5 +431,21 @@ const contra = [
     .bio-pair li { padding: 24px 22px; }
   }
   @media (max-width: 959px) { .sf-photos { padding-top: 56px; } .sf-photos__list { grid-template-columns: 1fr; } }
-  .sm-reg { margin-top: 20px; font-size: var(--fs-small); color: var(--muted); }
+  /* ---------- Об аппарате ---------- */
+  .dv { padding-top: 72px; }
+  .dv__card { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 48px; align-items: center; padding: 40px 48px; background: var(--ivory); }
+  .dv__pic { display: grid; place-items: center; }
+  .dv__pic img { display: block; width: auto; max-width: 100%; height: 380px; object-fit: contain; }
+  .dv__text h2 { margin-top: 12px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
+  .dv__text > p { margin-top: 16px; max-width: 620px; }
+  .dv__list { margin: 24px 0 0; padding: 0; }
+  .dv__list > div { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .dv__list dt { color: var(--muted); }
+  .dv__list dd { margin: 0; }
+  @media (max-width: 959px) {
+    .dv { padding-top: 56px; }
+    .dv__card { grid-template-columns: 1fr; gap: 24px; padding: 28px 20px; }
+    .dv__pic img { height: 280px; }
+    .dv__list > div { grid-template-columns: 1fr; gap: 4px; }
+  }
 </style>
