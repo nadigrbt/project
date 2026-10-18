@@ -84,7 +84,7 @@ const contra = [
         <h1 class="cs-hero__title">Свежесть и тонус кожи <span>без операции</span></h1>
         <p class="cs-hero__lead">Увлажнение, морщины, объём и контуры лица. Врач подберёт процедуру на консультации, чтобы подчеркнуть вашу естественную красоту.</p>
         <div class="cs-actions">
-          <a class="cs-btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на консультацию</a>
+          <a class="cs-btn" href="#contact">Записаться на консультацию</a>
           <a class="cs-phone" href={site.phone.href}>
             <span class="cs-phone__label">или позвоните</span>
             <span class="cs-phone__num">{site.phone.display}</span>
@@ -144,13 +144,13 @@ const contra = [
               <p>{d.text}</p>
               {d.href
                 ? <a class="cs-card__link" href={d.href}>Подробнее о процедуре →</a>
-                : <a class="cs-card__link" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на консультацию →</a>}
+                : <a class="cs-card__link" href="#contact">Записаться на консультацию →</a>}
             </li>
           ))}
           <li class="cs-card cs-card--soft" id="consult">
             <h3>Не знаете, с чего начать?</h3>
             <p>Врач соберёт анамнез, оценит состояние кожи и предложит план: какие процедуры нужны, в каком порядке и что подойдёт в домашнем уходе.</p>
-            <a class="cs-card__link" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на консультацию →</a>
+            <a class="cs-card__link" href="#contact">Записаться на консультацию →</a>
           </li>
         </ul>
         <p class="cs-all">Все процедуры клиники — <a href="/">на главной странице</a></p>
@@ -227,7 +227,7 @@ const contra = [
           <p class="cs-cta__sub">Приходите на консультацию: подберём процедуры и расскажем, как всё проходит.</p>
           <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
         </div>
-        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+        <a class="cs-cta__btn" href="#contact">Записаться онлайн</a>
       </div>
     </section>
 

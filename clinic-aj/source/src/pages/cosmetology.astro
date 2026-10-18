@@ -53,7 +53,7 @@ const slides: { id: string; name: string; text: string; key: ImageKey; w: number
 ].map((x) => ({ ...x, href: '' }));
 slides.forEach((x) => { x.href = devices.find((d) => d.id === x.id)!.href; });
 // у аппаратов без своей страницы слайд ведёт на запись
-const slideCta = (x: { href: string }) => (x.href ? { href: x.href, label: 'Подробнее о процедуре →', blank: false } : { href: site.bookingUrl, label: 'Записаться на консультацию →', blank: true });
+const slideCta = (x: { href: string }) => (x.href ? { href: x.href, label: 'Подробнее о процедуре →', blank: false } : { href: '#contact', label: 'Записаться на консультацию →', blank: false });
 const steps = [
   { title: 'Консультация', text: 'Врач соберёт анамнез, выслушает пожелания и оценит состояние кожи.' },
   { title: 'Индивидуальный план', text: 'Подберём аппарат или сочетание процедур и домашний уход под вашу задачу.' },
@@ -112,7 +112,7 @@ const photos: { key: ImageKey; alt: string }[] = [
       </div>
 
       <div class="cs-actions">
-        <a class="cs-btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на консультацию</a>
+        <a class="cs-btn" href="#contact">Записаться на консультацию</a>
         <a class="cs-phone" href={site.phone.href}>
           <span class="cs-phone__label">или позвоните</span>
           <span class="cs-phone__num">{site.phone.display}</span>
@@ -160,13 +160,13 @@ const photos: { key: ImageKey; alt: string }[] = [
               {d.rzn && <p class="cs-card__reg">Регистрационное удостоверение Росздравнадзора {d.rzn}</p>}
               {d.href
                 ? <a class="cs-card__link" href={d.href}>Подробнее о процедуре →</a>
-                : <a class="cs-card__link" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на консультацию →</a>}
+                : <a class="cs-card__link" href="#contact">Записаться на консультацию →</a>}
             </li>
           ))}
           <li class="cs-card cs-card--soft" id="acne">
             <h3>Аппаратное лечение акне и сосудистых проявлений</h3>
             <p>Здесь нет одного «лучшего» метода: у каждого свои преимущества, и подходит он не всем. Врач соберёт анамнез, подберёт процедуры и индивидуальный уход за кожей.</p>
-            <a class="cs-card__link" href={site.bookingUrl} target="_blank" rel="noopener">Записаться на консультацию →</a>
+            <a class="cs-card__link" href="#contact">Записаться на консультацию →</a>
           </li>
         </ul>
         <p class="cs-all">Все процедуры клиники — <a href="/">на главной странице</a></p>
@@ -216,7 +216,7 @@ const photos: { key: ImageKey; alt: string }[] = [
           <p class="cs-cta__sub">Приходите на консультацию: соберём анамнез, выслушаем пожелания и подберём процедуры.</p>
           <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
         </div>
-        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+        <a class="cs-cta__btn" href="#contact">Записаться онлайн</a>
       </div>
     </section>
 
