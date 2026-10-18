@@ -1,10 +1,8 @@
-/* Плавающее видео слева внизу, как на Тильде: маленькое превью без звука, по клику увеличивается, можно свернуть или спрятать. */
+/* Плавающее видео слева внизу, как на Тильде: маленькое превью без звука, по клику увеличивается, можно свернуть или спрятать (после обновления страницы возвращается). */
 (function () {
   var s = document.currentScript;
   var src = s && s.getAttribute('data-src');
   if (!src) return;
-  var KEY = 'aj-video-hidden:' + location.pathname;
-  try { if (sessionStorage.getItem(KEY) === '1') return; } catch (e) {}
 
   var css = document.createElement('style');
   css.textContent =
@@ -44,7 +42,6 @@
   box.querySelector('.vw__min').addEventListener('click', shrink);
   box.querySelector('.vw__close').addEventListener('click', function () {
     v.pause(); box.remove();
-    try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
   });
   document.body.appendChild(box);
 })();
