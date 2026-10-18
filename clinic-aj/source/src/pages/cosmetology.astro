@@ -47,8 +47,12 @@ const slides: { id: string; name: string; text: string; key: ImageKey; w: number
   { id: 'mediostar', name: 'MeDioStar Monolith', text: 'Диодный лазер: эпиляция и омоложение кожи.', key: 'deviceMediostar', w: 430, h: 760 },
   { id: 'neogen', name: 'NeoGen', text: 'Плазменное омоложение: рельеф и упругость кожи.', key: 'deviceNeogen', w: 334, h: 760 },
   { id: 'micro', name: 'Bio-Ultimate Platinum', text: 'Микротоки: тонус мышц лица, отёчность.', key: 'deviceMicro', w: 700, h: 391 },
+  { id: 'hydrafacial', name: 'HydraFacial Allegro', text: 'Очищение, увлажнение и свежесть кожи лица и тела.', key: 'deviceHydrafacial', w: 540, h: 518 },
+  { id: 'btl', name: 'Магнитотерапия BTL-6000', text: 'Воздействие на мышцы и ткани магнитным полем высокой интенсивности.', key: 'deviceBtl', w: 700, h: 541 },
 ].map((x) => ({ ...x, href: '' }));
 slides.forEach((x) => { x.href = devices.find((d) => d.id === x.id)!.href; });
+// у аппаратов без своей страницы слайд ведёт на запись
+const slideCta = (x: { href: string }) => (x.href ? { href: x.href, label: 'Подробнее о процедуре →', blank: false } : { href: site.bookingUrl, label: 'Записаться на консультацию →', blank: true });
 const steps = [
   { title: 'Консультация', text: 'Врач соберёт анамнез, выслушает пожелания и оценит состояние кожи.' },
   { title: 'Индивидуальный план', text: 'Подберём аппарат или сочетание процедур и домашний уход под вашу задачу.' },
@@ -89,7 +93,7 @@ const photos: { key: ImageKey; alt: string }[] = [
       <button type="button" class="cs-show__arr cs-show__arr--r" id="cs-next" aria-label="Следующий аппарат" hidden>&#8594;</button>
       <div class="cs-show__track" id="cs-track" role="region" aria-roledescription="карусель" aria-label="Аппараты клиники" tabindex="0">
         {slides.map((x, i) => (
-          <a class="cs-show__slide" href={x.href} data-i={i} data-name={x.name} data-text={x.text} aria-label={x.name}>
+          <a class="cs-show__slide" href={slideCta(x).href} target={slideCta(x).blank ? '_blank' : undefined} rel={slideCta(x).blank ? 'noopener' : undefined} data-i={i} data-name={x.name} data-text={x.text} data-label={slideCta(x).label} data-blank={slideCta(x).blank ? '1' : undefined} aria-label={x.name}>
             <img src={img(x.key)} alt={x.name} width={x.w} height={x.h} loading={i < 3 ? 'eager' : 'lazy'} />
           </a>
         ))}
@@ -217,7 +221,7 @@ const photos: { key: ImageKey; alt: string }[] = [
   </main>
   <Footer />
 
-  <script is:inline src="/cosmetology-carousel.js?v=1" defer></script>
+  <script is:inline src="/cosmetology-carousel.js?v=2" defer></script>
 </Base>
 
 <style>

@@ -66,6 +66,8 @@ export const images = {
   deviceMediostar: { file: 'device-mediostar.webp' },
   deviceNeogen: { file: 'device-neogen.webp' },
   deviceMicro: { file: 'device-micro.webp' },
+  deviceHydrafacial: { file: 'device-hydrafacial.webp' },
+  deviceBtl: { file: 'device-btl.webp' },
   clinicVolnewmer:  { file: 'clinic-volnewmer-room.webp' },
   clinicWashbasins: { file: 'clinic-washbasins.webp' },
   clinicTeam:       { file: 'clinic-reception-team.webp' },

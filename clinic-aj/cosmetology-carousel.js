@@ -29,6 +29,8 @@
     nameEl.textContent = o.getAttribute('data-name');
     textEl.textContent = o.getAttribute('data-text');
     linkEl.setAttribute('href', o.getAttribute('href'));
+    linkEl.textContent = o.getAttribute('data-label');
+    if (o.getAttribute('data-blank')) { linkEl.setAttribute('target', '_blank'); linkEl.setAttribute('rel', 'noopener'); } else { linkEl.removeAttribute('target'); linkEl.removeAttribute('rel'); }
   }
   function nearest() {
     var c = track.scrollLeft + track.clientWidth / 2, best = 0, bd = 1e9;
