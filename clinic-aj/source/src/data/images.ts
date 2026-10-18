@@ -55,6 +55,14 @@ export const images = {
   cosm2:         { file: 'cosmetology-2.webp', remote: `${T}/tild6434-3765-4237-a132-626633663530/__2023-05-26__144420.png`, width: 1100 },
   cosm3:         { file: 'cosmetology-3.webp', remote: `${T}/tild3661-6666-4432-a339-393436383762/__2026-06-24_154829.png`, width: 700 },
 
+  // Страница /injections
+  inj1:          { file: 'injections-1.webp', remote: `${T}/tild3363-6161-4463-b833-643132643532/__2023-05-09__195654.png`, width: 900 },
+  inj2:          { file: 'injections-2.webp', remote: `${T}/tild3466-6237-4735-b635-343134333865/__2023-05-09__194359.png`, width: 900 },
+  inj3:          { file: 'injections-3.webp', remote: `${T}/tild6435-3632-4466-b734-316436653563/__2023-06-29__214616.png`, width: 900 },
+  inj4:          { file: 'injections-4.webp', remote: `${T}/tild6538-6530-4338-b630-306335653064/__2023-05-08__173605.png`, width: 900 },
+  inj5:          { file: 'injections-5.webp', remote: `${T}/tild3366-3565-4864-a631-666235366364/__2023-06-29__215122.png`, width: 1200 },
+  inj6:          { file: 'injections-6.webp', remote: `${T}/tild6436-3733-4933-a530-366265613362/photo.png`, width: 700 },
+
   // Фото клиники для блока-галереи (свои, не с Тильды)
   clinicLounge:     { file: 'clinic-lounge.webp' },
   clinicLogo:       { file: 'clinic-logo-flowers.webp' },
