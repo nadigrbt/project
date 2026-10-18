@@ -15,6 +15,7 @@ const T = 'https://static.tildacdn.com';
 export const images = {
   logo:          { file: 'logo.webp',          remote: `${T}/tild6661-6166-4336-a436-386130373361/aj.png`, width: 400 },
   footerLogo:    { file: 'logo-footer.svg',    remote: `${T}/tild3365-6664-4664-a136-663565646437/AJ_logo_2_3.svg` },
+  cosmLetters:   { file: 'cosmetology-letters.webp' },
   heroLetters:   { file: 'hero-letters.webp',  remote: `${T}/tild3434-3831-4561-b634-643362643334/AJ_logo_2_2-min.png`, width: 1200 },
   heroDoctors:   { file: 'hero-doctors.webp',  remote: `${T}/tild3730-3761-4564-b761-623765656663/photo.png`, width: 600 },
   star:          { file: 'star.svg',           remote: `${T}/tild3432-6162-4235-b237-343630373565/ph_star-four-fill.svg` },
