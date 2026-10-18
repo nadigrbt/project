@@ -10,7 +10,7 @@ import Directions from '../components/Directions.astro';
 import { site } from '../data/site';
 import { img } from '../data/images';
 
-// Видео со страницы Тильды (вертикальное 9:16, лежит на сервере разработчика Тильды); когда владелец пришлёт файл, положить в public и поменять ссылку.
+// Видео со страницы Тильды (вертикальное 9:16): плавающее окошко слева внизу (public/video-widget.js); лежит на сервере разработчика Тильды, когда владелец пришлёт файл, положить в public и поменять ссылку.
 const videoUrl = 'https://cd75615.tw1.ru/biorevitalization.mp4';
 const benefits = [
   { title: 'Консультация перед процедурой', text: 'Врач оценит кожу, подберёт препарат и расскажет о противопоказаниях.' },
@@ -101,13 +101,10 @@ const contra = [
   </section>
 
   <main>
-    <section class="container cs-intro bio-intro">
-      <div class="bio-intro__text">
+    <section class="container cs-intro">
         <p class="cs-eyebrow">О процедуре</p>
         <h2 class="cs-title">Увлажнение и питание кожи изнутри</h2>
         <p class="cs-intro__text">Биоревитализация — это процедура для интенсивного увлажнения, питания и восстановления кожи с помощью гиалуроновой кислоты. Это натуральный компонент кожи, который участвует в обновлении тканей. После процедуры кожа становится более увлажнённой и мягкой, улучшаются её тонус и цвет. Результат у каждого свой: он зависит от возраста, исходного состояния кожи и схемы, которую подбирает врач.</p>
-      </div>
-      <video class="bio-intro__video" src={videoUrl} controls playsinline preload="metadata" aria-label="Видео о биоревитализации"></video>
     </section>
 
     <section class="container bio-block">
@@ -199,6 +196,7 @@ const contra = [
     <Contacts />
   </main>
   <Footer />
+  <script is:inline src="/video-widget.js?v=1" data-src={videoUrl} defer></script>
 </Base>
 
 <style>
@@ -370,9 +368,6 @@ const contra = [
   .bio-zones h3 { font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-regular); }
   .bio-zones p { margin-top: 12px; }
   .bio-zones { }
-  .bio-intro { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 64px; align-items: start; }
-  .cs-intro.bio-intro > * { max-width: none; }
-  .bio-intro__video { width: 340px; max-width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: var(--ivory); }
   .bio-block { padding-top: 88px; padding-bottom: 0; }
   .bio-results { margin-top: 88px; }
   .bio-block > p { margin-top: 24px; max-width: 820px; }
@@ -410,8 +405,6 @@ const contra = [
     .in-hero__visual { min-height: 300px; }
     .in-hero__woman { width: 300px; }
     .bio-zones, .bio-pair { grid-template-columns: 1fr; }
-    .bio-intro { grid-template-columns: 1fr; gap: 32px; }
-    .bio-intro__video { width: 100%; max-width: 320px; margin: 0 auto; }
     .bio-block { padding-top: 60px; }
     .bio-results { margin-top: 60px; }
     .bio-pair li { padding: 24px 22px; }
