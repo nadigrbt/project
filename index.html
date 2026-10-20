@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex,nofollow">
+<title>Личный кабинет клиента</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600;700;800&family=Onest:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: guide (wide screens) + toolbar above a phone-shaped app. App = cobalt shell header, scrolling work area, bottom tab bar.
+   World: race-day kit. Cool Tyvek ground, one committed cobalt, hi-vis lime for progress and callouts, heavy condensed numerals,
+   perforated tear-off tabs for sessions left. Flat, hairlines instead of shadows. */
+:root{
+  --bg:#D3D9E0; --app:#E6EAEF; --surface:#FFFFFF; --surface-2:#EFF2F6;
+  --ink:#0E1217; --ink-2:#3F4856; --ink-3:#5B6676; --line:#D1D7DF; --perf:#9AA4B2;
+  --shell:#2347F5; --shell-ink:#FFFFFF;
+  --wave:#2347F5; --wave-ink:#FFFFFF; --wave-soft:#E0E6FF; --wave-text:#2347F5;
+  --hero-dim:#E1E7FF; --hero-line:rgba(255,255,255,.34);
+  --hivis:#D4F23A; --on-hivis:#0E1217; --pitch:#0E1217; --on-pitch:#F4F7FA;
+  --card-dark:#0E1217; --card-dark-ink:#F4F7FA; --card-dark-dim:#B9C2CF;
+  --ice:#09657F; --ice-soft:#D8F0F7;
+  --star:#E89B00; --star-off:#C3CAD4;
+  --font-body:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-num:'Fira Sans Extra Condensed','Roboto Condensed','Arial Narrow',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#05070B; --app:#0B0F16; --surface:#141A24; --surface-2:#1B2330;
+    --ink:#EEF1F6; --ink-2:#B7C0CD; --ink-3:#8E99A9; --line:#252E3C; --perf:#4F596A;
+    --shell:#16206B; --shell-ink:#FFFFFF;
+    --wave:#2A4AF0; --wave-ink:#FFFFFF; --wave-soft:#1B2547; --wave-text:#9DB0FF;
+    --hero-dim:#DCE3FF; --hero-line:rgba(255,255,255,.3);
+    --card-dark:#263041; --card-dark-ink:#F4F7FA; --card-dark-dim:#B9C2CF;
+    --ice:#6CCBEA; --ice-soft:#0F2E39;
+    --star:#F5B73A; --star-off:#3A4455;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#05070B; --app:#0B0F16; --surface:#141A24; --surface-2:#1B2330;
+  --ink:#EEF1F6; --ink-2:#B7C0CD; --ink-3:#8E99A9; --line:#252E3C; --perf:#4F596A;
+  --shell:#16206B; --shell-ink:#FFFFFF;
+  --wave:#2A4AF0; --wave-ink:#FFFFFF; --wave-soft:#1B2547; --wave-text:#9DB0FF;
+  --hero-dim:#DCE3FF; --hero-line:rgba(255,255,255,.3);
+  --card-dark:#263041; --card-dark-ink:#F4F7FA; --card-dark-dim:#B9C2CF;
+  --ice:#6CCBEA; --ice-soft:#0F2E39;
+  --star:#F5B73A; --star-off:#3A4455;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box;scrollbar-width:thin;scrollbar-color:var(--perf) transparent}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{
+  margin:0;padding-block:12px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);font-size:15px;line-height:1.4;
+  -webkit-font-smoothing:antialiased;caret-color:var(--wave-text);
+}
+::selection{background:var(--hivis);color:var(--on-hivis)}
+button{font:inherit;color:inherit}
+h1,h2,h3,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.fillic{width:22px;height:22px;fill:currentColor;stroke:none;flex:none}
+:focus-visible{outline:2px solid var(--wave-text);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:minmax(0,400px);grid-template-rows:minmax(0,1fr);justify-content:center;height:100%;min-height:0}
+.col{display:flex;flex-direction:column;gap:12px;height:100%;max-height:880px;min-height:0;min-width:0;align-self:center}
+.guide{display:none}
+@media (min-width:920px){
+  .shell{grid-template-columns:290px minmax(0,400px);gap:48px}
+  .guide{display:block;align-self:center}
+}
+
+/* guide */
+.guide h2{font-family:var(--font-num);font-weight:800;font-size:34px;line-height:1;letter-spacing:.005em}
+.guide>p{margin:10px 0 18px;color:var(--ink-2);font-size:14px}
+.guide ol{display:flex;flex-direction:column;gap:2px}
+.guide li button{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;width:100%;text-align:left;padding:9px 10px;border:0;border-radius:10px;background:none;color:var(--ink);cursor:pointer;font-size:14px}
+.guide li button:hover{background:var(--surface)}
+.guide li button[aria-current="true"]{background:var(--wave);color:var(--wave-ink);font-weight:600}
+.guide .n{font-family:var(--font-num);font-weight:800;font-size:18px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.guide li button[aria-current="true"] .n{color:var(--hivis)}
+
+/* toolbar */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.seg{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:500;color:var(--ink-2)}
+.seg button[aria-checked="true"]{background:var(--wave);color:var(--wave-ink)}
+.ghost{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 12px;cursor:pointer;font-size:13px;font-weight:500;color:var(--ink-2)}
+.ghost:hover{color:var(--ink)}
+
+/* device */
+.device{position:relative;display:flex;flex-direction:column;flex:1;min-height:0;background:var(--app);border:1px solid var(--line);border-radius:28px;overflow:hidden}
+.chrome{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:11px 16px;background:var(--shell);color:var(--shell-ink);font-size:14px}
+.chrome .cl{font-weight:500;opacity:.9}
+.chrome .ct{text-align:center;line-height:1.2}
+.chrome .ct b{display:block;font-weight:600;font-size:14px}
+.chrome .ct span{font-size:11px;opacity:.8}
+.chrome .cr{justify-self:end;letter-spacing:2px;font-weight:700;opacity:.9}
+
+/* login */
+.login{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:28px 26px}
+.mark{width:60px;height:60px;border-radius:14px;background:var(--wave);color:var(--hivis);display:grid;place-items:center;font-family:var(--font-num);font-weight:800;font-size:40px;line-height:1}
+.login h1{font-family:var(--font-num);font-weight:800;font-size:40px;line-height:1;text-wrap:balance}
+.login .lead{color:var(--ink-2);font-size:15px}
+.perks{display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--ink-2)}
+.perks li{display:flex;gap:10px;align-items:flex-start}
+.perks .ic{width:18px;height:18px;color:var(--wave-text);margin-top:1px}
+.checking{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:14px}
+.spin{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--wave-text);animation:sp .8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.fine{font-size:12px;color:var(--ink-3)}
+
+/* app */
+.appwrap{flex:1;min-height:0;display:flex;flex-direction:column}
+.scroll{position:relative;flex:1;min-height:0;overflow-y:auto;padding:16px 16px 24px}
+.tab{display:flex;flex-direction:column;gap:26px}
+.blk{display:flex;flex-direction:column;gap:12px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.h-sec{font-family:var(--font-num);font-weight:800;font-size:30px;line-height:1}
+.sub-sec{font-size:13px;color:var(--ink-3);margin-top:4px}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:6px;background:var(--surface);border-top:1px solid var(--line)}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;border:0;background:none;color:var(--ink-3);font-size:11px;font-weight:500;cursor:pointer;border-radius:12px}
+.tabs button[aria-selected="true"]{color:var(--wave-text);background:var(--wave-soft);font-weight:600}
+
+/* hero */
+.hero{background:var(--wave);color:var(--wave-ink);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:18px}
+.hero-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 12px}
+.hero-top>div:first-child{min-width:0}
+.lbl{font-size:13px;color:var(--hero-dim)}
+.lvl{font-family:var(--font-num);font-weight:800;font-size:54px;line-height:.92;margin-top:6px}
+.disc{display:flex;flex-direction:column;align-items:flex-end;margin-left:auto}
+.disc b{font-family:var(--font-num);font-weight:800;font-size:72px;line-height:.86;color:var(--hivis);font-variant-numeric:tabular-nums}
+.disc span{font-size:13px;color:var(--hero-dim);margin-top:4px}
+.who{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding-top:14px;border-top:2px dotted var(--hero-line)}
+.who b{font-weight:600;font-size:16px}
+.who span{font-size:14px;color:var(--hero-dim);font-variant-numeric:tabular-nums}
+.who .no{grid-column:2;grid-row:1/3;align-self:center;text-align:right;display:flex;flex-direction:column}
+.who .no em{font-style:normal;font-size:12px;color:var(--hero-dim)}
+.who .no strong{font-family:var(--font-num);font-weight:800;font-size:24px;line-height:1}
+.next{display:flex;flex-direction:column;gap:9px}
+.next-row{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:14px}
+.next-row b{font-family:var(--font-num);font-weight:800;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.track{height:10px;border-radius:99px;background:var(--hero-line);overflow:hidden}
+.track i{display:block;height:100%;width:var(--w);border-radius:99px;background:var(--hivis);animation:fill 1.15s cubic-bezier(.16,1,.3,1) .15s both}
+@keyframes fill{from{width:0}}
+.next-note{font-size:12.5px;color:var(--hero-dim)}
+.ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ladder li{border-top:3px solid var(--hero-line);padding-top:8px;display:flex;flex-direction:column;gap:0;color:var(--hero-dim);font-size:12px}
+.ladder li b{font-size:13px;font-weight:600}
+.ladder li span{font-family:var(--font-num);font-weight:800;font-size:22px;line-height:1.1}
+.ladder li em{font-style:normal;font-size:11px}
+.ladder li.past{border-top-color:var(--hero-dim)}
+.ladder li[aria-current="step"]{border-top-color:var(--hivis);color:var(--wave-ink)}
+.ladder li[aria-current="step"] b,.ladder li[aria-current="step"] span{color:var(--hivis)}
+
+/* bonus coupons: notches sit on the perforation line */
+.cards{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;margin-inline:-16px;padding:2px 16px 6px;scrollbar-width:none}
+.cards::-webkit-scrollbar{display:none}
+.bc{--py:50px;flex:0 0 240px;scroll-snap-align:start;border-radius:16px;display:flex;flex-direction:column;
+  -webkit-mask:radial-gradient(circle at 0 var(--py),#0000 9px,#000 9.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% var(--py),#0000 9px,#000 9.5px) right/51% 100% no-repeat;
+  mask:radial-gradient(circle at 0 var(--py),#0000 9px,#000 9.5px) left/51% 100% no-repeat,radial-gradient(circle at 100% var(--py),#0000 9px,#000 9.5px) right/51% 100% no-repeat}
+.bc-head{height:var(--py);padding:0 22px;display:flex;align-items:center;font-size:13px;font-weight:600;border-bottom:2px dotted currentColor}
+.bc-body{padding:12px 22px 16px;display:flex;flex-direction:column;gap:6px}
+.bc-bal{display:flex;align-items:baseline;gap:8px}
+.bc-bal b{font-family:var(--font-num);font-weight:800;font-size:50px;line-height:.95;font-variant-numeric:tabular-nums}
+.bc-bal span{font-size:14px;font-weight:500}
+.bc-foot{display:flex;justify-content:space-between;gap:8px;font-size:12px;opacity:.85}
+.bc-foot .no{font-variant-numeric:tabular-nums;white-space:nowrap}
+.bc-bonus{background:var(--hivis);color:var(--on-hivis)}
+.bc-gift{background:var(--card-dark);color:var(--card-dark-ink)}
+.bc-partner{background:var(--surface);color:var(--ink)}
+
+/* buttons */
+.btn{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:12px 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-align:left;cursor:pointer;font-weight:600;font-size:15px}
+.btn small{display:block;font-size:12px;font-weight:400;opacity:.82;margin-top:1px}
+.btn.primary{background:var(--wave);color:var(--wave-ink);border-color:transparent}
+.btn.center{justify-content:center;text-align:center;min-height:50px}
+.btn:disabled{opacity:.6;cursor:default}
+.btn-sm{border:0;background:var(--wave);color:var(--wave-ink);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;gap:6px;align-items:center;flex:none}
+.btn-sm .ic{width:16px;height:16px}
+
+/* generic */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600;background:var(--wave-soft);color:var(--wave-text);white-space:nowrap}
+.pill .ic{width:13px;height:13px}
+.pill.ice{background:var(--ice-soft);color:var(--ice)}
+.pill.hivis{background:var(--hivis);color:var(--on-hivis)}
+
+/* appointments */
+.appt{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px}
+.date{align-self:start;text-align:center;background:var(--wave);color:var(--wave-ink);border-radius:12px;padding:8px 0 9px;display:flex;flex-direction:column;gap:3px}
+.date b{font-family:var(--font-num);font-weight:800;font-size:38px;line-height:.9}
+.date span{font-size:12px;color:var(--hero-dim);font-weight:500}
+.appt-body{display:flex;flex-direction:column;gap:8px;min-width:0}
+.appt-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.time{font-family:var(--font-num);font-weight:800;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.kv{display:grid;grid-template-columns:70px minmax(0,1fr);gap:8px;font-size:14px}
+.kv span{color:var(--ink-3)}
+.kv b{font-weight:500}
+.hint-link{display:inline-flex;gap:8px;align-items:center;border:0;background:none;padding:8px 0;color:var(--wave-text);font-size:14px;font-weight:600;cursor:pointer;text-align:left}
+.hint-link .ic{width:18px;height:18px}
+
+/* subscriptions */
+.sub{display:flex;flex-direction:column;gap:14px}
+.sub-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sub-head h3{font-size:17px;font-weight:600;line-height:1.25}
+.price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.price s{color:var(--ink-3);font-size:14px;font-variant-numeric:tabular-nums}
+.price b{font-family:var(--font-num);font-weight:800;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.pay{display:flex;flex-direction:column;gap:8px}
+.pay-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay-row div{display:flex;flex-direction:column;gap:1px}
+.pay-row div+div{text-align:right}
+.pay-row span{font-size:12px;color:var(--ink-3)}
+.pay-row b{font-family:var(--font-num);font-weight:700;font-size:22px;line-height:1.1;font-variant-numeric:tabular-nums}
+.bar-line{display:flex;align-items:center;gap:10px}
+.bar-line .track{flex:1;height:8px;background:var(--surface-2)}
+.bar-line .track i{background:var(--wave);animation-duration:.9s}
+.bar-line em{font-style:normal;font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:34px;text-align:right}
+.frozen .bar-line .track i{background:var(--ice)}
+.frozen-note{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--ice-soft);color:var(--ice);font-size:13px;font-weight:500}
+.frozen-note .ic{width:18px;height:18px}
+.items{display:flex;flex-direction:column;gap:16px;padding-top:14px;border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:baseline;font-size:14px}
+.item em{font-style:normal;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.strip{grid-column:1/-1;display:flex;gap:3px;margin-top:4px;padding-top:5px;border-top:2px dotted var(--perf)}
+.strip i{flex:1;height:24px;border-radius:0 0 5px 5px;background:var(--wave)}
+.strip i.used{background:repeating-linear-gradient(135deg,transparent 0 4px,var(--line) 4px 5.5px)}
+.frozen .strip i:not(.used){background:var(--ice)}
+.total{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;font-weight:600;padding-top:12px;border-top:1px solid var(--line)}
+.total .num{font-family:var(--font-num);font-weight:800;font-size:24px;line-height:1}
+
+/* visits */
+.vcard{padding:2px 16px}
+.visit{padding:14px 0;border-top:1px solid var(--line)}
+.visit:first-child{border-top:0}
+.v-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.v-date{font-size:12.5px;color:var(--ink-3)}
+.v-head h3{font-size:15.5px;font-weight:600;line-height:1.3;margin-top:2px}
+.v-master{font-size:13.5px;color:var(--ink-2);margin-top:1px}
+.v-sum{font-weight:600;font-size:14px;white-space:nowrap;text-align:right}
+.rate{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
+.rate>span{font-size:13px;color:var(--ink-3)}
+.stars{display:flex;gap:0;margin-right:-6px}
+.star{border:0;background:none;padding:6px;line-height:0;color:var(--star-off);cursor:pointer;border-radius:10px}
+.star.on{color:var(--star)}
+.star:hover{color:var(--star)}
+.star.pop svg{animation:pop .3s cubic-bezier(.16,1,.3,1)}
+@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+.review{margin-top:8px;padding:14px;border-radius:14px;background:var(--hivis);color:var(--on-hivis);font-size:14px;display:flex;flex-direction:column;gap:12px;font-weight:500}
+.review-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--pitch);color:var(--on-pitch);border-radius:12px;padding:12px 14px;font-weight:600;font-size:14px;text-decoration:none}
+.review-link .ic{width:16px;height:16px}
+.mini-link{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--wave-text);text-decoration:none;margin-top:4px}
+.mini-link .ic{width:14px;height:14px}
+.thanks{margin-top:6px;font-size:13px;color:var(--ink-2)}
+.pager{display:flex;align-items:center;justify-content:center;gap:6px}
+.pager button{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+.pager button[aria-current="page"]{background:var(--wave);color:var(--wave-ink);border-color:transparent}
+.pager button:disabled{opacity:.4;cursor:default}
+.pager .ic{width:18px;height:18px}
+.pager-cap{text-align:center;font-size:12.5px;color:var(--ink-3);margin-top:-4px}
+
+/* referral */
+.ref{display:flex;flex-direction:column;gap:14px}
+.ref p{color:var(--ink-2);font-size:14.5px;line-height:1.5}
+.refl{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:12px;background:var(--surface-2)}
+.mono{flex:1;min-width:0;font-size:13px;font-weight:500;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.counts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cnt{display:flex;flex-direction:column;gap:2px;padding:16px;border-radius:16px;background:var(--wave);color:var(--wave-ink)}
+.cnt b{font-family:var(--font-num);font-weight:800;font-size:60px;line-height:.9;font-variant-numeric:tabular-nums}
+.cnt:nth-child(2) b{color:var(--hivis)}
+.cnt span{font-size:14px;font-weight:500;margin-top:6px}
+.cnt em{font-style:normal;font-size:12px;color:var(--hero-dim)}
+
+/* sheet + toast */
+.backdrop{position:absolute;inset:0;background:rgba(6,10,20,.6);display:flex;align-items:flex-end;z-index:5}
+.sheet{width:100%;max-height:92%;overflow-y:auto;background:var(--surface);border-radius:22px 22px 0 0;padding:18px 16px;display:flex;flex-direction:column;gap:12px}
+.sh-head{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center}
+.sh-head h3{font-size:16px;font-weight:600}
+.sh-head p{font-size:12.5px;color:var(--ink-3)}
+.avatar{width:40px;height:40px;border-radius:12px;background:var(--wave);color:var(--hivis);display:grid;place-items:center;font-family:var(--font-num);font-weight:800;font-size:22px}
+.avatar .ic{width:20px;height:20px}
+.x{border:0;background:var(--surface-2);width:36px;height:36px;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--ink-2)}
+.x .ic{width:18px;height:18px}
+.chat{display:flex;flex-direction:column;gap:8px;min-height:64px;max-height:180px;overflow-y:auto;padding:10px;border-radius:14px;background:var(--app)}
+.chat .empty{margin:auto;text-align:center;font-size:13px;color:var(--ink-3)}
+.b{max-width:86%;padding:9px 12px;border-radius:14px;font-size:14px;line-height:1.4;white-space:pre-wrap}
+.b.me{align-self:flex-end;background:var(--wave);color:var(--wave-ink);border-bottom-right-radius:4px}
+.b.them{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.composer{display:flex;flex-direction:column;gap:8px}
+.composer textarea{width:100%;resize:none;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;line-height:1.45}
+.dev{font-size:12px;color:var(--ink-3);line-height:1.45;padding:10px 12px;border-radius:10px;background:var(--surface-2)}
+.steps{display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink-2)}
+.steps li{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--app)}
+.steps .n{width:24px;height:24px;border-radius:8px;background:var(--wave);color:var(--hivis);display:grid;place-items:center;font-family:var(--font-num);font-weight:800;font-size:15px;flex:none}
+.toast{position:absolute;left:50%;bottom:78px;transform:translateX(-50%);background:var(--pitch);color:var(--on-pitch);padding:10px 16px;border-radius:99px;font-size:13.5px;font-weight:500;z-index:6;white-space:nowrap;max-width:92%}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9L3.5 9.7l5.9-.8z"/></symbol>
+  <symbol id="i-starf" viewBox="0 0 24 24"><path d="M12 3.2l2.7 5.5 6 .9-4.4 4.2 1 6L12 17l-5.3 2.8 1-6L3.3 9.6l6-.9z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-calplus" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 12.5v5M9.5 15h5"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h13A1.5 1.5 0 0 1 20 8.5V10a2 2 0 0 0 0 4v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 15.5V14a2 2 0 0 0 0-4z"/><path d="M14 7.5v9" stroke-dasharray="1.6 2.2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19c.6-3 2.9-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M16.5 14.6c2.2.1 3.7 1.4 4.2 3.9"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.4 3.6 5.3 3.6 8.5s-1.1 6.1-3.6 8.5c-2.5-2.4-3.6-5.3-3.6-8.5S9.5 5.9 12 3.5z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.4A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M14.5 6l-6 6 6 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside class="guide" id="guide" aria-label="Что показано в демо">
+    <h2>Что показано в демо</h2>
+    <p>Все данные тестовые. Нажмите на пункт, чтобы перейти к экрану. Переключатель сверху меняет мессенджер.</p>
+    <ol>
+      <li><button type="button" data-go="login"><span class="n">0</span><span>Вход по номеру телефона</span></button></li>
+      <li><button type="button" data-go="club:s-status"><span class="n">1</span><span>Статус клуба</span></button></li>
+      <li><button type="button" data-go="club:s-cards"><span class="n">2</span><span>Бонусные карты</span></button></li>
+      <li><button type="button" data-go="club:s-actions"><span class="n">3</span><span>Запись и связь с менеджером</span></button></li>
+      <li><button type="button" data-go="appts"><span class="n">4</span><span>Активные записи</span></button></li>
+      <li><button type="button" data-go="subs"><span class="n">5</span><span>Абонементы</span></button></li>
+      <li><button type="button" data-go="visits"><span class="n">6</span><span>Последние визиты</span></button></li>
+      <li><button type="button" data-go="visits:v-1"><span class="n">7</span><span>Оценка визита</span></button></li>
+      <li><button type="button" data-go="friends"><span class="n">8</span><span>Реферальная программа</span></button></li>
+    </ol>
+  </aside>
+
+  <div class="col">
+    <div class="bar">
+      <div class="seg" id="seg" role="radiogroup" aria-label="Мессенджер">
+        <button type="button" role="radio" aria-checked="true" data-p="tg">Telegram</button>
+        <button type="button" role="radio" aria-checked="false" data-p="max">MAX</button>
+      </div>
+      <button type="button" class="ghost" id="resetBtn">Показать вход заново</button>
+    </div>
+
+    <div class="device" id="device">
+      <header class="chrome" aria-hidden="true">
+        <span class="cl">Закрыть</span>
+        <div class="ct"><b>Клуб «Ритм»</b><span id="chromeSub">мини-приложение · Telegram</span></div>
+        <span class="cr">•••</span>
+      </header>
+
+      <section class="login" id="login" aria-labelledby="loginH">
+        <div class="mark" aria-hidden="true">Р</div>
+        <div class="stack" style="gap:10px">
+          <h1 id="loginH">Вход в личный кабинет</h1>
+          <p class="lead" id="loginHint">Номер возьмём из вашего аккаунта в Telegram.</p>
+        </div>
+        <ul class="perks">
+          <li><svg class="ic"><use href="#i-check"/></svg><span>Без пароля и SMS</span></li>
+          <li><svg class="ic"><use href="#i-check"/></svg><span>Номер сверяется с карточкой члена клуба</span></li>
+          <li><svg class="ic"><use href="#i-check"/></svg><span>Данные видите только вы</span></li>
+        </ul>
+        <div class="stack">
+          <button type="button" class="btn primary center" id="loginBtn"><svg class="ic"><use href="#i-phone"/></svg>Поделиться номером телефона</button>
+          <div class="checking" id="checking" hidden role="status"><span class="spin" aria-hidden="true"></span><span id="checkingText">Проверяем номер в базе клуба</span></div>
+          <p class="fine">Нажимая кнопку, вы разрешаете клубу сверить номер для входа.</p>
+        </div>
+      </section>
+
+      <div class="appwrap" id="app" hidden>
+        <main class="scroll" id="scroll">
+          <section class="tab" role="tabpanel" data-panel="club" id="tab-club"></section>
+          <section class="tab" role="tabpanel" data-panel="appts" id="tab-appts" hidden></section>
+          <section class="tab" role="tabpanel" data-panel="subs" id="tab-subs" hidden></section>
+          <section class="tab" role="tabpanel" data-panel="visits" id="tab-visits" hidden></section>
+          <section class="tab" role="tabpanel" data-panel="friends" id="tab-friends" hidden></section>
+        </main>
+        <nav class="tabs" id="tabs" role="tablist" aria-label="Разделы">
+          <button type="button" role="tab" data-tab="club" aria-selected="true"><svg class="ic"><use href="#i-star"/></svg>Клуб</button>
+          <button type="button" role="tab" data-tab="appts" aria-selected="false"><svg class="ic"><use href="#i-cal"/></svg>Записи</button>
+          <button type="button" role="tab" data-tab="subs" aria-selected="false"><svg class="ic"><use href="#i-ticket"/></svg>Абонементы</button>
+          <button type="button" role="tab" data-tab="visits" aria-selected="false"><svg class="ic"><use href="#i-clock"/></svg>Визиты</button>
+          <button type="button" role="tab" data-tab="friends" aria-selected="false"><svg class="ic"><use href="#i-users"/></svg>Друзья</button>
+        </nav>
+      </div>
+
+      <div class="backdrop" id="sheet" hidden></div>
+      <div class="toast" id="toast" hidden role="status"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var NB=' ';
+var num=function(n){return new Intl.NumberFormat('ru-RU').format(n).replace(/\s/g,NB)};
+var rub=function(n){return num(n)+NB+'₽'};
+var esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')};
+var reduced=function(){return window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches};
+
+/* ---------- demo data (synthetic) ---------- */
+var client={name:'Анна Соколова',first:'Анна',phone:'+7 916 482-15-07',card:'04821'};
+var club={status:'Любитель',discount:5,next:'Профи',nextDiscount:8,spent:61400,target:90000};
+var tiers=[
+  {n:'Новичок',d:3,from:'с 1-го визита'},
+  {n:'Любитель',d:5,from:'от 30 тыс. ₽'},
+  {n:'Профи',d:8,from:'от 90 тыс. ₽'},
+  {n:'Чемпион',d:12,from:'от 200 тыс. ₽'}
+];
+var cards=[
+  {kind:'bonus',title:'Бонусы клуба',value:'2 140',unit:'бонусов',num:'•••• 4821',note:'1 бонус = 1 ₽'},
+  {kind:'gift',title:'Подарочный сертификат',value:'5 000',unit:'₽',num:'•••• 0377',note:'До 31.12.2026'},
+  {kind:'partner',title:'Кафе клуба',value:'420',unit:'бонусов',num:'•••• 9152',note:'Во всех филиалах'}
+];
+var appts=[
+  {d:24,m:'окт',w:'сб',time:'11:30',soon:'через 4 дня',cat:'Спортивный массаж',branch:'Центральный',master:'Игорь Левин'},
+  {d:29,m:'окт',w:'чт',time:'19:00',soon:'через 9 дней',cat:'Персональная тренировка',branch:'Северный',master:'Артём Кравец'},
+  {d:3,m:'ноя',w:'вт',time:'08:30',soon:'через 14 дней',cat:'Плавание',branch:'Речной',master:'Ольга Миронова'}
+];
+var subs=[
+  {name:'Старт-пакет, 12 посещений',price:9600,pay:9120,paid:9120,items:[
+    {n:'Тренажёрный зал',t:8,l:5},{n:'Групповые занятия',t:4,l:3}]},
+  {name:'Курс спортивного массажа',price:28000,pay:26600,paid:14000,items:[
+    {n:'Спортивный массаж, 60 мин',t:8,l:5},{n:'Миофасциальный релиз',t:2,l:2}]},
+  {name:'Плавание, 12 занятий',price:12000,pay:11400,paid:4000,frozen:true,until:'15.11.2026',items:[
+    {n:'Бассейн, 45 мин',t:12,l:9}]}
+];
+var visits=[
+  {id:1,date:'19 октября',branch:'Центральный',service:'Функциональный тренинг',master:'Дарья Орлова',sum:'По абонементу'},
+  {id:2,date:'17 октября',branch:'Центральный',service:'Спортивный массаж, 60 мин',master:'Игорь Левин',sum:'По абонементу'},
+  {id:3,date:'15 октября',branch:'Северный',service:'Персональная тренировка',master:'Артём Кравец',sum:'3 200 ₽'},
+  {id:4,date:'13 октября',branch:'Центральный',service:'Тренажёрный зал',master:'Руслан Исаев',sum:'По абонементу'},
+  {id:5,date:'11 октября',branch:'Речной',service:'Плавание, 45 мин',master:'Ольга Миронова',sum:'По абонементу'},
+  {id:6,date:'8 октября',branch:'Центральный',service:'Стретчинг, группа',master:'Мария Исаева',sum:'По абонементу'},
+  {id:7,date:'6 октября',branch:'Северный',service:'Персональная тренировка',master:'Артём Кравец',sum:'3 200 ₽'},
+  {id:8,date:'3 октября',branch:'Центральный',service:'Спортивный массаж, 60 мин',master:'Игорь Левин',sum:'По абонементу'},
+  {id:9,date:'1 октября',branch:'Речной',service:'Плавание, 45 мин',master:'Ольга Миронова',sum:'По абонементу'},
+  {id:10,date:'28 сентября',branch:'Центральный',service:'Функциональный тренинг',master:'Дарья Орлова',sum:'По абонементу'},
+  {id:11,date:'25 сентября',branch:'Северный',service:'Тренажёрный зал',master:'Руслан Исаев',sum:'По абонементу'},
+  {id:12,date:'22 сентября',branch:'Центральный',service:'Вводная тренировка',master:'Артём Кравец',sum:'Бесплатно'}
+];
+var PER=5;
+var REVIEW_URL='https://yandex.ru/maps/';
+var PLAT={
+  tg:{name:'Telegram',link:'https://t.me/ritmclub_bot?start=ref_A7K2Q',
+      note:'Telegram: кнопка открывает ссылку вида t.me/менеджер?text=… Чат открывается с готовым текстом, клиенту остаётся нажать «Отправить».'},
+  max:{name:'MAX',link:'https://max.ru/ritmclub_bot?start=ref_A7K2Q',
+      note:'MAX: откроется чат с менеджером. Если платформа не подставляет текст из ссылки, мини-приложение скопирует его в буфер обмена.'}
+};
+var CHAT={
+  book:{avatar:'М',title:'Менеджер клуба',
+    text:function(){return 'Здравствуйте! Хочу записаться на процедуру. Меня зовут '+client.name+', мой телефон '+client.phone+'. Уровень в клубе: '+club.status+'.'},
+    reply:'Здравствуйте, '+client.first+'! Подскажите, какая процедура вас интересует и в какой филиал удобнее? Подберу ближайшее время.'},
+  care:{avatar:'З',title:'Отдел заботы',
+    text:function(){return 'Здравствуйте! Обращаюсь в отдел заботы. '+client.name+', телефон '+client.phone+'. Мой вопрос: '},
+    reply:'Здравствуйте, '+client.first+'! Отдел заботы на связи. Расскажите, чем помочь, и мы разберёмся сегодня.'},
+  move:{avatar:'З',title:'Отдел заботы',
+    text:function(){return 'Здравствуйте! Хочу перенести или отменить запись. '+client.name+', телефон '+client.phone+'.'},
+    reply:'Здравствуйте, '+client.first+'! Подскажите, какую запись нужно перенести и на какое время.'}
+};
+var S={platform:'tg',authed:false,tab:'club',page:1,fresh:null,sheet:null,opener:null,timer:null,toastT:null,
+  ratings:{2:5,3:4,5:5,6:5,7:5,8:4,10:5,11:5,12:3}};
+
+var scroller=$('#scroll');
+
+/* ---------- renderers ---------- */
+function renderClub(){
+  var left=club.target-club.spent;
+  var pct=Math.round(club.spent/club.target*100);
+  var curIdx=0;
+  tiers.forEach(function(t,i){if(t.n===club.status)curIdx=i});
+  var ladder=tiers.map(function(t,i){
+    var cls=i<curIdx?'past':'';
+    var cur=i===curIdx?' aria-current="step"':'';
+    return '<li class="'+cls+'"'+cur+'><b>'+t.n+'</b><span>'+t.d+'%</span><em>'+t.from+'</em></li>';
+  }).join('');
+  var cardsHtml=cards.map(function(c){
+    return '<article class="bc bc-'+c.kind+'"><div class="bc-head">'+c.title+'</div>'+
+      '<div class="bc-body"><div class="bc-bal"><b>'+c.value+'</b><span>'+c.unit+'</span></div>'+
+      '<div class="bc-foot"><span>'+c.note+'</span><span class="no">'+c.num+'</span></div></div></article>';
+  }).join('');
+  $('#tab-club').innerHTML=
+    '<section class="hero" id="s-status" aria-labelledby="st-h">'+
+      '<div class="hero-top"><div><p class="lbl">Ваш уровень в клубе</p><h2 class="lvl" id="st-h">'+club.status+'</h2></div>'+
+      '<div class="disc"><b>'+club.discount+'%</b><span>скидка</span></div></div>'+
+      '<div class="who"><b>'+client.name+'</b><div class="no"><em>Карта</em><strong>№'+NB+client.card+'</strong></div><span>'+client.phone+'</span></div>'+
+      '<div class="next"><div class="next-row"><span>До уровня «'+club.next+'»</span><b>'+rub(left)+'</b></div>'+
+      '<div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'" aria-label="Прогресс до уровня '+club.next+'"><i style="--w:'+pct+'%"></i></div>'+
+      '<p class="next-note">'+rub(club.spent)+' из '+rub(club.target)+' за 12 месяцев. На уровне «'+club.next+'» скидка '+club.nextDiscount+'%.</p></div>'+
+      '<ol class="ladder" aria-label="Уровни клуба">'+ladder+'</ol>'+
+    '</section>'+
+    '<section class="blk" id="s-cards" aria-labelledby="bc-h"><div><h2 class="h-sec" id="bc-h">Бонусные карты</h2><p class="sub-sec">Три карты. Листайте вправо.</p></div>'+
+      '<div class="cards" tabindex="0" aria-label="Список бонусных карт">'+cardsHtml+'</div></section>'+
+    '<section class="blk" id="s-actions" aria-labelledby="ac-h"><h2 class="h-sec" id="ac-h">Запись и связь</h2><div class="stack">'+
+      '<button type="button" class="btn primary" data-act="book"><svg class="ic"><use href="#i-calplus"/></svg><span>Записаться на процедуру<small>Откроется чат с менеджером, текст уже написан</small></span></button>'+
+      '<button type="button" class="btn" data-act="online"><svg class="ic"><use href="#i-globe"/></svg><span>Онлайн запись<small>Выберите филиал, мастера и время сами</small></span></button>'+
+      '<button type="button" class="btn" data-act="care"><svg class="ic"><use href="#i-heart"/></svg><span>Связаться с отделом заботы<small>Откроется чат с менеджером, текст уже написан</small></span></button>'+
+    '</div></section>';
+}
+
+function renderAppts(){
+  var html=appts.map(function(a){
+    return '<article class="card appt"><div class="date" aria-hidden="true"><b>'+a.d+'</b><span>'+a.m+' · '+a.w+'</span></div>'+
+      '<div class="appt-body"><div class="appt-head"><span class="time">'+a.time+'</span><span class="pill">'+a.soon+'</span></div>'+
+      '<div class="kv"><span>Категория</span><b>'+a.cat+'</b></div>'+
+      '<div class="kv"><span>Филиал</span><b>'+a.branch+'</b></div>'+
+      '<div class="kv"><span>Мастер</span><b>'+a.master+'</b></div></div></article>';
+  }).join('');
+  $('#tab-appts').innerHTML=
+    '<div><h2 class="h-sec">Активные записи</h2><p class="sub-sec">Предстоящих визитов: '+appts.length+'</p></div>'+
+    '<div class="stack" style="gap:12px">'+html+'</div>'+
+    '<button type="button" class="hint-link" data-act="move"><svg class="ic"><use href="#i-heart"/></svg>Перенести или отменить запись</button>';
+}
+
+function renderSubs(){
+  var html=subs.map(function(s){
+    var pct=Math.round(s.paid/s.pay*100);
+    var due=s.pay-s.paid;
+    var tot=0,left=0;
+    s.items.forEach(function(i){tot+=i.t;left+=i.l});
+    var items=s.items.map(function(i){
+      var used=i.t-i.l,tabs='';
+      for(var k=0;k<i.t;k++){tabs+='<i'+(k<used?' class="used"':'')+'></i>'}
+      return '<li class="item"><span>'+i.n+'</span><em>осталось '+i.l+' из '+i.t+'</em><div class="strip" aria-hidden="true">'+tabs+'</div></li>';
+    }).join('');
+    var disc=Math.round((1-s.pay/s.price)*100);
+    return '<article class="card sub'+(s.frozen?' frozen':'')+'">'+
+      '<div class="sub-head"><h3>'+s.name+'</h3>'+(s.frozen?'<span class="pill ice"><svg class="ic"><use href="#i-snow"/></svg>Заморожен</span>':'')+'</div>'+
+      '<div class="price"><s>'+rub(s.price)+'</s><b>'+rub(s.pay)+'</b><span class="pill hivis">−'+disc+'%</span></div>'+
+      (s.frozen?'<div class="frozen-note"><svg class="ic"><use href="#i-snow"/></svg><span>Срок действия приостановлен до '+s.until+'</span></div>':'')+
+      '<div class="pay"><div class="pay-row"><div><span>Оплачено</span><b>'+rub(s.paid)+'</b></div><div><span>К оплате</span><b>'+rub(due)+'</b></div></div>'+
+      '<div class="bar-line"><div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'" aria-label="Оплачено"><i style="--w:'+pct+'%"></i></div><em>'+pct+'%</em></div></div>'+
+      '<ul class="items" aria-label="Состав абонемента">'+items+'</ul>'+
+      '<div class="total"><span>Осталось процедур</span><span class="num">'+left+' из '+tot+'</span></div>'+
+    '</article>';
+  }).join('');
+  $('#tab-subs').innerHTML=
+    '<div><h2 class="h-sec">Абонементы</h2><p class="sub-sec">Всего: '+subs.length+'. Купон закрашен, пока занятие не использовано.</p></div>'+
+    '<div class="stack" style="gap:12px">'+html+'</div>';
+}
+
+function visitHTML(v){
+  var r=S.ratings[v.id]||0;
+  var stars='';
+  for(var n=1;n<=5;n++){
+    stars+='<button type="button" class="star'+(n<=r?' on':'')+'" data-id="'+v.id+'" data-n="'+n+'" aria-label="Оценка '+n+' из 5" aria-pressed="'+(n===r)+'"><svg class="fillic" viewBox="0 0 24 24"><use href="#i-starf"/></svg></button>';
+  }
+  var extra='';
+  if(r===5&&S.fresh===v.id){
+    extra='<div class="review"><p>Спасибо за высокую оценку! Поделитесь отзывом о филиале «'+v.branch+'» на картах. Это помогает другим выбрать наш клуб.</p>'+
+      '<a class="review-link" href="'+REVIEW_URL+'" target="_blank" rel="noopener noreferrer">Оставить отзыв на картах<svg class="ic"><use href="#i-ext"/></svg></a></div>';
+  }else if(r===5){
+    extra='<a class="mini-link" href="'+REVIEW_URL+'" target="_blank" rel="noopener noreferrer">Отзыв на картах филиала<svg class="ic"><use href="#i-ext"/></svg></a>';
+  }else if(r>0){
+    extra='<p class="thanks">Спасибо за оценку. Мы передали её в отдел заботы.</p>';
+  }
+  return '<li class="visit" id="v-'+v.id+'"><div class="v-head"><div><p class="v-date">'+v.date+' · '+v.branch+'</p><h3>'+v.service+'</h3><p class="v-master">'+v.master+'</p></div><p class="v-sum">'+v.sum+'</p></div>'+
+    '<div class="rate"><span>'+(r?'Ваша оценка':'Оцените визит')+'</span><div class="stars" role="group" aria-label="Оценка визита">'+stars+'</div></div>'+extra+'</li>';
+}
+
+function renderVisits(){
+  var pages=Math.ceil(visits.length/PER);
+  if(S.page>pages)S.page=pages;
+  var from=(S.page-1)*PER;
+  var slice=visits.slice(from,from+PER);
+  var pg='<button type="button" data-pg="'+(S.page-1)+'" aria-label="Предыдущая страница"'+(S.page===1?' disabled':'')+'><svg class="ic"><use href="#i-left"/></svg></button>';
+  for(var p=1;p<=pages;p++){pg+='<button type="button" data-pg="'+p+'"'+(p===S.page?' aria-current="page"':'')+' aria-label="Страница '+p+'">'+p+'</button>'}
+  pg+='<button type="button" data-pg="'+(S.page+1)+'" aria-label="Следующая страница"'+(S.page===pages?' disabled':'')+'><svg class="ic"><use href="#i-right"/></svg></button>';
+  $('#tab-visits').innerHTML=
+    '<div><h2 class="h-sec">Последние визиты</h2><p class="sub-sec">Оцените визит, это занимает секунду.</p></div>'+
+    '<ul class="card vcard" id="vlist">'+slice.map(visitHTML).join('')+'</ul>'+
+    '<nav class="pager" aria-label="Страницы визитов">'+pg+'</nav>'+
+    '<p class="pager-cap">Показаны '+(from+1)+'–'+(from+slice.length)+' из '+visits.length+'</p>';
+}
+
+function renderFriends(){
+  var link=PLAT[S.platform].link;
+  $('#tab-friends').innerHTML=
+    '<div class="card ref"><h2 class="h-sec">Приглашайте друзей</h2>'+
+    '<p>Подарите другу пробную тренировку и скидку 10% на первый абонемент. Когда друг придёт на первый визит, вы получите 500 бонусов.</p>'+
+    '<div class="refl"><span class="mono" id="refLink">'+esc(link)+'</span><button type="button" class="btn-sm" data-copy><svg class="ic"><use href="#i-copy"/></svg>Копировать</button></div>'+
+    '<p class="fine">Пример ссылки для демо. Ссылка зависит от мессенджера.</p></div>'+
+    '<div class="counts"><div class="cnt"><b>6</b><span>приглашено</span><em>4 уже были на визите</em></div>'+
+    '<div class="cnt"><b>'+num(2000)+'</b><span>бонусов получено</span><em>по 500 за каждого друга</em></div></div>';
+}
+
+/* ---------- navigation ---------- */
+function setTab(t){
+  S.tab=t;
+  $$('#tabs [role=tab]').forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.tab===t))});
+  $$('.tab').forEach(function(p){p.hidden=p.dataset.panel!==t});
+  scroller.scrollTop=0;
+}
+function applyPlatform(){
+  var P=PLAT[S.platform];
+  $('#chromeSub').textContent='мини-приложение · '+P.name;
+  $('#loginHint').textContent='Номер возьмём из вашего аккаунта в '+P.name+'.';
+  renderFriends();
+}
+function enter(){
+  clearTimeout(S.timer);
+  S.authed=true;
+  $('#login').hidden=true;
+  $('#app').hidden=false;
+}
+function resetLogin(){
+  clearTimeout(S.timer);
+  closeSheet(true);
+  S.authed=false;
+  $('#app').hidden=true;
+  $('#login').hidden=false;
+  $('#loginBtn').hidden=false;
+  $('#checking').hidden=true;
+  setTab('club');
+}
+function toast(msg){
+  var t=$('#toast');
+  t.textContent=msg;t.hidden=false;
+  clearTimeout(S.toastT);
+  S.toastT=setTimeout(function(){t.hidden=true},2200);
+}
+
+/* ---------- sheets ---------- */
+function openSheet(key){
+  var sh=$('#sheet');
+  S.opener=document.activeElement;
+  S.sheet=key;
+  var P=PLAT[S.platform];
+  if(key==='online'){
+    sh.innerHTML='<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">'+
+      '<div class="sh-head"><span class="avatar" aria-hidden="true"><svg class="ic"><use href="#i-globe"/></svg></span><div><h3 id="sh-t">Онлайн запись</h3><p>Страница открывается внутри '+P.name+'</p></div>'+
+      '<button type="button" class="x" data-close aria-label="Закрыть"><svg class="ic"><use href="#i-close"/></svg></button></div>'+
+      '<ol class="steps"><li><span class="n">1</span>Выбор филиала</li><li><span class="n">2</span>Выбор мастера и процедуры</li><li><span class="n">3</span>Дата и время</li><li><span class="n">4</span>Подтверждение записи</li></ol>'+
+      '<p class="dev">В рабочей версии кнопка открывает ссылку на онлайн-запись вашей CRM во встроенном браузере мессенджера.</p>'+
+      '<button type="button" class="btn primary center" data-close>Понятно</button></div>';
+  }else{
+    var c=CHAT[key];
+    sh.innerHTML='<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">'+
+      '<div class="sh-head"><span class="avatar" aria-hidden="true">'+c.avatar+'</span><div><h3 id="sh-t">'+c.title+'</h3><p>'+P.name+' · на связи</p></div>'+
+      '<button type="button" class="x" data-close aria-label="Закрыть"><svg class="ic"><use href="#i-close"/></svg></button></div>'+
+      '<div class="chat" id="chat" aria-live="polite"><p class="empty">Чат открылся с готовым текстом.<br>Его можно изменить перед отправкой.</p></div>'+
+      '<div class="composer"><label class="sr" for="msg">Сообщение менеджеру</label><textarea id="msg" rows="4">'+esc(c.text())+'</textarea>'+
+      '<button type="button" class="btn primary center" id="send"><svg class="ic"><use href="#i-check"/></svg>Отправить</button></div>'+
+      '<p class="dev">'+P.note+'</p></div>';
+  }
+  sh.hidden=false;
+  var f=$('#msg',sh)||$('[data-close]',sh);
+  if(f){f.focus();if(f.id==='msg'){var l=f.value.length;try{f.setSelectionRange(l,l)}catch(e){}}}
+}
+function closeSheet(silent){
+  var sh=$('#sheet');
+  if(sh.hidden)return;
+  sh.hidden=true;sh.innerHTML='';S.sheet=null;
+  if(!silent&&S.opener&&S.opener.focus&&document.contains(S.opener))S.opener.focus();
+}
+function addBubble(who,text){
+  var chat=$('#chat');if(!chat)return;
+  var e=$('.empty',chat);if(e)e.remove();
+  var b=document.createElement('div');
+  b.className='b '+who;b.textContent=text;
+  chat.appendChild(b);chat.scrollTop=chat.scrollHeight;
+}
+
+/* ---------- events ---------- */
+$('#sheet').addEventListener('click',function(e){
+  if(e.target===this||e.target.closest('[data-close]')){closeSheet();return}
+  var send=e.target.closest('#send');
+  if(send){
+    var ta=$('#msg');var t=ta.value.trim();
+    if(!t)return;
+    var key=S.sheet;
+    addBubble('me',t);ta.value='';ta.disabled=true;send.disabled=true;
+    setTimeout(function(){if(S.sheet===key)addBubble('them',CHAT[key].reply)},900);
+  }
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&S.sheet)closeSheet()});
+
+$('#loginBtn').addEventListener('click',function(){
+  this.hidden=true;
+  $('#checkingText').textContent='Проверяем номер '+client.phone+' в базе клуба';
+  $('#checking').hidden=false;
+  S.timer=setTimeout(enter,1300);
+});
+$('#resetBtn').addEventListener('click',resetLogin);
+
+$('#seg').addEventListener('click',function(e){
+  var b=e.target.closest('[data-p]');if(!b)return;
+  S.platform=b.dataset.p;
+  $$('#seg [data-p]').forEach(function(x){x.setAttribute('aria-checked',String(x===b))});
+  applyPlatform();
+});
+
+$('#tabs').addEventListener('click',function(e){
+  var b=e.target.closest('[data-tab]');if(b)setTab(b.dataset.tab);
+});
+
+$('#guide').addEventListener('click',function(e){
+  var b=e.target.closest('[data-go]');if(!b)return;
+  var parts=b.dataset.go.split(':');var tab=parts[0],target=parts[1];
+  $$('#guide [data-go]').forEach(function(x){x.removeAttribute('aria-current')});
+  b.setAttribute('aria-current','true');
+  if(tab==='login'){resetLogin();return}
+  if(!S.authed)enter();
+  if(tab==='visits'&&S.page!==1){S.page=1;renderVisits()}
+  setTab(tab);
+  if(target){
+    requestAnimationFrame(function(){
+      var el=document.getElementById(target);
+      if(el)scroller.scrollTo({top:Math.max(0,el.offsetTop-12),behavior:reduced()?'auto':'smooth'});
+    });
+  }
+});
+
+scroller.addEventListener('click',function(e){
+  var act=e.target.closest('[data-act]');
+  if(act){openSheet(act.dataset.act);return}
+
+  var star=e.target.closest('.star');
+  if(star){
+    var id=+star.dataset.id,n=+star.dataset.n;
+    S.ratings[id]=n;S.fresh=(n===5)?id:null;
+    var v=visits.filter(function(x){return x.id===id})[0];
+    var prev=$$('#vlist .visit');
+    var li=document.getElementById('v-'+id);
+    li.outerHTML=visitHTML(v);
+    // a visit that held the review block returns to its compact form
+    prev.forEach(function(p){
+      if(p.id!=='v-'+id){var pid=+p.id.slice(2);if(S.ratings[pid]===5&&p.querySelector('.review')){p.outerHTML=visitHTML(visits.filter(function(x){return x.id===pid})[0])}}
+    });
+    var again=document.querySelector('#v-'+id+' .star[data-n="'+n+'"]');
+    if(again){again.focus();again.classList.add('pop')}
+    return;
+  }
+
+  var pg=e.target.closest('[data-pg]');
+  if(pg&&!pg.disabled){
+    S.page=+pg.dataset.pg;S.fresh=null;
+    renderVisits();
+    scroller.scrollTop=0;
+    var cur=document.querySelector('#tab-visits [aria-current="page"]');
+    if(cur)cur.focus({preventScroll:true});
+    return;
+  }
+
+  var cp=e.target.closest('[data-copy]');
+  if(cp){
+    var text=PLAT[S.platform].link;
+    var done=function(){toast('Ссылка скопирована')};
+    var fallback=function(){
+      var el=$('#refLink');
+      var r=document.createRange();r.selectNodeContents(el);
+      var s=window.getSelection();s.removeAllRanges();s.addRange(r);
+      toast('Ссылка выделена, скопируйте её');
+    };
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fallback)}
+      else fallback();
+    }catch(err){fallback()}
+  }
+});
+
+/* ---------- init ---------- */
+renderClub();renderAppts();renderSubs();renderVisits();
+applyPlatform();
+})();
+</script>
+</body>
+</html>
