@@ -77,6 +77,7 @@ export const images = {
   deviceMorpheus: { file: 'device-morpheus.webp' },
   deviceLumecca: { file: 'device-lumecca.webp' },
   deviceMediostar: { file: 'device-mediostar.webp' },
+  deviceIxtron: { file: 'device-ixtron.webp' },
   deviceNeogen: { file: 'device-neogen.webp' },
   deviceMicro: { file: 'device-micro.webp' },
   deviceHydrafacial: { file: 'device-hydrafacial.webp' },
