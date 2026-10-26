@@ -24,6 +24,7 @@ export const images = {
   vk:            { file: 'vk.svg',             remote: `${T}/tild3631-3835-4963-b836-333835303934/uil_vk.svg` },
   tg:            { file: 'tg.svg',             remote: `${T}/tild3163-6264-4833-a434-393564333839/fontisto_telegram.svg` },
   promoWoman:    { file: 'volnewmer-woman.webp',  remote: `${T}/tild3361-3462-4338-b063-363935386237/__-33.png`, width: 700 },
+  cleanWoman:    { file: 'clean-woman.webp' },
   promoDevice:   { file: 'volnewmer-device.webp', remote: `${T}/tild3337-3638-4465-b334-666364396330/__-19.png`, width: 800 },
   aboutBg:       { file: 'about-bg.webp',      remote: `${T}/tild3862-3939-4532-a464-616232666134/13.png`, width: 1600 },
   about1:        { file: 'about-1.webp',       remote: `${T}/tild3233-3333-4139-b431-346332313361/IMG_2960.jpg`, width: 500 },
