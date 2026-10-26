@@ -3,7 +3,7 @@
 // Тексты — со страницы Тильды /intim-piling, освежены и проверены по 38-ФЗ: убраны «настоящее открытие», «безупречный уход», «эффективное действие»,
 // «уникальная формула», «мощные антиоксидантные свойства», «борется с вредными бактериями», «противовоспалительное действие» (медицинские обещания),
 // «подходит для любого типа кожи», «наслаждаться результатами сразу». Курс «4–6 процедур» не пишем (число процедур не указываем). Видео на старой странице нет.
-// Фото на первом экране — общее promoWoman, пока владелец не пришлёт своё. Противопоказания составлены по общим правилам для пилингов — ждут проверки врачом.
+// На первом экране фото нет, только буквы A&J (решение владельца 26.10); на телефоне буквы скрыты. Противопоказания составлены по общим правилам для пилингов — ждут проверки врачом.
 // Ссылки на страницу: карточка «Интимный пилинг» и задача «Ухаживать за интимной зоной» на /estetica. Копию Тильды не делаем.
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
@@ -82,7 +82,6 @@ const contra = [
       </div>
       <div class="in-hero__visual" aria-hidden="true">
         <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
-        <img class="in-hero__woman" src={img('promoWoman')} alt="" width="700" height="700" fetchpriority="high" aria-hidden="true" />
       </div>
     </div>
 
@@ -415,4 +414,6 @@ const contra = [
   }
   .bio-zones.lm-zones { grid-template-columns: repeat(4, 1fr); }
   @media (max-width: 959px) { .bio-zones.lm-zones { grid-template-columns: 1fr; } }
+  /* фото на первом экране нет: на телефоне одни буквы не показываем */
+  @media (max-width: 959px) { .in-hero__visual { display: none; } .in-hero { padding-bottom: 32px; } }
 </style>
