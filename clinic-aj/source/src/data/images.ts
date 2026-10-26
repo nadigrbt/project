@@ -81,6 +81,7 @@ export const images = {
   deviceNeogen: { file: 'device-neogen.webp' },
   deviceMicro: { file: 'device-micro.webp' },
   deviceHydrafacial: { file: 'device-hydrafacial.webp' },
+  deviceProfacial: { file: 'device-profacial.webp' },
   deviceBtl: { file: 'device-btl.webp' },
   clinicVolnewmer:  { file: 'clinic-volnewmer-room.webp' },
   clinicWashbasins: { file: 'clinic-washbasins.webp' },

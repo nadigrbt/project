@@ -4,7 +4,7 @@
 // Виды: ручная (текст с /estetica), комбинированная Christina Comodex (7 этапов, механическая + ультразвук), атравматическая Holy Land (9 этапов), аппаратные на PRO FACIAL и HydraFacial — со страницы Тильды /clean.
 // Убраны «оригинальные аппараты», «прекрасные результаты», «активирует липолиз», «воздействует на жировые отложения», «ремоделирует коллаген», «сыворотка с фактором роста», «не имеет возрастных ограничений» (38-ФЗ);
 // исправлены «HUDRA» → HydraFacial, «Ааквапилинг», «камедонов». HydraFacial Allegro — Edge Systems (США), РЗН 2016/3600 от 28.01.2016 (удостоверение от владельца 18.10), фото из каталога /cosmetology.
-// PRO FACIAL — производитель и РЗН не подтверждены, фото нет (блок без фото). Время процедур не пишем. Видео со старой страницы — плавающее окошко. Копию Тильды не делаем.
+// PRO FACIAL — производитель и РЗН не подтверждены; фото от владельца 26.10 (device-profacial.webp), оно же в карусели и каталоге /cosmetology. Время процедур не пишем. Видео со старой страницы — плавающее окошко. Копию Тильды не делаем.
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Contacts from '../components/Contacts.astro';
@@ -151,7 +151,8 @@ const contra = [
     </section>
 
     <section class="container dv" id="dv-profacial">
-      <div class="dv__card dv__card--text">
+      <div class="dv__card">
+        <div class="dv__pic"><img class="dv__img--wide" src={img('deviceProfacial')} alt="Аппарат PRO FACIAL для аппаратной чистки и ухода за кожей лица" width="800" height="777" loading="lazy" /></div>
         <div class="dv__text">
           <p class="cs-eyebrow">Аппарат для чистки</p>
           <h2>PRO FACIAL</h2>
