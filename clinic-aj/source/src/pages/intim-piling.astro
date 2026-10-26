@@ -82,7 +82,7 @@ const contra = [
       </div>
       <div class="in-hero__visual" aria-hidden="true">
         <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
-        <img class="in-hero__woman" src={img('intimHero')} alt="" width="700" height="700" fetchpriority="high" aria-hidden="true" />
+        <img class="in-hero__woman" src={img('intimHero')} alt="" width="520" height="700" fetchpriority="high" aria-hidden="true" />
       </div>
     </div>
 
@@ -415,4 +415,8 @@ const contra = [
   }
   .bio-zones.lm-zones { grid-template-columns: repeat(4, 1fr); }
   @media (max-width: 959px) { .bio-zones.lm-zones { grid-template-columns: 1fr; } }
+  /* пионы обрезаны справа: прижимаем картинку к правому краю экрана, чтобы обрез ушёл за край */
+  .in-hero__visual { overflow: visible; }
+  @media (max-width: 959px) { .in-hero__woman.in-hero__woman { width: 230px; } }
+  .in-hero__woman { width: 360px; justify-self: end; margin-right: calc(-1 * (max(0px, (100vw - var(--container)) / 2) + var(--gutter))); }
 </style>
