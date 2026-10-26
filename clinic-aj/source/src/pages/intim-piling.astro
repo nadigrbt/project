@@ -1,0 +1,418 @@
+---
+// Страница /intim-piling — «Интимный пилинг Lactyferrin Intimate Peel (Sesderma)», дизайн по образцу /hand-biorevitalization, 5 размеров шрифта (шкала --fs-*).
+// Тексты — со страницы Тильды /intim-piling, освежены и проверены по 38-ФЗ: убраны «настоящее открытие», «безупречный уход», «эффективное действие»,
+// «уникальная формула», «мощные антиоксидантные свойства», «борется с вредными бактериями», «противовоспалительное действие» (медицинские обещания),
+// «подходит для любого типа кожи», «наслаждаться результатами сразу». Курс «4–6 процедур» не пишем (число процедур не указываем). Видео на старой странице нет.
+// Фото на первом экране — общее promoWoman, пока владелец не пришлёт своё. Противопоказания составлены по общим правилам для пилингов — ждут проверки врачом.
+// Ссылки на страницу: карточка «Интимный пилинг» и задача «Ухаживать за интимной зоной» на /estetica. Копию Тильды не делаем.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import Directions from '../components/Directions.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+
+const benefits = [
+  { title: 'Консультация перед процедурой', text: 'Специалист оценит состояние кожи и расскажет о противопоказаниях.' },
+  { title: 'Профессиональная косметика', text: 'Пилинг Lactyferrin Intimate Peel испанской марки Sesderma.' },
+  { title: 'Деликатный состав', text: 'Средство создано для чувствительной кожи интимной зоны.' },
+  { title: 'Без сложной реабилитации', text: 'Как ухаживать за кожей после процедуры, расскажет специалист.' },
+];
+const tasks = [
+  { title: 'Тон кожи', text: 'Помогает выровнять цвет кожи интимной зоны.' },
+  { title: 'Текстура', text: 'Кожа становится более гладкой.' },
+  { title: 'Увлажнение', text: 'Смягчает и увлажняет кожу.' },
+  { title: 'Ухоженный вид', text: 'Освежает и очищает кожу деликатной зоны.' },
+];
+const how = [
+  { title: 'Что это за пилинг', text: 'Lactyferrin Intimate Peel — профессиональный пилинг Sesderma для ухода за кожей интимной зоны. Он мягко обновляет верхний слой кожи, освежает её и помогает выровнять тон.' },
+  { title: 'Что в составе', text: 'Основной компонент — лактоферрин, белок с антиоксидантными свойствами. Он поддерживает защитный барьер кожи, а увлажняющие компоненты смягчают её.' },
+];
+const whenList = [
+  'Кожа интимной зоны стала темнее или неравномерной по цвету',
+  'Хочется более гладкой и ухоженной кожи в зоне бикини',
+  'Кожа сухая, нужна мягкость и увлажнение',
+  'Хочется дополнить уход за телом деликатной процедурой',
+];
+const steps = [
+  { title: 'Консультация', text: 'Специалист оценит состояние кожи, выслушает пожелания и расскажет о противопоказаниях.' },
+  { title: 'Процедура', text: 'Кожу очищают и наносят пилинг. Время воздействия специалист подбирает индивидуально.' },
+  { title: 'Уход после', text: 'Специалист расскажет, как ухаживать за кожей после процедуры, и договорится с вами о следующем визите.' },
+];
+const faq = [
+  { q: 'Это больно?', a: 'Пилинг деликатный. Во время процедуры может ощущаться лёгкое покалывание или тепло, ощущения индивидуальны.' },
+  { q: 'Нужно ли восстановление?', a: 'Обычно процедура не требует длительного восстановления. Что можно и нельзя делать после неё, специалист расскажет подробно.' },
+  { q: 'Сколько процедур нужно?', a: 'Количество процедур и интервалы между ними зависят от состояния кожи, поэтому их подбирают после консультации.' },
+  { q: 'Как подготовиться к процедуре?', a: 'Как подготовиться, вам расскажут при записи и на консультации.' },
+];
+const contra = [
+  'беременность и грудное вскармливание',
+  'воспаление, инфекция, раны или высыпания в зоне процедуры',
+  'обострение герпеса',
+  'аллергия на компоненты средства',
+  'острые заболевания, повышенная температура',
+];
+---
+<Base
+  title="Интимный пилинг в Мурманске: Lactyferrin Intimate Peel от Sesderma | Клиника эстетической косметологии A&J"
+  description="Интимный пилинг Lactyferrin Intimate Peel (Sesderma) в клинике A&J в Мурманске: уход за кожей интимной зоны, выравнивание тона и увлажнение. Запишитесь онлайн или по номеру 78-70-30"
+>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/estetica">Эстетическая косметология</a><span class="cs-crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Интимный пилинг</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">Эстетическая косметология</p>
+        <h1 class="cs-hero__title">Интимный пилинг <span>Lactyferrin Intimate Peel от Sesderma</span></h1>
+        <p class="cs-hero__lead">Деликатный пилинг для ухода за кожей интимной зоны: освежает, выравнивает тон и увлажняет. Подходит ли он вам, специалист скажет на консультации.</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href="#contact">Записаться на консультацию</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual" aria-hidden="true">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
+        <img class="in-hero__woman" src={img('promoWoman')} alt="" width="700" height="700" fetchpriority="high" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="cs-benefits">
+      <ul class="container cs-benefits__list">
+        {benefits.map((b) => (
+          <li>
+            <img src={img('star')} alt="" width="15" height="15" />
+            <div><strong>{b.title}</strong><span>{b.text}</span></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <main>
+    <section class="container cs-intro">
+        <p class="cs-eyebrow">О процедуре</p>
+        <h2 class="cs-title">Уход за самой деликатной зоной</h2>
+        <p class="cs-intro__text">Кожа интимной зоны тонкая и чувствительная, и ей тоже нужен бережный уход. Интимный пилинг помогает освежить и очистить кожу, улучшить её текстуру и цвет, увлажнить и смягчить её. В клинике A&amp;J процедуру проводят профессиональным средством Lactyferrin Intimate Peel испанской марки Sesderma. Результат у каждого свой и зависит от исходного состояния кожи.</p>
+    </section>
+
+    <section class="container bio-block">
+      <p class="cs-eyebrow">Как это работает</p>
+      <h2 class="cs-title">Пилинг Sesderma для интимной зоны</h2>
+      <ul class="bio-pair">
+        {how.map((x) => <li><h3>{x.title}</h3><p>{x.text}</p></li>)}
+      </ul>
+    </section>
+
+    <section class="container bio-block">
+      <p class="cs-eyebrow">Задачи</p>
+      <h2 class="cs-title">С чем помогает процедура</h2>
+      <ul class="bio-zones lm-zones">
+        {tasks.map((z) => <li><h3>{z.title}</h3><p>{z.text}</p></li>)}
+      </ul>
+    </section>
+
+    <section class="cs-results bio-results">
+      <div class="container cs-results__inner">
+        <div>
+          <h2 class="cs-results__title">Когда стоит задуматься о процедуре</h2>
+          <p class="cs-results__note">Нужна ли процедура именно вам, решит специалист.</p>
+        </div>
+        <ul class="cs-results__list">
+          {whenList.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="container cs-steps">
+      <h2 class="section-title">Как проходит процедура</h2>
+      <ol class="cs-steps__list">
+        {steps.map((s, i) => (
+          <li>
+            <span class="cs-steps__num">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="container in-faq">
+      <p class="cs-eyebrow">Вопросы и ответы</p>
+      <h2 class="cs-title">Что обычно спрашивают</h2>
+      <div class="in-faq__list">
+        {faq.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="container cs-med">
+      <div class="cs-med__card">
+        <h2>Когда процедура может быть невозможна</h2>
+        <ul>
+          {contra.map((c) => <li>{c}</li>)}
+        </ul>
+        <p>Это общий перечень, окончательное решение принимает специалист. Имеются противопоказания. Необходима консультация специалиста.</p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>Другие процедуры для тела и кожи</h2>
+        <p class="in-cross__text">Процедуры можно сочетать. Посмотрите, что ещё есть в клинике.</p>
+        <p class="in-cross__links">
+          <a href="/estetica">Эстетическая косметология →</a>
+          <a href="/clean">Чистки лица →</a>
+          <a href="/emsella">Укрепление мышц тазового дна Emsella →</a>
+          <a href="/lazer">Лазерная эпиляция →</a>
+          <a href="/lpg">LPG-массаж →</a>
+          <a href="/sale">Акции месяца →</a>
+        </p>
+      </div>
+    </section>
+
+    <Directions current="/estetica" />
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">Хотите узнать, подойдёт ли вам интимный пилинг?</h2>
+          <p class="cs-cta__sub">Приходите на консультацию: специалист оценит состояние кожи и расскажет о процедуре.</p>
+          <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  /* Размеры шрифта — только из общей шкалы --fs-* (styles/global.css), 5 размеров */
+
+  .cs-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font);
+    font-size: var(--fs-small);
+    font-weight: var(--w-regular);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--wine);
+  }
+  .cs-eyebrow::before { content: ''; width: 40px; height: 1px; background: currentColor; }
+  .cs-title { margin-top: 20px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
+
+  /* ---------- Первый экран ---------- */
+  .cs-hero { position: relative; overflow: hidden; background: var(--white); }
+  .cs-crumbs { display: flex; gap: 10px; padding-top: 40px; font-size: var(--fs-small); color: var(--muted); }
+  .cs-crumbs > * { white-space: nowrap; }
+  .cs-crumbs a { text-decoration: none; }
+  .cs-crumbs a:hover { color: var(--wine); }
+  .in-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 40px; align-items: end; padding-top: 28px; padding-bottom: 0; }
+  .cs-hero__title { margin-top: 20px; font-size: var(--fs-h1); line-height: 1.12; font-weight: var(--w-thin); }
+  .cs-hero__title span { display: block; color: var(--wine); font-size: var(--fs-h2); line-height: 1.25; margin-top: 8px; }
+  .cs-hero__lead { margin-top: 24px; max-width: 520px; color: var(--muted); }
+  .in-hero__text { padding-bottom: 64px; }
+  .in-hero__visual { position: relative; display: grid; justify-items: center; align-items: end; min-height: 440px; overflow: hidden; }
+  .in-hero__letters { position: absolute; left: 50%; bottom: 0; width: 100%; max-width: 640px; height: auto; transform: translate(-50%, 14%); opacity: 0.28; clip-path: inset(0 0 14% 0); pointer-events: none; }
+  .in-hero__woman { position: relative; width: 460px; max-width: 100%; height: auto; }
+
+  .cs-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 20px 32px; margin-top: 32px; }
+  .cs-btn,
+  .cs-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 0 36px;
+    border-radius: 999px;
+    font-family: var(--font);
+    font-size: var(--fs-body);
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .cs-btn { background: var(--wine); color: var(--white); }
+  .cs-btn:hover { background: var(--graphite); }
+  .cs-phone { display: grid; text-decoration: none; line-height: 1.2; }
+  .cs-phone__label { font-size: var(--fs-small); color: var(--muted); }
+  .cs-phone__num { font-family: var(--font); font-size: var(--fs-h3); letter-spacing: 0.5px; }
+  .cs-phone:hover .cs-phone__num { color: var(--wine); }
+
+  .cs-benefits { border-top: 1px solid var(--line); }
+  .cs-benefits__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin: 0 auto;
+    padding-top: 32px;
+    padding-bottom: 36px;
+    list-style: none;
+  }
+  .cs-benefits__list li { display: flex; gap: 10px; font-size: var(--fs-small); line-height: 1.45; }
+  .cs-benefits__list img { flex: none; margin-top: 5px; }
+  .cs-benefits__list strong { display: block; font-family: var(--font); font-size: var(--fs-body); font-weight: var(--w-regular); }
+  .cs-benefits__list span { color: var(--muted); }
+
+  /* ---------- О направлении ---------- */
+  .cs-intro { padding-top: 88px; }
+  .cs-intro > * { max-width: 820px; }
+  .cs-intro__text { margin-top: 24px; }
+
+  /* ---------- Подбор по задаче ---------- */
+  .cs-nav { padding-top: 72px; padding-bottom: 72px; }
+  .cs-nav__list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .cs-nav__item { display: flex; flex-direction: column; gap: 14px; padding: 28px 28px 24px; background: var(--ivory); }
+  .cs-nav__item h3 { font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-light); }
+  .cs-nav__item ul { display: flex; flex-wrap: wrap; gap: 8px; margin: auto 0 0; padding: 0; list-style: none; }
+  .cs-nav__item a {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid var(--wine);
+    border-radius: 999px;
+    font-size: var(--fs-small);
+    color: var(--wine);
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .cs-nav__item a:hover { background: var(--wine); color: var(--white); }
+
+  /* ---------- Каталог ---------- */
+  .cs-devices { padding-bottom: 80px; }
+  .cs-devices__lead { margin-top: 16px; max-width: 640px; color: var(--muted); }
+  .cs-devices__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .cs-card { display: flex; flex-direction: column; padding: 36px; border: 1px solid var(--line); scroll-margin-top: 90px; }
+  .cs-card h3 { font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-regular); }
+  .cs-card p { margin-top: 12px; color: var(--muted); }
+  .cs-card p.cs-card__for { color: var(--graphite); }
+  .cs-card__link { margin-top: auto; padding-top: 22px; font-family: var(--font); color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
+  .cs-card__link:hover { color: var(--graphite); }
+  .cs-card--soft { background: var(--ivory); border-color: var(--ivory); }
+  .cs-card--soft p { color: var(--graphite); }
+  .cs-all { margin-top: 32px; text-align: center; font-family: var(--font); }
+  .cs-all a { color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
+
+  /* ---------- Принципы (винная полоса) ---------- */
+  .cs-results { background: var(--wine); color: var(--white); }
+  .cs-results__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 64px; padding-top: 72px; padding-bottom: 72px; }
+  .cs-results__title { font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
+  .cs-results__note { margin-top: 20px; max-width: 380px; color: rgba(255, 255, 255, 0.85); }
+  .cs-results__list { margin: 0; padding: 0; list-style: none; }
+  .cs-results__list li {
+    padding: 16px 0 16px 32px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    background: url('/images/star.svg') 0 22px / 15px no-repeat;
+    font-family: var(--font);
+    font-size: var(--fs-h3);
+    font-weight: var(--w-thin);
+  }
+  .cs-results__list li:first-child { padding-top: 0; background-position: 0 6px; }
+
+  /* ---------- Шаги ---------- */
+  .cs-steps { padding-top: 88px; padding-bottom: 72px; }
+  .cs-steps__list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .cs-steps__num { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--wine); border-radius: 50%; color: var(--wine); font-family: var(--font); font-size: var(--fs-body); }
+  .cs-steps__list h3 { margin-top: 20px; font-size: var(--fs-h3); }
+  .cs-steps__list p { margin-top: 10px; color: var(--muted); }
+
+  /* ---------- Вопросы ---------- */
+  .in-faq { padding-bottom: 88px; }
+  .in-faq__list { margin-top: 32px; }
+  .in-faq details { border-top: 1px solid var(--line); padding: 20px 0; }
+  .in-faq details:last-child { border-bottom: 1px solid var(--line); }
+  .in-faq summary { display: flex; justify-content: space-between; gap: 20px; cursor: pointer; list-style: none; font-family: var(--font); font-size: var(--fs-h3); font-weight: var(--w-light); }
+  .in-faq summary::-webkit-details-marker { display: none; }
+  .in-faq summary::after { content: '+'; flex: none; color: var(--wine); font-size: var(--fs-h3); line-height: 1; }
+  .in-faq details[open] summary::after { content: '×'; }
+  .in-faq details p { margin-top: 14px; max-width: 760px; color: var(--muted); }
+
+  /* ---------- Противопоказания / аппаратные методы ---------- */
+  .cs-med { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-bottom: 88px; }
+  .cs-med__card { padding: 40px; background: var(--ivory); }
+  .cs-med__card--alt { background: var(--white); border: 1px solid var(--line); }
+  .cs-med__card h2 { font-size: var(--fs-h3); }
+  .cs-med__card ul { margin: 20px 0 0; padding-left: 20px; }
+  .cs-med__card li { padding: 4px 0; }
+  .cs-med__card li::marker { color: var(--wine); }
+  .cs-med__card p { margin-top: 16px; font-size: var(--fs-small); color: var(--muted); }
+  .cs-med__card p.in-cross__text { margin-top: 20px; font-size: var(--fs-body); color: var(--graphite); }
+  .in-cross__links { display: flex; flex-direction: column; gap: 10px; }
+  .cs-med__card p.in-cross__links { font-size: var(--fs-body); }
+  .in-cross__links a { font-family: var(--font); color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
+  .in-cross__links a:hover { color: var(--graphite); }
+
+  /* ---------- Запись (тёмная полоса) ---------- */
+  .cs-cta { background: var(--graphite); color: var(--ivory); margin-bottom: 80px; }
+  .cs-cta__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 40px; padding-top: 48px; padding-bottom: 52px; }
+  .cs-cta__title { font-size: var(--fs-h2); line-height: 1.15; }
+  .cs-cta__sub { margin-top: 10px; color: rgba(241, 234, 224, 0.8); }
+  .cs-cta__warn { margin-top: 8px; font-size: var(--fs-small); letter-spacing: 0.5px; text-transform: uppercase; color: rgba(241, 234, 224, 0.6); }
+  .cs-cta__btn { background: var(--ivory); color: var(--graphite); }
+  .cs-cta__btn:hover { background: var(--wine); color: var(--white); }
+
+  .bio-zones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .bio-zones li { padding: 28px; background: var(--ivory); }
+  .bio-zones h3 { font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-regular); }
+  .bio-zones p { margin-top: 12px; }
+  .bio-zones { }
+  .bio-block { padding-top: 88px; padding-bottom: 0; }
+  .bio-results { margin-top: 88px; }
+  .bio-block > p { margin-top: 24px; max-width: 820px; }
+  .bio-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .bio-pair li { padding: 32px 36px; border: 1px solid var(--line); }
+  .bio-pair h3 { font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-regular); }
+  .bio-pair p { margin-top: 12px; color: var(--muted); }
+
+  @media (max-width: 1199px) {
+    .cs-benefits__list { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 959px) {
+    .cs-crumbs { padding-top: 24px; }
+    .cs-crumbs { flex-wrap: wrap; gap: 4px 8px; }
+    .cs-crumbs__sep { display: none; }
+    .cs-crumbs > [aria-current] { flex-basis: 100%; }
+    .cs-eyebrow { letter-spacing: 1.5px; }
+    .in-hero { grid-template-columns: 1fr; gap: 16px; padding-top: 20px; }
+    .in-hero__text { padding-bottom: 0; }
+    .cs-hero__title { margin-top: 18px; font-size: var(--fs-h1); }
+    .cs-btn { width: 100%; }
+    .cs-actions { width: 100%; }
+    .in-hero__letters { width: 100%; max-width: none; }
+    .cs-benefits__list { grid-template-columns: 1fr; gap: 18px; }
+    main :global(.section-title) { font-size: var(--fs-h2); line-height: 1.25; }
+    .cs-intro { padding-top: 60px; }
+    .cs-nav { padding-top: 56px; padding-bottom: 48px; }
+    .cs-nav__list, .cs-devices__grid, .cs-med, .cs-results__inner { grid-template-columns: 1fr; }
+    .cs-results__inner { gap: 32px; padding-top: 56px; padding-bottom: 56px; }
+    .cs-card { padding: 28px 22px; }
+    .cs-devices { padding-bottom: 56px; }
+    .cs-steps { padding-top: 60px; padding-bottom: 56px; }
+    .cs-steps__list { grid-template-columns: 1fr; gap: 28px; }
+    .in-faq { padding-bottom: 60px; }
+    .cs-med { gap: 16px; padding-bottom: 60px; }
+    .cs-med__card { padding: 28px 22px; }
+    .cs-cta__btn { width: 100%; }
+    .in-hero__visual { min-height: 300px; }
+    .in-hero__woman { width: 300px; }
+    .bio-zones, .bio-pair { grid-template-columns: 1fr; }
+    .bio-block { padding-top: 60px; }
+    .bio-results { margin-top: 60px; }
+    .bio-pair li { padding: 24px 22px; }
+  }
+  .bio-zones.lm-zones { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 959px) { .bio-zones.lm-zones { grid-template-columns: 1fr; } }
+</style>
