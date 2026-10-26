@@ -167,7 +167,7 @@ const contra = [
 
     <section class="container dv" id="dv-scrubber">
       <div class="dv__card">
-        <div class="dv__pic"><img src={img('deviceScrubber')} alt="Ультразвуковой скрабер для чистки лица" width="505" height="800" loading="lazy" /></div>
+        <div class="dv__pic"><img class="dv__img--sm" src={img('deviceScrubber')} alt="Ультразвуковой скрабер для чистки лица" width="505" height="800" loading="lazy" /></div>
         <div class="dv__text">
           <p class="cs-eyebrow">Аппарат для чистки</p>
           <h2>Ультразвуковой скрабер</h2>
@@ -493,6 +493,7 @@ const contra = [
   .dv__pic { display: grid; place-items: center; }
   .dv__pic img { display: block; width: auto; max-width: 100%; height: 380px; object-fit: contain; }
   .dv__pic img.dv__img--wide { width: 100%; height: auto; }
+  .dv__pic img.dv__img--sm { height: 260px; }
   .dv__text h2 { margin-top: 12px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
   .dv__text > p { margin-top: 16px; max-width: 620px; }
   .dv__list { margin: 24px 0 0; padding: 0; }
@@ -504,7 +505,7 @@ const contra = [
     .dv__card { grid-template-columns: 1fr; gap: 24px; padding: 28px 20px; }
     .dv__pic img { height: 280px; }
     .dv__pic img.dv__img--wide { height: auto; }
-    .dv__pic img.dv__img--wide { height: auto; }
+    .dv__pic img.dv__img--sm { height: 190px; }
     .dv__list > div { grid-template-columns: 1fr; gap: 4px; }
   }
 </style>
