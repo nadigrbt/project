@@ -4,7 +4,7 @@
 // Виды: ручная (текст с /estetica), комбинированная Christina Comodex (7 этапов, механическая + ультразвук), атравматическая Holy Land (9 этапов), аппаратные на PRO FACIAL и HydraFacial — со страницы Тильды /clean.
 // Убраны «оригинальные аппараты», «прекрасные результаты», «активирует липолиз», «воздействует на жировые отложения», «ремоделирует коллаген», «сыворотка с фактором роста», «не имеет возрастных ограничений» (38-ФЗ);
 // исправлены «HUDRA» → HydraFacial, «Ааквапилинг», «камедонов». HydraFacial Allegro — Edge Systems (США), РЗН 2016/3600 от 28.01.2016 (удостоверение от владельца 18.10), фото из каталога /cosmetology.
-// PRO FACIAL — производитель и РЗН не подтверждены; фото от владельца 26.10 (device-profacial.webp), оно же в карусели и каталоге /cosmetology. Время процедур не пишем. Видео со старой страницы — плавающее окошко. Копию Тильды не делаем.
+// PRO FACIAL — производитель и РЗН не подтверждены; фото от владельца 26.10 (device-profacial.webp), оно же в карусели и каталоге /cosmetology. Ультразвуковой скрабер — есть в клинике (владелец 26.10), модель не названа; картинка device-scrubber.webp — нейтральная иллюстрация без логотипа, нарисована по просьбе владельца до получения фото. Время процедур не пишем. Видео со старой страницы — плавающее окошко. Копию Тильды не делаем.
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Contacts from '../components/Contacts.astro';
@@ -161,6 +161,17 @@ const contra = [
           <dl class="dv__list">
           <div><dt>Регистрация</dt><dd></dd></div>
           </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="container dv" id="dv-scrubber">
+      <div class="dv__card">
+        <div class="dv__pic"><img src={img('deviceScrubber')} alt="Ультразвуковой скрабер для чистки лица" width="298" height="831" loading="lazy" /></div>
+        <div class="dv__text">
+          <p class="cs-eyebrow">Аппарат для чистки</p>
+          <h2>Ультразвуковой скрабер</h2>
+          <p>Металлическая лопатка-насадка колеблется с ультразвуковой частотой. Скрабер мягко очищает поверхность кожи и поры без механического давления. Косметолог использует его в комбинированной чистке и как отдельный этап ухода, режим подбирает под тип кожи.</p>
         </div>
       </div>
     </section>
@@ -376,7 +387,7 @@ const contra = [
 
   /* ---------- Вопросы ---------- */
   .in-faq { padding-bottom: 88px; }
-  .in-faq__list { max-width: 900px; margin-top: 32px; }
+  .in-faq__list { margin-top: 32px; }
   .in-faq details { border-top: 1px solid var(--line); padding: 20px 0; }
   .in-faq details:last-child { border-bottom: 1px solid var(--line); }
   .in-faq summary { display: flex; justify-content: space-between; gap: 20px; cursor: pointer; list-style: none; font-family: var(--font); font-size: var(--fs-h3); font-weight: var(--w-light); }
