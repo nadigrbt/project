@@ -13,4 +13,5 @@ export const directions: Direction[] = [
   { href: '/lazer', title: 'Лазерная эпиляция', text: 'Удаление нежелательных волос на аппаратах клиники.' },
   { href: '/emsella', title: 'Тазовое дно', text: 'Укрепление мышц тазового дна на аппарате BTL Emsella.' },
   { href: '/permanent', title: 'Перманентный макияж', text: 'Процедуры перманентного макияжа.' },
+  { href: '/piercing', title: 'Прокол ушей', text: 'Прокол мочек ушей по системе Inverness для детей и взрослых.' },
 ];
