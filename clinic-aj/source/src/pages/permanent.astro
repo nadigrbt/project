@@ -46,6 +46,9 @@ const works: { key: ImageKey; alt: string }[] = [
   { key: 'permWork3', alt: 'Перманентный макияж губ крупным планом — работа мастера клиники A&J' },
   { key: 'permWork4', alt: 'Перманентный макияж бровей и губ — работа мастера клиники A&J' },
   { key: 'permWork5', alt: 'Перманентный макияж бровей и губ, вид сбоку — работа мастера клиники A&J' },
+  { key: 'permWork6', alt: 'Перманентный макияж бровей — работа мастера клиники A&J' },
+  { key: 'permWork7', alt: 'Перманентный макияж губ — работа мастера клиники A&J' },
+  { key: 'permWork8', alt: 'Перманентный макияж бровей и губ — работа мастера клиники A&J' },
 ];
 const photos: { key: ImageKey; alt: string; w: number; h: number }[] = [
   { key: 'perm1', alt: 'Мастер перманентного макияжа работает с клиенткой в кабинете клиники A&J', w: 900, h: 407 },
@@ -161,13 +164,29 @@ const contra = [
       </ol>
     </section>
 
-    <section class="container pm-works">
-      <p class="cs-eyebrow">Наши работы</p>
-      <h2 class="cs-title">Работы мастеров</h2>
+    <section class="container pm-works" data-pm-works>
+      <div class="pm-works__head">
+        <div>
+          <p class="cs-eyebrow">Наши работы</p>
+          <h2 class="cs-title">Работы мастеров</h2>
+        </div>
+        <div class="pm-works__nav">
+          <button type="button" data-dir="-1" aria-label="Предыдущие работы">←</button>
+          <button type="button" data-dir="1" aria-label="Следующие работы">→</button>
+        </div>
+      </div>
       <ul class="pm-works__list">
         {works.map((p) => <li><img src={img(p.key)} alt={p.alt} width="720" height="900" loading="lazy" /></li>)}
       </ul>
     </section>
+    <script is:inline>
+      document.querySelectorAll('[data-pm-works]').forEach(function (box) {
+        var list = box.querySelector('.pm-works__list');
+        box.querySelectorAll('[data-dir]').forEach(function (b) {
+          b.addEventListener('click', function () { list.scrollBy({ left: Number(b.dataset.dir) * list.clientWidth * 0.75, behavior: 'smooth' }); });
+        });
+      });
+    </script>
 
     <section class="container pm-photos">
       <p class="cs-eyebrow">Как мы работаем</p>
@@ -458,14 +477,20 @@ const contra = [
     .pm-photos__list { grid-template-columns: 1fr 1fr; gap: 10px; }
     .pm-photos__list li:first-child img { aspect-ratio: 2 / 1; }
   }
-  /* работы мастера (фото от владельца 27.10) */
+  /* работы мастеров (фото от владельца 27.10): горизонтальная прокрутка со стрелками */
   .pm-works { padding-top: 88px; }
-  .pm-works__list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .pm-works__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .pm-works__nav { display: flex; gap: 12px; }
+  .pm-works__nav button { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 1px solid var(--wine); border-radius: 50%; background: transparent; color: var(--wine); font-family: var(--font); font-size: var(--fs-body); cursor: pointer; transition: background-color 0.2s, color 0.2s; }
+  .pm-works__nav button:hover { background: var(--wine); color: var(--white); }
+  .pm-works__list { display: flex; gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .pm-works__list::-webkit-scrollbar { display: none; }
+  .pm-works__list li { flex: 0 0 calc((100% - 60px) / 4); scroll-snap-align: start; }
   .pm-works__list img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
   @media (max-width: 959px) {
     .pm-works { padding-top: 56px; }
-    .pm-works__list { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .pm-works__list li:last-child { grid-column: span 2; }
-    .pm-works__list li:last-child img { aspect-ratio: 4 / 3; object-position: center 72%; }
+    .pm-works__nav { display: none; }
+    .pm-works__list { gap: 10px; }
+    .pm-works__list li { flex-basis: 72%; }
   }
 </style>
