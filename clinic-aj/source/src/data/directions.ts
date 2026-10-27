@@ -14,4 +14,5 @@ export const directions: Direction[] = [
   { href: '/emsella', title: 'Тазовое дно', text: 'Укрепление мышц тазового дна на аппарате BTL Emsella.' },
   { href: '/permanent', title: 'Перманентный макияж', text: 'Процедуры перманентного макияжа.' },
   { href: '/piercing', title: 'Прокол ушей', text: 'Прокол мочек ушей по системе Inverness для детей и взрослых.' },
+  { href: '/pedikur', title: 'Подология и педикюр', text: 'Гигиенический педикюр и приём подолога.' },
 ];
