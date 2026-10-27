@@ -89,7 +89,7 @@ export const services: ServiceGroup[] = [
   {
     title: 'Прокол ушей',
     body: `
-<p>Inverness - самая безопасная система в мире по проколу мочки уха для детей и взрослых</p>
+<p>Прокол мочек ушей по системе Inverness для детей и взрослых</p>
 <p><a href="/piercing">Подробнее →</a></p>`,
   },
   {
