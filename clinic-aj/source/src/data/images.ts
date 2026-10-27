@@ -28,6 +28,7 @@ export const images = {
   handHero:      { file: 'hand-hero.webp' },
   intimHero:     { file: 'intim-hero.webp' },
   permHero:      { file: 'perm-hero.webp' },
+  pierHero:      { file: 'pier-hero.webp' },
   perm1:         { file: 'perm-1.webp' },
   perm2:         { file: 'perm-2.webp' },
   perm3:         { file: 'perm-3.webp' },
