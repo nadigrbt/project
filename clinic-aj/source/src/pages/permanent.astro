@@ -164,29 +164,22 @@ const contra = [
       </ol>
     </section>
 
-    <section class="container pm-works" data-pm-works>
-      <div class="pm-works__head">
-        <div>
-          <p class="cs-eyebrow">Наши работы</p>
-          <h2 class="cs-title">Работы мастеров</h2>
-        </div>
-        <div class="pm-works__nav">
-          <button type="button" data-dir="-1" aria-label="Предыдущие работы">←</button>
-          <button type="button" data-dir="1" aria-label="Следующие работы">→</button>
-        </div>
+    <section class="pm-works">
+      <div class="container">
+        <p class="cs-eyebrow">Наши работы</p>
+        <h2 class="cs-title">Работы мастеров</h2>
       </div>
-      <ul class="pm-works__list">
-        {works.map((p) => <li><img src={img(p.key)} alt={p.alt} width="720" height="900" loading="lazy" /></li>)}
-      </ul>
+      <div class="pm-show" id="pm-show">
+        <button type="button" class="pm-show__arr pm-show__arr--l" id="pm-prev" aria-label="Предыдущая работа" hidden>&#8592;</button>
+        <button type="button" class="pm-show__arr pm-show__arr--r" id="pm-next" aria-label="Следующая работа" hidden>&#8594;</button>
+        <ul class="pm-show__track" id="pm-track" role="region" aria-roledescription="карусель" aria-label="Работы мастеров" tabindex="0">
+          {works.map((p) => <li><img src={img(p.key)} alt={p.alt} width="720" height="900" loading="lazy" /></li>)}
+        </ul>
+      </div>
+      <div class="pm-dots" id="pm-dots">
+        {works.map((p, i) => <button type="button" aria-label={`Работа ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'}></button>)}
+      </div>
     </section>
-    <script is:inline>
-      document.querySelectorAll('[data-pm-works]').forEach(function (box) {
-        var list = box.querySelector('.pm-works__list');
-        box.querySelectorAll('[data-dir]').forEach(function (b) {
-          b.addEventListener('click', function () { list.scrollBy({ left: Number(b.dataset.dir) * list.clientWidth * 0.75, behavior: 'smooth' }); });
-        });
-      });
-    </script>
 
     <section class="container pm-photos">
       <p class="cs-eyebrow">Как мы работаем</p>
@@ -246,6 +239,7 @@ const contra = [
     <Contacts />
   </main>
   <Footer />
+  <script is:inline src="/perm-works.js?v=1" defer></script>
 </Base>
 
 <style>
@@ -477,20 +471,42 @@ const contra = [
     .pm-photos__list { grid-template-columns: 1fr 1fr; gap: 10px; }
     .pm-photos__list li:first-child img { aspect-ratio: 2 / 1; }
   }
-  /* работы мастеров (фото от владельца 27.10): горизонтальная прокрутка со стрелками */
+  /* работы мастеров (фото от владельца 27.10): бесконечная лента по образцу карусели аппаратов /cosmetology, public/perm-works.js */
   .pm-works { padding-top: 88px; }
-  .pm-works__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
-  .pm-works__nav { display: flex; gap: 12px; }
-  .pm-works__nav button { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 1px solid var(--wine); border-radius: 50%; background: transparent; color: var(--wine); font-family: var(--font); font-size: var(--fs-body); cursor: pointer; transition: background-color 0.2s, color 0.2s; }
-  .pm-works__nav button:hover { background: var(--wine); color: var(--white); }
-  .pm-works__list { display: flex; gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-  .pm-works__list::-webkit-scrollbar { display: none; }
-  .pm-works__list li { flex: 0 0 calc((100% - 60px) / 4); scroll-snap-align: start; }
-  .pm-works__list img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  .pm-show { position: relative; margin-top: 40px; }
+  .pm-show__track {
+    --sw: 340px;
+    display: flex;
+    margin: 0;
+    padding: 0 calc(50% - var(--sw) / 2);
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .pm-show__track::-webkit-scrollbar { display: none; }
+  .pm-show__track:focus-visible { outline: 2px solid var(--wine); outline-offset: -2px; }
+  .pm-show__track li { flex: 0 0 var(--sw); padding: 0 10px; scroll-snap-align: center; opacity: 0.45; transform: scale(0.82); transition: opacity 0.35s, transform 0.35s; cursor: pointer; }
+  .pm-show__track li.is-on { opacity: 1; transform: scale(1); cursor: default; }
+  .pm-show__track img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  .pm-show__arr { position: absolute; top: 50%; z-index: 2; width: 52px; height: 52px; margin-top: -26px; padding: 0; display: grid; place-items: center; border: 1px solid var(--wine); border-radius: 50%; background: var(--white); color: var(--wine); font-family: var(--font); font-size: 22px; line-height: 1; cursor: pointer; transition: background-color 0.2s, color 0.2s; }
+  .pm-show__arr[hidden] { display: none; }
+  .pm-show__arr:hover { background: var(--wine); color: var(--white); }
+  .pm-show__arr:focus-visible { outline: 2px solid var(--graphite); outline-offset: 2px; }
+  .pm-show__arr--l { left: max(16px, calc(50% - 560px)); }
+  .pm-show__arr--r { right: max(16px, calc(50% - 560px)); }
+  .pm-dots { display: flex; justify-content: center; padding-top: 20px; }
+  .pm-dots button { width: 24px; height: 24px; padding: 8px; border: 0; background: var(--line); background-clip: content-box; border-radius: 12px; cursor: pointer; transition: width 0.2s; }
+  .pm-dots button[aria-current='true'] { width: 38px; background: var(--wine); background-clip: content-box; }
   @media (max-width: 959px) {
     .pm-works { padding-top: 56px; }
-    .pm-works__nav { display: none; }
-    .pm-works__list { gap: 10px; }
-    .pm-works__list li { flex-basis: 72%; }
+    .pm-show { margin-top: 28px; }
+    .pm-show__track { --sw: 68%; }
+    .pm-show__track li { padding: 0 6px; }
+    .pm-show__arr { width: 44px; height: 44px; margin-top: -22px; font-size: 18px; }
+    .pm-show__arr--l { left: 6px; }
+    .pm-show__arr--r { right: 6px; }
   }
+  @media (prefers-reduced-motion: reduce) { .pm-show__track li, .pm-dots button { transition: none; } }
 </style>
