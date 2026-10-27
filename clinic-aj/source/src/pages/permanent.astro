@@ -40,6 +40,13 @@ const steps = [
   { title: 'Эскиз и пигмент', text: 'Мастер нарисует предварительный эскиз на лице и подберёт оттенок пигмента.' },
   { title: 'Процедура и уход', text: 'После согласования проводится процедура. Как ухаживать за кожей после, мастер расскажет подробно.' },
 ];
+const works: { key: ImageKey; alt: string }[] = [
+  { key: 'permWork1', alt: 'Перманентный макияж бровей — работа мастера клиники A&J' },
+  { key: 'permWork2', alt: 'Перманентный макияж губ — работа мастера клиники A&J' },
+  { key: 'permWork3', alt: 'Перманентный макияж губ крупным планом — работа мастера клиники A&J' },
+  { key: 'permWork4', alt: 'Перманентный макияж бровей и губ — работа мастера клиники A&J' },
+  { key: 'permWork5', alt: 'Перманентный макияж бровей и губ, вид сбоку — работа мастера клиники A&J' },
+];
 const photos: { key: ImageKey; alt: string; w: number; h: number }[] = [
   { key: 'perm1', alt: 'Мастер перманентного макияжа работает с клиенткой в кабинете клиники A&J', w: 900, h: 407 },
   { key: 'perm2', alt: 'Мастер перманентного макияжа в кабинете клиники', w: 900, h: 878 },
@@ -152,6 +159,14 @@ const contra = [
           </li>
         ))}
       </ol>
+    </section>
+
+    <section class="container pm-works">
+      <p class="cs-eyebrow">Наши работы</p>
+      <h2 class="cs-title">Работы мастера</h2>
+      <ul class="pm-works__list">
+        {works.map((p) => <li><img src={img(p.key)} alt={p.alt} width="720" height="900" loading="lazy" /></li>)}
+      </ul>
     </section>
 
     <section class="container pm-photos">
@@ -443,5 +458,15 @@ const contra = [
     .pm-photos { padding-top: 56px; padding-bottom: 56px; }
     .pm-photos__list { grid-template-columns: 1fr 1fr; gap: 10px; }
     .pm-photos__list li:first-child img { aspect-ratio: 2 / 1; }
+  }
+  /* работы мастера (фото от владельца 27.10) */
+  .pm-works { padding-top: 88px; }
+  .pm-works__list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
+  .pm-works__list img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  @media (max-width: 959px) {
+    .pm-works { padding-top: 56px; }
+    .pm-works__list { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pm-works__list li:last-child { grid-column: span 2; }
+    .pm-works__list li:last-child img { aspect-ratio: 4 / 3; object-position: center 72%; }
   }
 </style>
