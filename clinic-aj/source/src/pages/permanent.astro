@@ -434,13 +434,13 @@ const contra = [
   /* фото мастера с пигментами — вырезано из фона, крупнее стандартного */
   .in-hero__woman.pm-hero { width: 540px; }
   @media (max-width: 959px) { .in-hero__woman.pm-hero { width: 340px; } }
-  .pm-photos { padding-top: 88px; }
+  .pm-photos { padding-top: 88px; padding-bottom: 88px; }
   .pm-photos__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
   .pm-photos__list li:first-child { grid-column: span 2; }
   .pm-photos__list img { display: block; width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
   .pm-photos__list li:first-child img { aspect-ratio: auto; }
   @media (max-width: 959px) {
-    .pm-photos { padding-top: 56px; }
+    .pm-photos { padding-top: 56px; padding-bottom: 56px; }
     .pm-photos__list { grid-template-columns: 1fr 1fr; gap: 10px; }
     .pm-photos__list li:first-child img { aspect-ratio: 2 / 1; }
   }
