@@ -16,7 +16,6 @@ import { abs, breadcrumbsLd, clinicLd, doctorLd } from '../data/schema';
 import '../styles/inner.css';
 
 const PRODOCTOROV_CLINIC = 'https://prodoctorov.ru/murmansk/lpu/113320-aj/';
-const names = doctors.map((d) => d.name).join(', ');
 
 const jsonLd = [
   {
@@ -36,7 +35,7 @@ const jsonLd = [
 ---
 <Base
   title="Врачи и косметологи клиники A&J в Мурманске: специалисты, стаж, запись"
-  description={`Врачи и специалисты клиники эстетической косметологии A&J в Мурманске: врач-косметолог, дерматолог, косметологи-эстетисты, массажист. ${names}. Запишитесь онлайн или по номеру 78-70-30`}
+  description="Врачи и специалисты клиники A&J в Мурманске: врач-косметолог и дерматолог, косметологи-эстетисты, массажист. Стаж и фото специалистов. Запишитесь онлайн или по номеру 78-70-30"
   jsonLd={jsonLd}
 >
   <section class="cs-hero">

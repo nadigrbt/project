@@ -31,7 +31,7 @@ const title = spec
   ? `${d.name} — ${role} в Мурманске | Клиника A&J`
   : `${d.name} — специалист клиники A&J в Мурманске`;
 const description = [
-  `${d.name}${d.position ? `, ${d.position.toLowerCase()}` : ''}${spec ? `, ${role}` : ''} клиники эстетической косметологии A&J в Мурманске.`,
+  `${d.name}${d.position ? `, ${d.position.toLowerCase()}` : ''}${spec ? `, ${role}` : ', специалист'} клиники эстетической косметологии A&J в Мурманске.`,
   exp ? `${exp}.` : '',
   'Запишитесь онлайн или по номеру 78-70-30',
 ].filter(Boolean).join(' ');
