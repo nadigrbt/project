@@ -2,7 +2,7 @@
 // Страница /education — «Учебный центр A&J в Мурманске»: программы обучения и обязательные «Сведения об образовательной организации» (components/EduInfo.astro).
 // Тексты со страницы Тильды /education, проверены по 38-ФЗ: убраны «высококвалифицированные специалисты», «передовые аппараты»,
 // «лучшее оборудование в Мурманской области», «сертифицированное оборудование» (у LPG нет РЗН). Цены курсов не показываем.
-// Фото — со старой страницы. Курс для мастеров маникюра (/education-man) на Тильде в списке не стоял — добавлен четвёртой карточкой.
+// Фото — со старой страницы; на первом экране без фото, только буквы A&J (решение владельца 28.10). Курс для мастеров маникюра (/education-man) на Тильде в списке не стоял — добавлен четвёртой карточкой.
 // Ссылки на страницу: блок «Учебный центр» на главной (Education.astro), страницы курсов.
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
@@ -52,7 +52,7 @@ const photos: { key: ImageKey; alt: string }[] = [
       </nav>
     </div>
 
-    <div class="container in-hero">
+    <div class="container in-hero in-hero--noimg">
       <div class="in-hero__text">
         <p class="cs-eyebrow">Учебный центр A&amp;J</p>
         <h1 class="cs-hero__title">Учебный центр <span>в Мурманске</span></h1>
@@ -67,7 +67,6 @@ const photos: { key: ImageKey; alt: string }[] = [
       </div>
       <div class="in-hero__visual" aria-hidden="true">
         <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
-        <img class="in-hero__cut" src={img('eduHero')} alt="" width="716" height="1000" fetchpriority="high" aria-hidden="true" />
       </div>
     </div>
 
