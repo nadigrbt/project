@@ -1,0 +1,160 @@
+---
+// Страница /education — «Учебный центр A&J в Мурманске»: программы обучения и обязательные «Сведения об образовательной организации» (components/EduInfo.astro).
+// Тексты со страницы Тильды /education, проверены по 38-ФЗ: убраны «высококвалифицированные специалисты», «передовые аппараты»,
+// «лучшее оборудование в Мурманской области», «сертифицированное оборудование» (у LPG нет РЗН). Цены курсов не показываем.
+// Фото — со старой страницы. Курс для мастеров маникюра (/education-man) на Тильде в списке не стоял — добавлен четвёртой карточкой.
+// Ссылки на страницу: блок «Учебный центр» на главной (Education.astro), страницы курсов.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import Directions from '../components/Directions.astro';
+import EduInfo from '../components/EduInfo.astro';
+import { site } from '../data/site';
+import { img, type ImageKey } from '../data/images';
+import '../styles/inner.css';
+
+const benefits = [
+  { title: 'Медицинская лицензия', text: 'Учебный центр работает на базе клиники с медицинской лицензией.' },
+  { title: 'Практика', text: 'На аппаратах клиники и с моделями.' },
+  { title: 'Документы', text: 'Государственного образца, в зависимости от программы.' },
+  { title: 'Опыт', text: 'Для дальнейшей работы в косметологии.' },
+];
+const courses = [
+  { href: '/education-cosmetic', title: 'Косметолог-эстетист', forWhat: 'Новая профессия без медицинского образования.', text: 'Курс помогает освоить новую профессию. Для этой программы медицинское образование не требуется.' },
+  { href: '/education-ses', title: 'Сестринское дело в косметологии', forWhat: 'Профессиональная переподготовка, диплом государственного образца.', text: 'Курс помогает получить знания и навыки, необходимые медицинской сестре для работы в косметологии.' },
+  { href: '/education-ped', title: 'Базовый педикюр с введением в подологию', forWhat: 'Очно, группа до 2 человек.', text: 'Курс помогает получить знания и навыки для работы мастером педикюра с погружением в подологию.' },
+  { href: '/education-man', title: 'Повышение квалификации для мастеров маникюра', forWhat: 'PRO STYLE GEL, 1 день, индивидуально.', text: 'Курс для действующих мастеров маникюра: методика работы с покрытием PRO STYLE GEL.' },
+];
+const results = [
+  'Профессиональная переподготовка',
+  'Диплом государственного образца',
+  'Баллы НМО',
+  'Опыт для работы в косметологии',
+];
+const photos: { key: ImageKey; alt: string }[] = [
+  { key: 'edu1', alt: 'Практика в кабинете клиники A&J' },
+  { key: 'edu2', alt: 'Специалист клиники A&J за работой' },
+  { key: 'edu3', alt: 'Специалисты клиники A&J' },
+  { key: 'edu4', alt: 'Косметика в клинике A&J' },
+];
+---
+<Base
+  title="Учебный центр A&J в Мурманске — обучение косметологии | Клиника эстетической косметологии A&J"
+  description="Учебный центр клиники A&J в Мурманске: обучение «Косметолог-эстетист», «Сестринское дело в косметологии», педикюр с введением в подологию, повышение квалификации для мастеров маникюра. Практика на аппаратах и с моделями."
+>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">Учебный центр</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">Учебный центр A&amp;J</p>
+        <h1 class="cs-hero__title">Учебный центр <span>в Мурманске</span></h1>
+        <p class="cs-hero__lead">Для всех, кто хочет работать в косметологии и делать мир прекраснее. Программы для тех, кто хочет учиться у действующих врачей и косметологов и связать свою жизнь с красотой и эстетикой.</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href="#kursy">Выбрать программу</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual" aria-hidden="true">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
+        <img class="in-hero__cut" src={img('eduHero')} alt="" width="716" height="1000" fetchpriority="high" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="cs-benefits">
+      <ul class="container cs-benefits__list">
+        {benefits.map((b) => (
+          <li>
+            <img src={img('star')} alt="" width="15" height="15" />
+            <div><strong>{b.title}</strong><span>{b.text}</span></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <main>
+    <section class="container cs-intro">
+      <p class="cs-eyebrow">Об учебном центре</p>
+      <h2 class="cs-title">Обучение на базе клиники</h2>
+      <p class="cs-intro__text">Обучение проходит в клинике эстетической косметологии A&amp;J: с действующими врачами и косметологами, на аппаратах клиники и с моделями, которых предоставляет клиника. По окончании обучения выдаётся сертификат или диплом государственного образца (в зависимости от программы).</p>
+    </section>
+
+    <section class="container bio-block cs-devices" id="kursy">
+      <p class="cs-eyebrow">Программы</p>
+      <h2 class="cs-title">Наши курсы</h2>
+      <ul class="cs-devices__grid">
+        {courses.map((c) => (
+          <li class="cs-card">
+            <h3>{c.title}</h3>
+            <p class="cs-card__for">{c.forWhat}</p>
+            <p>{c.text}</p>
+            <a class="cs-card__link" href={c.href}>Подробнее о курсе →</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="cs-results">
+      <div class="container cs-results__inner">
+        <div>
+          <h2 class="cs-results__title">Обучение в A&amp;J — это</h2>
+          <p class="cs-results__note">Документ зависит от программы: подробности — на странице курса.</p>
+        </div>
+        <ul class="cs-results__list">
+          {results.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="container pm-photos">
+      <p class="cs-eyebrow">Как проходит обучение</p>
+      <ul class="pm-photos__list">
+        {photos.map((p) => <li><img src={img(p.key)} alt={p.alt} width="800" height="800" loading="lazy" /></li>)}
+      </ul>
+    </section>
+
+    <EduInfo />
+
+    <section class="container cs-med">
+      <div class="cs-med__card">
+        <h2>Стоимость и условия</h2>
+        <p class="in-cross__text">Стоимость обучения, расписание и условия оплаты уточняйте у администраторов по номеру <a href={site.phone.href}>{site.phone.display}</a>.</p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>О клинике</h2>
+        <p class="in-cross__text">Учебный центр работает на базе клиники эстетической косметологии A&amp;J.</p>
+        <p class="in-cross__links">
+          <a href="/license">Лицензия клиники →</a>
+          <a href="/cosmetology">Аппаратная косметология →</a>
+          <a href="/pedikur">Подология и педикюр →</a>
+        </p>
+      </div>
+    </section>
+
+    <Directions />
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">Запишитесь на обучение</h2>
+          <p class="cs-cta__sub">Позвоните или оставьте заявку, администратор ответит на вопросы об обучении.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.phone.href}>Позвонить {site.phone.display}</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+</Base>

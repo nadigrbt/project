@@ -1,0 +1,71 @@
+---
+// Текстовая страница-документ (лицензия, политика, правила, согласие, права граждан).
+// blocks — текст документа из data/docs/*.json: h2, h3, p, li (подряд идущие собираются в список), c — ссылка на закон мелким шрифтом.
+// Тексты документов перенесены с Тильды дословно (это не реклама), исправлены только опечатки. Стили — styles/inner.css.
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { legalLinks } from '../data/site';
+import '../styles/inner.css';
+
+export interface DocBlock { t: 'h2' | 'h3' | 'p' | 'li' | 'c'; x: string }
+interface Props {
+  title: string;        // заголовок h1
+  crumb: string;        // последняя «хлебная крошка»
+  metaTitle: string;
+  description: string;
+  lead?: string;
+  path: string;         // адрес страницы, чтобы не показывать её в «Другие документы»
+  blocks?: DocBlock[];
+}
+const { title, crumb, metaTitle, description, lead, path, blocks = [] } = Astro.props;
+
+// подряд идущие пункты li — в один список
+type Group = { t: 'ul'; items: string[] } | DocBlock;
+const groups: Group[] = [];
+for (const b of blocks) {
+  const last = groups[groups.length - 1];
+  if (b.t === 'li') {
+    if (last && last.t === 'ul') last.items.push(b.x);
+    else groups.push({ t: 'ul', items: [b.x] });
+  } else groups.push(b);
+}
+const others = legalLinks.filter((l) => l.href !== path);
+---
+<Base title={metaTitle} description={description}>
+  <section class="cs-hero">
+    <Header />
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">{crumb}</span>
+      </nav>
+    </div>
+    <div class="container doc-hero">
+      <p class="cs-eyebrow">Документы клиники</p>
+      <h1 class="cs-hero__title">{title}</h1>
+      {lead && <p class="cs-hero__lead">{lead}</p>}
+    </div>
+  </section>
+
+  <main>
+    <section class="container doc">
+      <div class="doc__body">
+        <slot />
+        {groups.map((g) =>
+          g.t === 'ul' ? <ul>{g.items.map((i) => <li>{i}</li>)}</ul>
+          : g.t === 'h2' ? <h2>{g.x}</h2>
+          : g.t === 'h3' ? <h3>{g.x}</h3>
+          : g.t === 'c' ? <p class="doc__cite">{g.x}</p>
+          : <p>{g.x}</p>
+        )}
+        <nav class="doc__other" aria-label="Другие документы">
+          <h2>Другие документы клиники</h2>
+          <p class="in-cross__links">
+            {others.map((l) => <a href={l.href}>{l.label} →</a>)}
+          </p>
+        </nav>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

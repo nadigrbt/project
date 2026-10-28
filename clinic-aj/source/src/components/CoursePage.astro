@@ -1,0 +1,134 @@
+---
+// Страница курса учебного центра (/education-cosmetic, -ses, -ped, -man): первый экран с фото в арке, цифры курса, содержимое (slot), фото, вопросы, запись.
+// Цены курсов не показываем (главное правило, 16.10) — «стоимость уточняйте у администраторов». Стили — styles/inner.css.
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Contacts from './Contacts.astro';
+import Footer from './Footer.astro';
+import { site } from '../data/site';
+import { img, type ImageKey } from '../data/images';
+import '../styles/inner.css';
+
+interface Props {
+  metaTitle: string;
+  description: string;
+  crumb: string;
+  title: string;
+  subtitle: string;
+  lead: string;
+  hero: ImageKey;
+  benefits: { title: string; text: string }[];
+  facts: { value: string; text: string }[];
+  photos: { key: ImageKey; alt: string }[];
+  faq: { q: string; a: string }[];
+}
+const { metaTitle, description, crumb, title, subtitle, lead, hero, benefits, facts, photos, faq } = Astro.props;
+const courses = [
+  { href: '/education-cosmetic', title: 'Косметолог-эстетист' },
+  { href: '/education-ses', title: 'Сестринское дело в косметологии' },
+  { href: '/education-ped', title: 'Базовый педикюр с введением в подологию' },
+  { href: '/education-man', title: 'Повышение квалификации для мастеров маникюра' },
+].filter((c) => c.title !== crumb);
+---
+<Base title={metaTitle} description={description}>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/education">Учебный центр</a><span aria-hidden="true">/</span><span aria-current="page">{crumb}</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">Учебный центр A&amp;J</p>
+        <h1 class="cs-hero__title">{title} <span>{subtitle}</span></h1>
+        <p class="cs-hero__lead">{lead}</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href="#contact">Записаться на обучение</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual" aria-hidden="true">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
+        <img class="in-hero__arch" src={img(hero)} alt="" width="720" height="900" fetchpriority="high" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="cs-benefits">
+      <ul class="container cs-benefits__list">
+        {benefits.map((b) => (
+          <li>
+            <img src={img('star')} alt="" width="15" height="15" />
+            <div><strong>{b.title}</strong><span>{b.text}</span></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <main>
+    <section class="container bio-block">
+      <p class="cs-eyebrow">Коротко о курсе</p>
+      <h2 class="cs-title">Формат обучения</h2>
+      <ul class="ed-facts">
+        {facts.map((f) => <li><strong>{f.value}</strong><span>{f.text}</span></li>)}
+      </ul>
+    </section>
+
+    <slot />
+
+    <section class="container pm-photos">
+      <p class="cs-eyebrow">Как проходит обучение</p>
+      <ul class="pm-photos__list pm-photos__list--3">
+        {photos.map((p) => <li><img src={img(p.key)} alt={p.alt} width="800" height="800" loading="lazy" /></li>)}
+      </ul>
+    </section>
+
+    <section class="container in-faq">
+      <p class="cs-eyebrow">Вопросы и ответы</p>
+      <h2 class="cs-title">Что обычно спрашивают</h2>
+      <div class="in-faq__list">
+        {faq.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="container cs-med">
+      <div class="cs-med__card">
+        <h2>Стоимость и условия</h2>
+        <p class="in-cross__text">Стоимость обучения, расписание и условия оплаты уточняйте у администраторов по номеру <a href={site.phone.href}>{site.phone.display}</a>.</p>
+        <p class="in-cross__links"><a href="/education#svedeniya">Сведения об образовательной организации →</a></p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>Другие программы</h2>
+        <p class="in-cross__text">В учебном центре A&amp;J есть и другие программы.</p>
+        <p class="in-cross__links">
+          {courses.map((c) => <a href={c.href}>{c.title} →</a>)}
+          <a href="/education">Все программы учебного центра →</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">Запишитесь на обучение</h2>
+          <p class="cs-cta__sub">Позвоните или оставьте заявку, администратор ответит на вопросы об обучении.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.phone.href}>Позвонить {site.phone.display}</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+</Base>

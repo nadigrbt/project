@@ -1,0 +1,186 @@
+---
+// Страница /massage — «Массаж лица и тела»: классический ручной, классический + вибромассаж, Vortex Pro, LPG. Дизайн по образцу /orto (стили — styles/inner.css).
+// На Тильде страница без адреса (page77185316.html). Тексты оттуда, проверены по 38-ФЗ: убраны «укрепляет иммунитет», «уходит тревожность
+// и восстанавливается сон», «расщеплять жировые отложения», «избавление от целлюлита», «уже после пары сеансов виден результат», «идеален».
+// Фото на первом экране — со старой страницы (EG4A2223.jpg). Противопоказаний списком не даём, строка 38-ФЗ — в «Важно знать» и в полосе записи.
+// Ссылки на страницу: «Массажи» в услугах (services.ts), карточки массажа на /estetica, /lpg, /lifting.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import Directions from '../components/Directions.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+import '../styles/inner.css';
+
+const benefits = [
+  { title: 'Ручной массаж', text: 'Классический и классический с вибромассажем.' },
+  { title: 'Аппаратный массаж', text: 'Vortex Pro и LPG на аппарате Cellu M6 Alliance.' },
+  { title: 'Лицо и тело', text: 'Массаж для разных зон и задач.' },
+  { title: 'Подбор под задачу', text: 'Специалист подскажет, какой массаж выбрать.' },
+];
+const kinds: { id: string; href: string; title: string; forWhat: string; text: string; list?: string[] }[] = [
+  { id: 'classic', href: '', title: 'Классический ручной массаж', forWhat: 'Усталость, напряжение в спине, желание «перезагрузиться».', text: 'Ручной массаж стимулирует кровообращение, помогает снять мышечное напряжение и расслабиться.' },
+  { id: 'vibro', href: '', title: 'Классический массаж и вибромассаж', forWhat: 'Живот, бёдра и талия.', text: 'Вибрация дополняет ручной массаж: улучшает кровообращение в тканях и помогает сделать кожу более упругой и свежей. Такое сочетание работает и на самочувствие, и на эстетику.' },
+  { id: 'vortex', href: '', title: 'Vortex Pro — вакуумно-роликовый массаж', forWhat: 'Контуры тела и рельеф кожи.', text: 'Процедура комфортная, количество сеансов подбирает специалист.', list: ['Работа с проявлениями целлюлита', 'Работа над объёмами', 'Более гладкая кожа', 'Лимфодренаж — помогает уменьшить отёчность'] },
+  { id: 'lpg', href: '/lpg', title: 'LPG-массаж на аппарате Cellu M6 Alliance', forWhat: 'Фигура, качество кожи, восстановление.', text: 'Аппаратный массаж для лица и тела.', list: ['Работа над контурами фигуры', 'Улучшение качества кожи', 'Восстановление после нагрузок', 'Уход при возрастных изменениях кожи'] },
+];
+const results = [
+  'Меньше отёков и напряжения',
+  'Работа с объёмами',
+  'Тонус кожи и бодрость',
+  'Время на заботу о себе',
+];
+const steps = [
+  { title: 'Консультация', text: 'Расскажите о своей задаче. Специалист подскажет, какой массаж подойдёт, и расскажет о противопоказаниях.' },
+  { title: 'Массаж', text: 'Ручной или аппаратный массаж выбранной зоны лица или тела.' },
+  { title: 'Курс', text: 'Количество сеансов и сочетание видов массажа подбирают индивидуально.' },
+];
+const faq = [
+  { q: 'Какой массаж выбрать?', a: 'Классический ручной подойдёт, если хочется снять усталость и напряжение. Для работы с животом, бёдрами и талией выбирают классический массаж с вибромассажем, Vortex Pro или LPG. Специалист поможет определиться.' },
+  { q: 'Можно ли сочетать ручной и аппаратный массаж?', a: 'Да. Например, классический массаж часто сочетают с вибромассажем. Сочетание подбирает специалист.' },
+  { q: 'Есть ли противопоказания?', a: 'Да, специалист расскажет о них перед процедурой.' },
+  { q: 'Как записаться?', a: 'Онлайн или по телефону 78-70-30. Подробности уточняйте у администраторов.' },
+];
+---
+<Base
+  title="Массаж лица и тела в Мурманске | Клиника эстетической косметологии A&J"
+  description="Массаж лица и тела в клинике A&J в Мурманске: классический ручной, классический с вибромассажем, вакуумно-роликовый Vortex Pro и LPG-массаж. Запишитесь онлайн или по номеру 78-70-30"
+>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/estetica">Эстетическая косметология</a><span aria-hidden="true">/</span><span aria-current="page">Массаж</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">Клиника A&amp;J</p>
+        <h1 class="cs-hero__title">Массаж лица и тела <span>ручной и аппаратный</span></h1>
+        <p class="cs-hero__lead">Массаж в A&amp;J — это не только про «просто расслабиться». Это про отёки и напряжение, объёмы, тонус и заботу, которую вы давно заслужили.</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href="#contact">Записаться на консультацию</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual" aria-hidden="true">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
+        <img class="in-hero__arch" src={img('massHero')} alt="" width="720" height="900" fetchpriority="high" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="cs-benefits">
+      <ul class="container cs-benefits__list">
+        {benefits.map((b) => (
+          <li>
+            <img src={img('star')} alt="" width="15" height="15" />
+            <div><strong>{b.title}</strong><span>{b.text}</span></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <main>
+    <section class="container cs-intro">
+      <p class="cs-eyebrow">О массаже</p>
+      <h2 class="cs-title">От расслабляющего до восстановительного</h2>
+      <p class="cs-intro__text">В клинике есть разные виды массажа: ручные и аппаратные, для лица и для тела. Массаж в A&amp;J — тот случай, когда расслабление и работа над внешним видом совмещаются в одной процедуре.</p>
+    </section>
+
+    <section class="container bio-block cs-devices">
+      <p class="cs-eyebrow">Виды массажа</p>
+      <h2 class="cs-title">Какой массаж есть в клинике</h2>
+      <ul class="cs-devices__grid">
+        {kinds.map((k) => (
+          <li class="cs-card" id={k.id}>
+            <h3>{k.title}</h3>
+            <p class="cs-card__for">{k.forWhat}</p>
+            {k.list && <ul>{k.list.map((x) => <li>{x}</li>)}</ul>}
+            <p>{k.text}</p>
+            {k.href ? <a class="cs-card__link" href={k.href}>Подробнее о процедуре →</a> : <a class="cs-card__link" href={site.bookingUrl} target="_blank" rel="noopener">Записаться →</a>}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="cs-results">
+      <div class="container cs-results__inner">
+        <div>
+          <h2 class="cs-results__title">Зачем приходят на массаж</h2>
+          <p class="cs-results__note">Какой массаж подойдёт именно вам, подскажет специалист.</p>
+        </div>
+        <ul class="cs-results__list">
+          {results.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="container cs-steps">
+      <h2 class="section-title">Как проходит процедура</h2>
+      <ol class="cs-steps__list">
+        {steps.map((s, i) => (
+          <li>
+            <span class="cs-steps__num">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="container in-faq">
+      <p class="cs-eyebrow">Вопросы и ответы</p>
+      <h2 class="cs-title">Что обычно спрашивают</h2>
+      <div class="in-faq__list">
+        {faq.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="container cs-med">
+      <div class="cs-med__card">
+        <h2>Важно знать</h2>
+        <p class="in-cross__text">Вид массажа и количество сеансов подбирают индивидуально. Подробности уточняйте у администраторов.</p>
+        <p>Имеются противопоказания. Необходима консультация специалиста.</p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>Что ещё есть в клинике</h2>
+        <p class="in-cross__text">Процедуры можно сочетать. Посмотрите, что ещё есть в клинике.</p>
+        <p class="in-cross__links">
+          <a href="/lpg">LPG-массаж →</a>
+          <a href="/lifting">Подтяжка лица без хирургии →</a>
+          <a href="/micro">Микротоковая терапия →</a>
+          <a href="/estetica">Эстетическая косметология →</a>
+          <a href="/sale">Акции месяца →</a>
+        </p>
+      </div>
+    </section>
+
+    <Directions current="/massage" />
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">Запишитесь на массаж</h2>
+          <p class="cs-cta__sub">Выберите удобное время онлайн или позвоните, администратор ответит на вопросы.</p>
+          <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+</Base>

@@ -1,0 +1,13 @@
+---
+// Страница /policy — «Политика конфиденциальности», текст с Тильды дословно (data/docs/policy.json). Ссылка — в подвале (legalLinks).
+import DocPage from '../components/DocPage.astro';
+import blocks from '../data/docs/policy.json';
+---
+<DocPage
+  path="/policy"
+  title="Политика конфиденциальности"
+  crumb="Политика конфиденциальности"
+  metaTitle="Политика конфиденциальности | Клиника эстетической косметологии A&J"
+  description="Политика конфиденциальности ООО «Эстетика» (клиника A&J, Мурманск): как мы обрабатываем и защищаем персональные данные посетителей сайта clinic-aj.ru."
+  blocks={blocks as any}
+/>
