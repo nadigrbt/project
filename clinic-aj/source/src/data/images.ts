@@ -69,7 +69,7 @@ export const images = {
   lift2:         { file: 'lift-2.webp' },
   lift3:         { file: 'lift-3.webp' },
   lift4:         { file: 'lift-4.webp' },
-  liftHero:      { file: 'lift-hero.webp' },
+  liftHeroArch:  { file: 'lift-hero-arch.webp' },
   massHero:      { file: 'mass-hero.webp' },
   promoDevice:   { file: 'volnewmer-device.webp', remote: `${T}/tild3337-3638-4465-b334-666364396330/__-19.png`, width: 800 },
   aboutBg:       { file: 'about-bg.webp',      remote: `${T}/tild3862-3939-4532-a464-616232666134/13.png`, width: 1600 },

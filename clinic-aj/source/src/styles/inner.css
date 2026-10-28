@@ -293,3 +293,7 @@
   /* каталог карточек перед винной полосой: отступ снизу (bio-block обнуляет padding-bottom) */
   .bio-block.cs-devices { padding-bottom: 88px; }
   @media (max-width: 959px) { .bio-block.cs-devices { padding-bottom: 60px; } }
+
+  /* фото в арке (только /lifting, решение владельца 28.10) */
+  .in-hero__arch--round { width: 400px; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 200px 200px 0 0; }
+  @media (max-width: 959px) { .in-hero__arch--round { width: 280px; border-radius: 140px 140px 0 0; } }
