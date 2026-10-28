@@ -289,3 +289,7 @@
     .doc__imgs { grid-template-columns: 1fr; }
     .doc__note { padding: 20px; }
   }
+
+  /* каталог карточек перед винной полосой: отступ снизу (bio-block обнуляет padding-bottom) */
+  .bio-block.cs-devices { padding-bottom: 88px; }
+  @media (max-width: 959px) { .bio-block.cs-devices { padding-bottom: 60px; } }
