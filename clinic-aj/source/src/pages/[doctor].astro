@@ -1,0 +1,212 @@
+---
+// Страница врача /vrach-<slug> (28.10): одна на каждого врача из data/doctors.ts, создаётся автоматически.
+// Дизайн по образцу /orto (стили — styles/inner.css). Пустые поля не показываем, факты — только с ПроДокторов или от владельца.
+// Для Яндекса: title/description с ФИО и специальностью, разметка schema.org (ProfilePage + Person, работает в клинике,
+// sameAs на ПроДокторов), хлебные крошки Главная → Врачи → ФИО. Пока нет специальности — noindex и не в sitemap.xml.
+// Ссылки на страницу: карточка на /vrachi, блок «Другие врачи» на страницах врачей, автор статьи в блоге.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import DoctorCard from '../components/DoctorCard.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+import { doctors, doctorUrl, isIndexable, specialtyLine, experience, type Doctor } from '../data/doctors';
+import { abs, breadcrumbsLd, doctorLd } from '../data/schema';
+import '../styles/inner.css';
+
+export function getStaticPaths() {
+  return doctors.map((d) => ({ params: { doctor: `vrach-${d.slug}` }, props: { d } }));
+}
+
+const { d } = Astro.props as { d: Doctor };
+const spec = specialtyLine(d);
+const exp = experience(d);
+const photo = d.photo ? img(d.photo as any) : undefined;
+const initials = d.name.split(' ').filter((w) => !w.startsWith('(')).slice(0, 2).map((w) => w[0]).join('');
+const others = doctors.filter((x) => x.slug !== d.slug);
+const role = spec ? spec.toLowerCase() : 'специалист';
+
+const title = spec
+  ? `${d.name} — ${role} в Мурманске | Клиника A&J`
+  : `${d.name} — специалист клиники A&J в Мурманске`;
+const description = [
+  `${d.name}${d.position ? `, ${d.position.toLowerCase()}` : ''}${spec ? `, ${role}` : ', специалист'} клиники эстетической косметологии A&J в Мурманске.`,
+  exp ? `${exp}.` : '',
+  'Запишитесь онлайн или по номеру 78-70-30',
+].filter(Boolean).join(' ');
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    url: abs(doctorUrl(d)),
+    name: title,
+    mainEntity: doctorLd(d, photo),
+  },
+  breadcrumbsLd([
+    { name: 'Главная', href: '/' },
+    { name: 'Врачи', href: '/vrachi' },
+    { name: d.name, href: doctorUrl(d) },
+  ]),
+];
+---
+<Base title={title} description={description} jsonLd={jsonLd} ogType="profile" ogImage={photo ? abs(photo) : undefined} noindex={!isIndexable(d)}>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/vrachi">Врачи</a><span aria-hidden="true">/</span><span aria-current="page">{d.name}</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">{d.position ?? 'Специалист клиники A&J'}</p>
+        <h1 class="cs-hero__title">{d.name} <span>{spec || '[специальность — уточнить у клиники]'}</span></h1>
+        {(exp || d.category) && (
+          <ul class="dr-facts">
+            {exp && <li>{exp}</li>}
+            {d.category && <li>{d.category}</li>}
+          </ul>
+        )}
+        <p class="cs-hero__lead">Ведёт приём в клинике эстетической косметологии A&amp;J в Мурманске.</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
+        {photo
+          ? <img class="in-hero__arch in-hero__arch--round" src={photo} alt={`${d.name}, ${role} клиники A&J в Мурманске`} width="720" height="900" fetchpriority="high" />
+          : <span class="dr-initials" aria-hidden="true">{initials}</span>}
+      </div>
+    </div>
+  </section>
+
+  <main>
+    {!!d.about?.length && (
+      <section class="container cs-intro">
+        <p class="cs-eyebrow">О специалисте</p>
+        <h2 class="cs-title">{d.name}</h2>
+        {d.about.map((p) => <p class="cs-intro__text">{p}</p>)}
+      </section>
+    )}
+
+    {!!(d.education?.length || d.courses?.length) && (
+      <section class="container bio-block">
+        <p class="cs-eyebrow">Образование</p>
+        <h2 class="cs-title">Образование и квалификация</h2>
+        <ul class="bio-pair">
+          {d.education?.map((e) => <li><h3>{e.title}</h3>{(e.year || e.text) && <p>{[e.year, e.text].filter(Boolean).join(' · ')}</p>}</li>)}
+          {d.courses?.map((c) => <li><h3>{c.title}</h3>{c.year && <p>{c.year}</p>}</li>)}
+        </ul>
+      </section>
+    )}
+
+    {!!d.services?.length && (
+      <section class="container bio-block">
+        <p class="cs-eyebrow">Услуги</p>
+        <h2 class="cs-title">Услуги</h2>
+        <ul class="bio-zones dr-services">
+          {d.services.map((s) => <li><a href={s.href}>{s.label} →</a></li>)}
+        </ul>
+      </section>
+    )}
+
+    {!!d.articles?.length && (
+      <section class="container bio-block">
+        <p class="cs-eyebrow">Блог</p>
+        <h2 class="cs-title">Статьи в блоге клиники</h2>
+        <ul class="bio-pair">
+          {d.articles.map((a) => <li><h3><a class="dr-link" href={a.href}>{a.label}</a></h3></li>)}
+        </ul>
+      </section>
+    )}
+
+    <section class="container cs-med dr-med">
+      <div class="cs-med__card">
+        <h2>Отзывы пациентов</h2>
+        {d.prodoctorovUrl
+          ? <><p class="in-cross__text">Отзывы о специалисте собраны на независимом сайте ПроДокторов.</p>
+             <p class="in-cross__links"><a href={d.prodoctorovUrl} target="_blank" rel="noopener">Отзывы на ПроДокторов →</a></p></>
+          : <><p class="in-cross__text">Отзывы о специалистах клиники собраны на независимом сайте ПроДокторов.</p>
+             <p class="in-cross__links"><a href="https://prodoctorov.ru/murmansk/lpu/113320-aj/" target="_blank" rel="noopener">Отзывы о клинике на ПроДокторов →</a></p></>}
+        <p>Имеются противопоказания. Необходима консультация специалиста.</p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>Направления клиники</h2>
+        <p class="in-cross__links">
+          <a href="/vrachi">Все специалисты клиники →</a>
+          <a href="/cosmetology">Аппаратная косметология →</a>
+          <a href="/injections">Инъекционная косметология →</a>
+          <a href="/estetica">Эстетическая косметология →</a>
+        </p>
+      </div>
+    </section>
+
+    {others.length > 0 && (
+      <section class="container dr-others">
+        <p class="cs-eyebrow">Команда</p>
+        <h2 class="cs-title">Другие специалисты клиники</h2>
+        <ul class="dr-others__grid">
+          {others.map((x) => <DoctorCard doctor={x} headingLevel="h3" />)}
+        </ul>
+      </section>
+    )}
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">Запишитесь на приём</h2>
+          <p class="cs-cta__sub">Выберите удобное время онлайн или позвоните, администратор ответит на вопросы.</p>
+          <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .dr-facts { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 20px 0 0; padding: 0; list-style: none; font-family: var(--font); }
+  .dr-facts li { display: flex; align-items: center; gap: 10px; }
+  .dr-facts li::before { content: ''; width: 15px; height: 15px; background: url('/images/star.svg') center / contain no-repeat; }
+  .dr-initials {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 400px;
+    max-width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 200px 200px 0 0;
+    background: var(--ivory);
+    font-family: var(--font);
+    font-size: var(--fs-h1);
+    font-weight: var(--w-thin);
+    letter-spacing: 6px;
+    color: var(--wine);
+  }
+  .dr-services li { padding: 0; }
+  .dr-services a { display: block; padding: 28px; font-family: var(--font); color: var(--wine); text-decoration: none; }
+  .dr-services a:hover { color: var(--graphite); }
+  .dr-link { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+  .dr-link:hover { color: var(--wine); }
+  .dr-med { padding-top: 88px; }
+  .dr-others { padding-bottom: 88px; }
+  .dr-others__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 40px 32px; margin: 40px 0 0; padding: 0; }
+  @media (max-width: 959px) {
+    .dr-initials { width: 280px; border-radius: 140px 140px 0 0; }
+    .dr-med { padding-top: 60px; }
+    .dr-others { padding-bottom: 60px; }
+    .dr-others__grid { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+  }
+</style>

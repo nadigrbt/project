@@ -86,6 +86,14 @@ export const images = {
   faviconLight:  { file: 'favicon-light.svg',  remote: `${T}/tild6539-6662-4931-a635-346634343638/kosmetologiya_murman.svg` },
   faviconDark:   { file: 'favicon-dark.svg',   remote: `${T}/tild3464-3937-4331-a664-363038663661/kosmetologiya_murman.svg` },
   appleIcon:     { file: 'apple-touch-icon.png', remote: `${T}/tild6237-3737-4130-b965-373233396138/kosmetologiya_murman.png`, width: 192 },
+  // Врачи (28.10): временно — фото с ПроДокторов (скриншоты владельца), маленькие; заменить оригиналами
+  doctorBorovkova:  { file: 'doctor-borovkova.webp' },
+  doctorSmykova:    { file: 'doctor-smykova.webp' },
+  doctorAgaeva:     { file: 'doctor-agaeva.webp' },
+  doctorKogut:      { file: 'doctor-kogut.webp' },
+  doctorMatveeva:   { file: 'doctor-matveeva.webp' },
+  doctorPogorelova: { file: 'doctor-pogorelova.webp' },
+  doctorHarinova:   { file: 'doctor-harinova.webp' },
   og:            { file: 'og.jpg',             remote: `${T}/tild3133-3666-4639-b434-376539316537/AJ_logo.jpg`, width: 1200 },
 
   // Страница /volnewmer

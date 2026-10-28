@@ -1,0 +1,50 @@
+---
+// Карточка врача: на странице /vrachi и в блоке «Другие врачи» на странице врача.
+// Нет фото — в арке инициалы (фото добавить ключом `photo` в data/doctors.ts).
+import { doctorUrl, specialtyLine, experience, type Doctor } from '../data/doctors';
+import { img } from '../data/images';
+
+interface Props { doctor: Doctor; headingLevel?: 'h2' | 'h3' }
+const { doctor: d, headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+const initials = d.name.split(' ').filter((w) => !w.startsWith('(')).slice(0, 2).map((w) => w[0]).join('');
+const photo = d.photo ? img(d.photo as any) : undefined;
+const spec = specialtyLine(d);
+const exp = experience(d);
+---
+<li class="dc">
+  <a class="dc__link" href={doctorUrl(d)}>
+    <span class="dc__photo">
+      {photo
+        ? <img src={photo} alt={`${d.name}${spec ? `, ${spec.toLowerCase()}` : ''} — клиника A&J, Мурманск`} width="400" height="500" loading="lazy" />
+        : <span class="dc__initials" aria-hidden="true">{initials}</span>}
+    </span>
+    <H class="dc__name">{d.name}</H>
+    {d.position && <span class="dc__pos">{d.position}</span>}
+    {spec && <span class="dc__spec">{spec}</span>}
+    {exp && <span class="dc__exp">{exp}</span>}
+    <span class="dc__more">Подробнее →</span>
+  </a>
+</li>
+
+<style>
+  .dc { list-style: none; }
+  .dc__link { display: flex; flex-direction: column; height: 100%; text-decoration: none; }
+  .dc__photo {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 200px 200px 0 0;
+    background: var(--ivory);
+  }
+  .dc__photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+  .dc__link:hover .dc__photo img { transform: scale(1.03); }
+  .dc__initials { font-family: var(--font); font-size: var(--fs-h1); font-weight: var(--w-thin); letter-spacing: 4px; color: var(--wine); }
+  .dc__name { margin-top: 22px; font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-regular); }
+  .dc__pos { margin-top: 8px; font-family: var(--font); font-size: var(--fs-small); letter-spacing: 2px; text-transform: uppercase; color: var(--wine); }
+  .dc__spec { margin-top: 8px; }
+  .dc__exp { margin-top: 4px; color: var(--muted); }
+  .dc__more { margin-top: auto; padding-top: 16px; font-family: var(--font); color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
+  .dc__link:hover .dc__more { color: var(--graphite); }
+</style>
