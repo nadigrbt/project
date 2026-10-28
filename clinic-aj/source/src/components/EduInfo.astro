@@ -1,7 +1,7 @@
 ---
 // Блок «Сведения об образовательной организации» учебного центра A&J — обязательная информация, перенесена со страницы Тильды /education дословно
 // (исправлено только «дополнительного профессиональное» → «дополнительное профессиональное»). Документы лежат на Google Диске клиники, ссылки — оттуда.
-// Стоит на /education (id="svedeniya"); страницы курсов ссылаются на него. Стили — styles/inner.css (in-faq, doc__body).
+// Стоит на /education и на всех страницах курсов (id="svedeniya") — по закону нужен на каждой странице учебного центра (владелец, 28.10). Стили — styles/inner.css (in-faq, doc__body).
 const D = (id: string) => `https://drive.google.com/file/d/${id}/view?usp=share_link`;
 type Item = string | { label: string; href: string };
 const sections: { title: string; items: Item[]; intro?: string }[] = [

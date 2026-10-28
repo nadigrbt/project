@@ -223,9 +223,9 @@
     .in-hero--noimg .in-hero__visual { display: none; }
     .in-hero--noimg .in-hero__text { padding-bottom: 48px; }
   }
-  /* фото в арке на первом экране */
-  .in-hero__arch { position: relative; display: block; width: 400px; max-width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 200px 200px 0 0; }
-  @media (max-width: 959px) { .in-hero__arch { width: 280px; border-radius: 140px 140px 0 0; } }
+  /* фото на первом экране — с вырезанным фоном, края, упирающиеся в рамку кадра, растушёваны (решение владельца 28.10: без арки) */
+  .in-hero__arch { position: relative; display: block; width: 440px; max-width: 100%; height: auto; }
+  @media (max-width: 959px) { .in-hero__arch { width: 290px; } }
   .in-hero__cut { position: relative; width: 420px; max-width: 100%; height: auto; }
   @media (max-width: 959px) { .in-hero__cut { width: 280px; } }
 

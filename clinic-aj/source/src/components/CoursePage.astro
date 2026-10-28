@@ -1,10 +1,12 @@
 ---
 // Страница курса учебного центра (/education-cosmetic, -ses, -ped, -man): первый экран с фото в арке, цифры курса, содержимое (slot), фото, вопросы, запись.
+// Обязательные «Сведения об образовательной организации» (EduInfo) стоят на каждой странице курса — требование закона (владелец, 28.10).
 // Цены курсов не показываем (главное правило, 16.10) — «стоимость уточняйте у администраторов». Стили — styles/inner.css.
 import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
 import Contacts from './Contacts.astro';
 import Footer from './Footer.astro';
+import EduInfo from './EduInfo.astro';
 import { site } from '../data/site';
 import { img, type ImageKey } from '../data/images';
 import '../styles/inner.css';
@@ -16,7 +18,7 @@ interface Props {
   title: string;
   subtitle: string;
   lead: string;
-  hero: ImageKey;
+  hero?: { key: ImageKey; w: number; h: number }; // фото с прозрачным фоном; нет — только буквы A&J (на мобильном скрыты)
   benefits: { title: string; text: string }[];
   facts: { value: string; text: string }[];
   photos: { key: ImageKey; alt: string }[];
@@ -40,7 +42,7 @@ const courses = [
       </nav>
     </div>
 
-    <div class="container in-hero">
+    <div class:list={['container in-hero', { 'in-hero--noimg': !hero }]}>
       <div class="in-hero__text">
         <p class="cs-eyebrow">Учебный центр A&amp;J</p>
         <h1 class="cs-hero__title">{title} <span>{subtitle}</span></h1>
@@ -55,7 +57,7 @@ const courses = [
       </div>
       <div class="in-hero__visual" aria-hidden="true">
         <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
-        <img class="in-hero__arch" src={img(hero)} alt="" width="720" height="900" fetchpriority="high" aria-hidden="true" />
+        {hero && <img class="in-hero__arch" src={img(hero.key)} alt="" width={hero.w} height={hero.h} fetchpriority="high" aria-hidden="true" />}
       </div>
     </div>
 
@@ -102,11 +104,13 @@ const courses = [
       </div>
     </section>
 
+    <EduInfo />
+
     <section class="container cs-med">
       <div class="cs-med__card">
         <h2>Стоимость и условия</h2>
         <p class="in-cross__text">Стоимость обучения, расписание и условия оплаты уточняйте у администраторов по номеру <a href={site.phone.href}>{site.phone.display}</a>.</p>
-        <p class="in-cross__links"><a href="/education#svedeniya">Сведения об образовательной организации →</a></p>
+        <p class="in-cross__links"><a href="#svedeniya">Сведения об образовательной организации →</a></p>
       </div>
       <div class="cs-med__card cs-med__card--alt">
         <h2>Другие программы</h2>
