@@ -13,6 +13,10 @@ Options -Indexes
   RewriteCond %{HTTP_HOST} ^www\. [NC]
   RewriteRule ^ https://clinic-aj.ru%{REQUEST_URI} [L,R=301]
 
+  # 1а. Страницы Тильды без адреса → новые адреса (28.10)
+  RewriteRule ^page77185316\.html$ /massage [L,R=301]
+  RewriteRule ^page77186186\.html$ /lifting [L,R=301]
+
   # 2. Адреса как на Тильде: /lpg открывает lpg.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
