@@ -59,7 +59,6 @@ export const images = {
   eduMan1:       { file: 'edu-man-1.webp' },
   eduMan2:       { file: 'edu-man-2.webp' },
   eduMan3:       { file: 'edu-man-3.webp' },
-  eduManHero:    { file: 'edu-man-hero.webp' },
   eduPed1:       { file: 'edu-ped-1.webp' },
   eduPed2:       { file: 'edu-ped-2.webp' },
   eduPed3:       { file: 'edu-ped-3.webp' },
