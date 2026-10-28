@@ -7,24 +7,79 @@ import '@fontsource/commissioner/300.css';
 import '@fontsource/commissioner/400.css';
 import '@fontsource/commissioner/500.css';
 import '../styles/global.css';
+import jostThin from '@fontsource/jost/files/jost-cyrillic-200-normal.woff2?url';
+import commissionerLight from '@fontsource/commissioner/files/commissioner-cyrillic-300-normal.woff2?url';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import MobileMenu from '../components/MobileMenu.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import { site } from '../data/site';
 import { img } from '../data/images';
 
 interface Props {
+  /** До 70 знаков: «Услуга в Мурманске — клиника A&J». Без цен. */
   title: string;
+  /** 140–170 знаков: что за услуга, для кого, призыв записаться. Без цен и времени процедур. */
   description: string;
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  /** article — для статей блога */
+  ogType?: 'website' | 'article';
   /** Черновик или вариант редизайна: не показывать в поиске */
   noindex?: boolean;
 }
 
-const { title, description, ogTitle = title, ogDescription = description, ogImage, noindex = false } = Astro.props;
+const { title, description, ogTitle = title, ogDescription = description, ogImage, ogType = 'website', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site).href;
 const og = ogImage ?? new URL(img('og'), Astro.site).href;
+const isHome = Astro.url.pathname === '/' || /\/index(\.html)?$/.test(Astro.url.pathname);
+const robots = noindex || import.meta.env.PUBLIC_NOINDEX === '1' ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+
+// GT Eesti Pro (платный шрифт с Тильды) подключаем, только если файлы лежат в public/fonts
+const hasGtEesti = existsSync(join(process.cwd(), 'public', 'fonts'));
+const gtEestiCss = [
+  ['Thin', 100], ['UltraLight', 200], ['Light', 300], ['Regular', 400], ['Medium', 500],
+].map(([n, w]) => `@font-face{font-family:'GT Eesti Pro';src:url('/fonts/GTEestiPro-${n}.woff2') format('woff2');font-weight:${w};font-display:swap}`).join('');
+
+// Разметка schema.org о клинике (на всех страницах). Только факты из data/site.ts.
+const clinicLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalClinic',
+  '@id': `${Astro.site!.origin}/#clinic`,
+  name: 'Клиника эстетической косметологии A&J',
+  alternateName: ['A&J', 'Клиника A&J'],
+  legalName: site.legalName,
+  taxID: site.inn,
+  url: `${Astro.site!.origin}/`,
+  logo: new URL(img('logo'), Astro.site).href,
+  image: new URL(img('og'), Astro.site).href,
+  telephone: site.phone.href.replace('tel:', ''),
+  address: site.addresses.map((a) => ({
+    '@type': 'PostalAddress',
+    streetAddress: a.replace(/^Мурманск,\s*/, ''),
+    addressLocality: 'Мурманск',
+    addressRegion: 'Мурманская область',
+    addressCountry: 'RU',
+  })),
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '09:00',
+    closes: '21:00',
+  },
+  areaServed: { '@type': 'City', name: 'Мурманск' },
+  sameAs: [site.social.vk, site.social.telegram],
+};
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Клиника A&J',
+  url: `${Astro.site!.origin}/`,
+  inLanguage: 'ru',
+  publisher: { '@id': clinicLd['@id'] },
+};
+const ld = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="ru">
@@ -32,28 +87,44 @@ const og = ogImage ?? new URL(img('og'), Astro.site).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {/* Тестовая копия на GitHub Pages не должна попадать в поиск (npm run preview-build) */}
-    {(noindex || import.meta.env.PUBLIC_NOINDEX === '1') && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="robots" content={robots} />
     <meta name="format-detection" content="telephone=no" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <!-- Если файлы GT Eesti Pro лежат в public/fonts, включаем толщины как на Тильде -->
-    <script is:inline>
-      document.fonts && document.fonts.load('200 16px "GT Eesti Pro"').then(function (f) {
-        if (f.length) document.documentElement.classList.add('gt-eesti');
-      });
-    </script>
+    <meta name="theme-color" content="#F1EAE0" />
 
-    <meta property="og:type" content="website" />
+    {/* Шрифты первого экрана: заголовки (Jost 200) и текст (Commissioner 300) — грузим сразу */}
+    <link rel="preload" href={jostThin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={commissionerLight} as="font" type="font/woff2" crossorigin />
+    {hasGtEesti && <Fragment set:html={`<style>${gtEestiCss}</style>`} />}
+    {/* Если файлы GT Eesti Pro лежат в public/fonts, включаем толщины как на Тильде */}
+    {hasGtEesti && (
+      <script is:inline>
+        document.fonts && document.fonts.load('200 16px "GT Eesti Pro"').then(function (f) {
+          if (f.length) document.documentElement.classList.add('gt-eesti');
+        });
+      </script>
+    )}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Клиника A&J" />
+    <meta property="og:locale" content="ru_RU" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:image" content={og} />
+    {!ogImage && <meta property="og:image:width" content="1200" />}
+    {!ogImage && <meta property="og:image:height" content="985" />}
+    <meta property="og:image:alt" content="Логотип клиники эстетической косметологии A&J" />
+    <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" type="image/svg+xml" href={img('faviconLight')} media="(prefers-color-scheme: light)" />
-    <link rel="icon" type="image/svg+xml" href={img('faviconDark')} media="(prefers-color-scheme: dark)" />
-    <link rel="icon" type="image/svg+xml" href={img('favicon')} />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href={img('favicon')} />
     <link rel="apple-touch-icon" href={img('appleIcon')} />
+
+    <script is:inline type="application/ld+json" set:html={ld(clinicLd)} />
+    {isHome && <script is:inline type="application/ld+json" set:html={ld(websiteLd)} />}
     <link rel="stylesheet" href="/a11y.css?v=2" />
     {/* Версия для слабовидящих включается до отрисовки, чтобы страница не «мигала» */}
     <script is:inline>
