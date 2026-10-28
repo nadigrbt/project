@@ -3,7 +3,7 @@
 // На Тильде страница без адреса (page77186186.html). Тексты оттуда, проверены по 38-ФЗ: убраны «революционная», «идеальное решение», «уникальный аппарат»,
 // «лучшие результаты», «результаты заметны уже после первой процедуры», «безопасный и эффективный», «инновационное», «без периода восстановления»,
 // «результаты сохраняются до 18 месяцев», «естественных и долговременных результатов», «опытных специалистов», «только на оригинальных аппаратах».
-// Фото — со старой страницы. Ссылки на страницу: /smas, /lpg, /massage, /injections («Подтяжка и омоложение без инъекций»), услуги на главной.
+// Фото — со старой страницы; на первом экране фото в арке (решение владельца 28.10, только на этой странице). Ссылки на страницу: /smas, /lpg, /massage, /injections («Подтяжка и омоложение без инъекций»), услуги на главной.
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Contacts from '../components/Contacts.astro';
@@ -76,7 +76,7 @@ const faq = [
       </div>
       <div class="in-hero__visual" aria-hidden="true">
         <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
-        <img class="in-hero__arch" src={img('liftHero')} alt="" width="760" height="707" fetchpriority="high" aria-hidden="true" />
+        <img class="in-hero__arch in-hero__arch--round" src={img('liftHeroArch')} alt="" width="720" height="900" fetchpriority="high" aria-hidden="true" />
       </div>
     </div>
 
