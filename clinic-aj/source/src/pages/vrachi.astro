@@ -8,14 +8,23 @@ import Header from '../components/Header.astro';
 import Contacts from '../components/Contacts.astro';
 import Footer from '../components/Footer.astro';
 import Directions from '../components/Directions.astro';
-import DoctorCard from '../components/DoctorCard.astro';
 import { site } from '../data/site';
 import { img } from '../data/images';
-import { doctors, doctorUrl, isIndexable } from '../data/doctors';
+import { doctors, doctorUrl, isIndexable, specialtyLine, experience } from '../data/doctors';
 import { abs, breadcrumbsLd, clinicLd, doctorLd } from '../data/schema';
 import '../styles/inner.css';
 
 const PRODOCTOROV_CLINIC = 'https://prodoctorov.ru/murmansk/lpu/113320-aj/';
+
+// Список строками сверху вниз: фото слева, сведения справа (решение владельца 28.10, вместо плитки)
+const rows = doctors.map((d) => ({
+  d,
+  url: doctorUrl(d),
+  photo: d.photo ? img(d.photo as any) : undefined,
+  initials: d.name.split(' ').filter((w) => !w.startsWith('(')).slice(0, 2).map((w) => w[0]).join(''),
+  spec: specialtyLine(d),
+  exp: experience(d),
+}));
 
 const jsonLd = [
   {
@@ -68,8 +77,26 @@ const jsonLd = [
 
   <main>
     <section class="container dl">
-      <ul class="dl__grid">
-        {doctors.map((d) => <DoctorCard doctor={d} />)}
+      <ul class="dl__list">
+        {rows.map(({ d, url, photo, initials, spec, exp }) => (
+          <li class="dl__row">
+            <a class="dl__photo" href={url} tabindex="-1" aria-hidden="true">
+              {photo
+                ? <img src={photo} alt="" width="400" height="500" loading="lazy" />
+                : <span class="dl__initials">{initials}</span>}
+            </a>
+            <div class="dl__info">
+              {d.position && <p class="dl__pos">{d.position}</p>}
+              <h2 class="dl__name"><a href={url}>{d.name}</a></h2>
+              <p class="dl__spec">{spec || 'Специальность уточняется'}</p>
+              {exp && <p class="dl__exp">{exp}</p>}
+              <div class="dl__actions">
+                <a class="dl__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+                <a class="dl__more" href={url}>Подробнее<span class="dl__more-long"> о специалисте</span> →</a>
+              </div>
+            </div>
+          </li>
+        ))}
       </ul>
     </section>
 
@@ -111,13 +138,29 @@ const jsonLd = [
 </Base>
 
 <style>
-  .dl { padding-top: 72px; padding-bottom: 88px; }
-  .dl__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 48px 32px; margin: 0; padding: 0; }
+  .dl { padding-top: 56px; padding-bottom: 88px; }
+  .dl__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .dl__row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; align-items: center; padding: 32px 0; border-bottom: 1px solid var(--line); }
+  .dl__photo { display: grid; place-items: center; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 100px 100px 0 0; background: var(--ivory); text-decoration: none; }
+  .dl__photo img { width: 100%; height: 100%; object-fit: cover; }
+  .dl__initials { font-family: var(--font); font-size: var(--fs-h2); font-weight: var(--w-thin); letter-spacing: 4px; color: var(--wine); }
+  .dl__pos { font-family: var(--font); font-size: var(--fs-small); letter-spacing: 2px; text-transform: uppercase; color: var(--wine); margin-bottom: 8px; }
+  .dl__name { font-size: var(--fs-h3); line-height: 1.2; font-weight: var(--w-regular); }
+  .dl__name a { text-decoration: none; }
+  .dl__name a:hover { color: var(--wine); }
+  .dl__spec { margin-top: 10px; }
+  .dl__exp { margin-top: 4px; color: var(--muted); }
+  .dl__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 22px; }
+  .dl__btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 28px; border-radius: 999px; background: var(--wine); color: var(--white); font-family: var(--font); text-decoration: none; transition: background-color 0.2s; }
+  .dl__btn:hover { background: var(--graphite); }
+  .dl__more { font-family: var(--font); color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
+  .dl__more:hover { color: var(--graphite); }
   @media (max-width: 959px) {
-    .dl { padding-top: 48px; padding-bottom: 60px; }
-    .dl__grid { grid-template-columns: 1fr 1fr; gap: 36px 16px; }
-  }
-  @media (max-width: 479px) {
-    .dl__grid { grid-template-columns: 1fr; }
+    .dl { padding-top: 32px; padding-bottom: 60px; }
+    .dl__row { grid-template-columns: 110px minmax(0, 1fr); gap: 20px; align-items: start; padding: 24px 0; }
+    .dl__photo { border-radius: 55px 55px 0 0; }
+    .dl__actions { gap: 12px 20px; margin-top: 16px; }
+    .dl__btn { min-height: 44px; padding: 0 22px; }
+    .dl__more-long { display: none; }
   }
 </style>
