@@ -46,7 +46,8 @@ export const services: ServiceGroup[] = [
   <li>Плазменное омоложение NeoGen</li>
   <li>Лазерное омоложение MeDioStar Monolith</li>
 </ul>
-<p><a class="accent" href="/cosmetology">Подробнее →</a></p>`,
+<p><a class="accent" href="/cosmetology">Подробнее →</a><br>
+<a href="/lifting">Подтяжка лица без хирургии →</a></p>`,
   },
   {
     title: 'Инъекционная косметология',
@@ -76,7 +77,8 @@ export const services: ServiceGroup[] = [
   <li>Чистки лица</li>
   <li>Микротоковая терапия</li>
 </ul>
-<p><a href="/estetica">Подробнее →</a></p>`,
+<p><a href="/estetica">Подробнее →</a><br>
+<a href="/massage">Подробнее про массаж лица и тела →</a></p>`,
   },
   {
     title: 'Перманентный макияж',

@@ -1,0 +1,199 @@
+---
+// Страница /lifting — «Подтяжка лица без хирургии»: SMAS-лифтинг Liftera, LPG-массаж, полимолочная кислота. Дизайн как у /massage (стили — styles/inner.css).
+// На Тильде страница без адреса (page77186186.html). Тексты оттуда, проверены по 38-ФЗ: убраны «революционная», «идеальное решение», «уникальный аппарат»,
+// «лучшие результаты», «результаты заметны уже после первой процедуры», «безопасный и эффективный», «инновационное», «без периода восстановления»,
+// «результаты сохраняются до 18 месяцев», «естественных и долговременных результатов», «опытных специалистов», «только на оригинальных аппаратах».
+// Фото — со старой страницы. Ссылки на страницу: /smas, /lpg, /massage, /injections («Подтяжка и омоложение без инъекций»), услуги на главной.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import Directions from '../components/Directions.astro';
+import { site } from '../data/site';
+import { img, type ImageKey } from '../data/images';
+import '../styles/inner.css';
+
+const benefits = [
+  { title: 'Без операции', text: 'Методы без хирургического вмешательства.' },
+  { title: 'Три метода', text: 'SMAS-лифтинг, LPG-массаж и полимолочная кислота.' },
+  { title: 'Лицо и шея', text: 'Работа с упругостью и тонусом кожи.' },
+  { title: 'Подбор врачом', text: 'Метод подбирают на консультации.' },
+];
+const kinds: { id: string; href: string; title: string; forWhat: string; text: string; list?: string[] }[] = [
+  { id: 'smas', href: '/smas', title: 'SMAS-лифтинг на аппарате Liftera', forWhat: 'Подтяжка кожи и мышц лица и шеи без хирургии.', text: 'Аппарат Liftera работает по технологии HIFU (высокоинтенсивный фокусированный ультразвук): воздействует на глубокие слои тканей и стимулирует обновление коллагена и эластина.' },
+  { id: 'lpg', href: '/lpg', title: 'LPG-массаж лица и тела на аппарате Cellu M6 Alliance', forWhat: 'Качество кожи и контуры фигуры.', text: 'Процедура сочетает вакуумное и роликовое воздействие на кожу. Обычно рекомендуют курс процедур, количество сеансов подбирает специалист.' },
+  { id: 'plla', href: '', title: 'Полимолочная кислота', forWhat: 'Потеря упругости, морщины и провисание кожи.', text: 'Препараты полимолочной кислоты используют в эстетической косметологии для восстановления упругости кожи.', list: ['Процедура стимулирует выработку собственного коллагена', 'Сеансы занимают немного времени', 'Эффект нарастает постепенно', 'Подходит ли метод, решает врач на консультации'] },
+];
+const results = [
+  'Потеря упругости кожи',
+  'Морщины',
+  'Провисание кожи, нечёткий овал лица',
+  'Тонус кожи лица и шеи',
+];
+const steps = [
+  { title: 'Консультация', text: 'Врач оценит состояние кожи, подберёт метод и расскажет о противопоказаниях.' },
+  { title: 'Процедура', text: 'Процедуру проводят в кабинете клиники на выбранном аппарате или с выбранным препаратом.' },
+  { title: 'План ухода', text: 'Количество процедур и сочетание методов подбирают индивидуально.' },
+];
+const photos: { key: ImageKey; alt: string }[] = [
+  { key: 'lift1', alt: 'Процедура на аппарате в кабинете клиники A&J' },
+  { key: 'lift2', alt: 'Аппаратная процедура для лица в клинике A&J' },
+  { key: 'lift3', alt: 'SMAS-лифтинг: насадка аппарата на коже лица' },
+  { key: 'lift4', alt: 'Косметолог клиники A&J проводит процедуру' },
+];
+const faq = [
+  { q: 'Какой метод выбрать?', a: 'Это зависит от состояния кожи и задачи. Врач подберёт метод на консультации.' },
+  { q: 'Можно ли сочетать методы?', a: 'Да, сочетание методов обсуждают на консультации.' },
+  { q: 'Нужно ли восстановление?', a: 'Зависит от метода. Врач расскажет, что можно и чего нельзя делать после процедуры.' },
+  { q: 'Как записаться?', a: 'Онлайн или по телефону 78-70-30. Подробности уточняйте у администраторов.' },
+];
+---
+<Base
+  title="Подтяжка лица без хирургии в Мурманске | Клиника эстетической косметологии A&J"
+  description="Подтяжка лица без хирургии в клинике A&J в Мурманске: SMAS-лифтинг на аппарате Liftera, LPG-массаж Cellu M6 Alliance, полимолочная кислота. Запишитесь онлайн или по номеру 78-70-30"
+>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/cosmetology">Аппаратная косметология</a><span aria-hidden="true">/</span><span aria-current="page">Подтяжка лица без хирургии</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">Клиника A&amp;J</p>
+        <h1 class="cs-hero__title">Подтяжка лица <span>без хирургии</span></h1>
+        <p class="cs-hero__lead">Если хочется более упругой и подтянутой кожи, в A&amp;J есть нехирургические методы. С заботой о вашей коже.</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href="#contact">Записаться на консультацию</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual" aria-hidden="true">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
+        <img class="in-hero__arch" src={img('liftHero')} alt="" width="720" height="900" fetchpriority="high" aria-hidden="true" />
+      </div>
+    </div>
+
+    <div class="cs-benefits">
+      <ul class="container cs-benefits__list">
+        {benefits.map((b) => (
+          <li>
+            <img src={img('star')} alt="" width="15" height="15" />
+            <div><strong>{b.title}</strong><span>{b.text}</span></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <main>
+    <section class="container cs-intro">
+      <p class="cs-eyebrow">О направлении</p>
+      <h2 class="cs-title">Упругая кожа без хирургического вмешательства</h2>
+      <p class="cs-intro__text">В клинике есть нехирургические методы, направленные на улучшение внешнего вида и упругости кожи. Специалисты используют современные аппаратные технологии и инъекционные методики, а метод подбирают после консультации.</p>
+    </section>
+
+    <section class="container bio-block cs-devices">
+      <p class="cs-eyebrow">Методы</p>
+      <h2 class="cs-title">Какие методы есть в клинике</h2>
+      <ul class="cs-devices__grid">
+        {kinds.map((k) => (
+          <li class="cs-card" id={k.id}>
+            <h3>{k.title}</h3>
+            <p class="cs-card__for">{k.forWhat}</p>
+            {k.list && <ul>{k.list.map((x) => <li>{x}</li>)}</ul>}
+            <p>{k.text}</p>
+            {k.href ? <a class="cs-card__link" href={k.href}>Подробнее о процедуре →</a> : <a class="cs-card__link" href={site.bookingUrl} target="_blank" rel="noopener">Записаться →</a>}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="cs-results">
+      <div class="container cs-results__inner">
+        <div>
+          <h2 class="cs-results__title">С чем приходят</h2>
+          <p class="cs-results__note">Какой метод подойдёт именно вам, решает врач после консультации.</p>
+        </div>
+        <ul class="cs-results__list">
+          {results.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="container cs-steps">
+      <h2 class="section-title">Как проходит процедура</h2>
+      <ol class="cs-steps__list">
+        {steps.map((s, i) => (
+          <li>
+            <span class="cs-steps__num">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="container pm-photos">
+      <p class="cs-eyebrow">Как мы работаем</p>
+      <ul class="pm-photos__list">
+        {photos.map((p) => <li><img src={img(p.key)} alt={p.alt} width="800" height="800" loading="lazy" /></li>)}
+      </ul>
+    </section>
+
+    <section class="container in-faq">
+      <p class="cs-eyebrow">Вопросы и ответы</p>
+      <h2 class="cs-title">Что обычно спрашивают</h2>
+      <div class="in-faq__list">
+        {faq.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="container cs-med">
+      <div class="cs-med__card">
+        <h2>Важно знать</h2>
+        <p class="in-cross__text">Метод и количество процедур подбирают индивидуально. Подробности уточняйте у администраторов.</p>
+        <p>Имеются противопоказания. Необходима консультация специалиста.</p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>Что ещё есть в клинике</h2>
+        <p class="in-cross__text">Процедуры можно сочетать. Посмотрите, что ещё есть в клинике.</p>
+        <p class="in-cross__links">
+          <a href="/smas">SMAS-лифтинг Liftera →</a>
+          <a href="/lpg">LPG-массаж →</a>
+          <a href="/volnewmer">RF-лифтинг Volnewmer →</a>
+          <a href="/rf">Игольчатый RF-лифтинг Morpheus 8 →</a>
+          <a href="/massage">Массаж лица и тела →</a>
+          <a href="/sale">Акции месяца →</a>
+        </p>
+      </div>
+    </section>
+
+    <Directions />
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">Запишитесь на консультацию</h2>
+          <p class="cs-cta__sub">Выберите удобное время онлайн или позвоните, администратор ответит на вопросы.</p>
+          <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+</Base>

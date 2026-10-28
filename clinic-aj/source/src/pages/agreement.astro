@@ -1,0 +1,14 @@
+---
+// Страница /agreement — «Согласие на обработку персональных данных», текст с Тильды дословно (data/docs/agreement.json).
+// На неё ведут ссылки в подвале (legalLinks) и у форм записи.
+import DocPage from '../components/DocPage.astro';
+import blocks from '../data/docs/agreement.json';
+---
+<DocPage
+  path="/agreement"
+  title="Согласие на обработку персональных данных"
+  crumb="Согласие на обработку данных"
+  metaTitle="Согласие на обработку персональных данных | Клиника эстетической косметологии A&J"
+  description="Согласие на обработку персональных данных ООО «Эстетика» (клиника A&J, Мурманск) при записи и заказе обратного звонка на сайте clinic-aj.ru."
+  blocks={blocks as any}
+/>
