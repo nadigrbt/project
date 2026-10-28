@@ -36,6 +36,7 @@ export const site = {
 export const mainNav = [
   { label: 'Услуги', href: '/#uslugi' },
   { label: 'О клинике', href: '/#about' },
+  { label: 'Врачи', href: '/vrachi' },
   { label: 'Акции', href: '/sale' },
   { label: 'Контакты', href: '/#contact' },
 ];

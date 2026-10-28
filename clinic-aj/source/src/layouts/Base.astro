@@ -20,9 +20,13 @@ interface Props {
   ogImage?: string;
   /** Черновик или вариант редизайна: не показывать в поиске */
   noindex?: boolean;
+  /** Разметка schema.org (JSON-LD) для поисковиков: объект или список объектов */
+  jsonLd?: object | object[];
+  ogType?: string;
 }
 
-const { title, description, ogTitle = title, ogDescription = description, ogImage, noindex = false } = Astro.props;
+const { title, description, ogTitle = title, ogDescription = description, ogImage, noindex = false, jsonLd, ogType = 'website' } = Astro.props;
+const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site).href;
 const og = ogImage ?? new URL(img('og'), Astro.site).href;
 ---
@@ -44,11 +48,13 @@ const og = ogImage ?? new URL(img('og'), Astro.site).href;
       });
     </script>
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:image" content={og} />
+    <meta property="og:locale" content="ru_RU" />
+    {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
 
     <link rel="icon" type="image/svg+xml" href={img('faviconLight')} media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href={img('faviconDark')} media="(prefers-color-scheme: dark)" />

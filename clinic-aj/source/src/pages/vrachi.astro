@@ -1,0 +1,124 @@
+---
+// Страница /vrachi — «Врачи клиники» (28.10). Список врачей — data/doctors.ts, у каждого своя страница /vrach-<slug> (pages/[doctor].astro).
+// Дизайн по образцу /orto (стили — styles/inner.css). Данные о врачах — только с ПроДокторов или от владельца, ничего не выдумываем.
+// Для Яндекса: title/description с именами, разметка schema.org (MedicalClinic + сотрудники, список врачей, хлебные крошки), страница в sitemap.xml.
+// Ссылки на страницу: меню в шапке и мобильное меню (site.ts → mainNav), подвал, полоса под первым экраном главной, «Что ещё есть в клинике» на направлениях.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import Directions from '../components/Directions.astro';
+import DoctorCard from '../components/DoctorCard.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+import { doctors, doctorUrl, isIndexable } from '../data/doctors';
+import { abs, breadcrumbsLd, clinicLd, doctorLd } from '../data/schema';
+import '../styles/inner.css';
+
+const PRODOCTOROV_CLINIC = 'https://prodoctorov.ru/murmansk/lpu/113320-aj/';
+const names = doctors.map((d) => d.name).join(', ');
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    ...clinicLd(),
+    sameAs: [...clinicLd().sameAs, PRODOCTOROV_CLINIC],
+    employee: doctors.filter(isIndexable).map((d) => doctorLd(d, d.photo ? img(d.photo as any) : undefined)),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Врачи клиники A&J в Мурманске',
+    itemListElement: doctors.filter(isIndexable).map((d, i) => ({ '@type': 'ListItem', position: i + 1, name: d.name, url: abs(doctorUrl(d)) })),
+  },
+  breadcrumbsLd([{ name: 'Главная', href: '/' }, { name: 'Врачи', href: '/vrachi' }]),
+];
+---
+<Base
+  title="Врачи и косметологи клиники A&J в Мурманске: специалисты, стаж, запись"
+  description={`Врачи и специалисты клиники эстетической косметологии A&J в Мурманске: врач-косметолог, дерматолог, косметологи-эстетисты, массажист. ${names}. Запишитесь онлайн или по номеру 78-70-30`}
+  jsonLd={jsonLd}
+>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">Врачи</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero in-hero--noimg">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">Клиника A&amp;J · Мурманск</p>
+        <h1 class="cs-hero__title">Врачи и специалисты <span>клиники A&amp;J в&nbsp;Мурманске</span></h1>
+        <p class="cs-hero__lead">Выберите специалиста, чтобы узнать о нём подробнее: специальность, стаж и статьи. Или запишитесь на консультацию, и администратор поможет подобрать специалиста.</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual" aria-hidden="true">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="container dl">
+      <ul class="dl__grid">
+        {doctors.map((d) => <DoctorCard doctor={d} />)}
+      </ul>
+    </section>
+
+    <section class="container cs-med">
+      <div class="cs-med__card">
+        <h2>Отзывы пациентов</h2>
+        <p class="in-cross__text">Отзывы о специалистах клиники A&amp;J собраны на независимом сайте ПроДокторов.</p>
+        <p class="in-cross__links"><a href={PRODOCTOROV_CLINIC} target="_blank" rel="noopener">Отзывы на ПроДокторов →</a></p>
+        <p>Имеются противопоказания. Необходима консультация специалиста.</p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>Направления клиники</h2>
+        <p class="in-cross__text">С чем можно прийти к нашим врачам.</p>
+        <p class="in-cross__links">
+          <a href="/cosmetology">Аппаратная косметология →</a>
+          <a href="/injections">Инъекционная косметология →</a>
+          <a href="/estetica">Эстетическая косметология →</a>
+          <a href="/blog">Главный врач отвечает в блоге →</a>
+        </p>
+      </div>
+    </section>
+
+    <Directions />
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">Запишитесь на консультацию</h2>
+          <p class="cs-cta__sub">Выберите удобное время онлайн или позвоните, администратор поможет подобрать специалиста.</p>
+          <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .dl { padding-top: 72px; padding-bottom: 88px; }
+  .dl__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 48px 32px; margin: 0; padding: 0; }
+  @media (max-width: 959px) {
+    .dl { padding-top: 48px; padding-bottom: 60px; }
+    .dl__grid { grid-template-columns: 1fr 1fr; gap: 36px 16px; }
+  }
+  @media (max-width: 479px) {
+    .dl__grid { grid-template-columns: 1fr; }
+  }
+</style>
