@@ -16,6 +16,12 @@ Options -Indexes
   # 1а. Страницы Тильды без адреса → новые адреса (28.10)
   RewriteRule ^page77185316\.html$ /massage [L,R=301]
   RewriteRule ^page77186186\.html$ /lifting [L,R=301]
+  # Служебная страница Тильды (скрипт для слабовидящих) была в sitemap — ведём на главную (28.10)
+  RewriteRule ^page39632167\.html$ / [L,R=301]
+
+  # 1б. /index и /index.html — дубли главной → /
+  RewriteCond %{THE_REQUEST} \s/index(\.html)?[\s?] [NC]
+  RewriteRule ^ / [L,R=301]
 
   # 2. Адреса как на Тильде: /lpg открывает lpg.html
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -31,6 +37,11 @@ Options -Indexes
 
 ErrorDocument 404 /404.html
 
+# Типы файлов (на случай, если хостинг их не знает)
+AddType image/webp .webp
+AddType font/woff2 .woff2
+AddType video/mp4 .mp4
+
 # Кэширование статики
 <IfModule mod_expires.c>
   ExpiresActive On
@@ -38,6 +49,10 @@ ErrorDocument 404 /404.html
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 month"
+  ExpiresByType application/xml "access plus 1 day"
+  ExpiresByType text/xml "access plus 1 day"
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType text/css "access plus 1 year"
   ExpiresByType application/javascript "access plus 1 year"
@@ -45,5 +60,5 @@ ErrorDocument 404 /404.html
 </IfModule>
 
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml application/json
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript image/svg+xml application/json application/xml text/xml image/x-icon
 </IfModule>

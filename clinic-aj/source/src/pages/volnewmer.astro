@@ -60,8 +60,8 @@ const photos: { key: ImageKey; alt: string }[] = [
 ];
 ---
 <Base
-  title="RF-лифтинг Volnewmer в Мурманске | Клиника эстетической косметологии A&J"
-  description="Volnewmer — RF-лифтинг нового поколения: подтяжка и уплотнение кожи без операции. Теперь в клинике A&J в Мурманске."
+  title="RF-лифтинг Volnewmer в Мурманске — клиника A&J"
+  description="RF-лифтинг на аппарате Volnewmer в клинике A&J в Мурманске: радиочастотная подтяжка и уплотнение кожи без операции. Запишитесь онлайн или по номеру 78-70-30"
 >
   <section class="vr-hero">
     <Header />
@@ -69,7 +69,7 @@ const photos: { key: ImageKey; alt: string }[] = [
     <div class="container vr-hero__top">
       <div class="vr-hero__text">
         <nav class="vr-crumbs" aria-label="Хлебные крошки">
-          <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/cosmetology">Аппаратная косметология</a>
+          <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/cosmetology">Аппаратная косметология</a><span class="vr-crumbs__sep" aria-hidden="true">/</span><span aria-current="page">RF-лифтинг Volnewmer</span>
         </nav>
         <p class="vr-eyebrow">Теперь в&nbsp;A&amp;J</p>
         <h1 class="vr-hero__title">RF-лифтинг Volnewmer <span>подтяжка кожи без&nbsp;операции</span></h1>
@@ -87,7 +87,7 @@ const photos: { key: ImageKey; alt: string }[] = [
       <div class="vr-hero__visual" aria-hidden="true">
         <img class="vr-hero__letters" src={img('heroLetters')} alt="" width="1200" height="608" />
         <img class="vr-hero__woman" src={img('promoWoman')} alt="" width="700" height="700" fetchpriority="high" />
-        <img class="vr-hero__device" src={img('promoDevice')} alt="" width="800" height="800" />
+        <img class="vr-hero__device" src={img('promoDevice')} alt="Аппарат Volnewmer для RF-лифтинга" width="800" height="800" />
       </div>
     </div>
 
@@ -224,7 +224,7 @@ const photos: { key: ImageKey; alt: string }[] = [
     min-height: 600px;
   }
   .vr-hero__text { position: relative; z-index: 2; padding: 40px 0 64px; }
-  .vr-crumbs { display: flex; gap: 10px; margin-bottom: 36px; font-size: var(--fs-small); color: var(--muted); }
+  .vr-crumbs { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-bottom: 36px; font-size: var(--fs-small); color: var(--muted); }
   .vr-crumbs a { text-decoration: none; }
   .vr-crumbs a:hover { color: var(--wine); }
   .vr-hero__title { margin-top: 28px; font-size: var(--fs-h1); line-height: 1.12; font-weight: var(--w-thin); }

@@ -14,7 +14,8 @@ const T = 'https://static.tildacdn.com';
 
 export const images = {
   logo:          { file: 'logo.webp',          remote: `${T}/tild6661-6166-4336-a436-386130373361/aj.png`, width: 400 },
-  footerLogo:    { file: 'logo-footer.svg',    remote: `${T}/tild3365-6664-4664-a136-663565646437/AJ_logo_2_3.svg` },
+  // Логотип в подвале: на Тильде SVG весом 1 МБ (внутри PNG 4096 px), у нас — webp 320 px (~20 КБ)
+  footerLogo:    { file: 'logo-footer.webp',   remote: `${T}/tild3365-6664-4664-a136-663565646437/AJ_logo_2_3.svg`, width: 320 },
   cosmLetters:   { file: 'cosmetology-letters.webp' },
   heroLetters:   { file: 'hero-letters.webp',  remote: `${T}/tild3434-3831-4561-b634-643362643334/AJ_logo_2_2-min.png`, width: 1200 },
   heroDoctors:   { file: 'hero-doctors.webp',  remote: `${T}/tild3730-3761-4564-b761-623765656663/photo.png`, width: 600 },
@@ -82,9 +83,8 @@ export const images = {
   aboutVk:       { file: 'about-vk.svg',       remote: `${T}/tild3136-6330-4132-b639-326661666365/14.svg` },
   aboutTg:       { file: 'about-tg.svg',       remote: `${T}/tild3130-3462-4839-a135-303035366161/15.svg` },
   developer:     { file: 'polar-digital.webp', remote: `${T}/tild3635-3666-4336-a563-363964326632/photo.png`, width: 200 },
-  favicon:       { file: 'favicon.svg',        remote: `${T}/tild3363-6631-4238-a439-656236633565/kosmetologiya_murman.svg` },
-  faviconLight:  { file: 'favicon-light.svg',  remote: `${T}/tild6539-6662-4931-a635-346634343638/kosmetologiya_murman.svg` },
-  faviconDark:   { file: 'favicon-dark.svg',   remote: `${T}/tild3464-3937-4331-a664-363038663661/kosmetologiya_murman.svg` },
+  // Иконка сайта: на Тильде SVG весом 1 МБ, у нас PNG 96×96 (~10 КБ) и public/favicon.ico (16/32/48 px)
+  favicon:       { file: 'favicon-96.png' },
   appleIcon:     { file: 'apple-touch-icon.png', remote: `${T}/tild6237-3737-4130-b965-373233396138/kosmetologiya_murman.png`, width: 192 },
   og:            { file: 'og.jpg',             remote: `${T}/tild3133-3666-4639-b434-376539316537/AJ_logo.jpg`, width: 1200 },
 
