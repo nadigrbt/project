@@ -17,16 +17,23 @@ Options -Indexes
   RewriteRule ^page77185316\.html$ /massage [L,R=301]
   RewriteRule ^page77186186\.html$ /lifting [L,R=301]
 
-  # 2. Адреса как на Тильде: /lpg открывает lpg.html
+  # 2. Старые адреса с .html → без .html (301, 29.10): /lpg.html → /lpg, /index.html → /
+  #    THE_REQUEST — то, что набрал посетитель, поэтому внутренняя подмена из п. 4 сюда не попадает
+  RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+  RewriteRule ^ / [L,R=301]
+  RewriteCond %{THE_REQUEST} \s/+([^\s?]+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [L,R=301]
+
+  # 3. Без слэша в конце (trailingSlash: 'never'): /lpg/ → /lpg
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+  # 4. Адреса как на Тильде: /lpg открывает lpg.html (адрес в браузере не меняется)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-  RewriteRule ^(.+?)/?$ /$1.html [L]
-
-  # 3. Если кто-то зайдёт на /lpg.html — перекидываем на /lpg
-  RewriteCond %{THE_REQUEST} \s/([^\s?]+)\.html[\s?] [NC]
-  RewriteCond %1 !^index$
-  RewriteRule ^ /%1 [L,R=301]
+  RewriteRule ^(.+)$ /$1.html [L]
 </IfModule>
 
 ErrorDocument 404 /404.html
