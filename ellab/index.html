@@ -1319,8 +1319,30 @@
       z-index: 0;
     }
     .svc-hero-wrap .bulb-frame {
-      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 90%, transparent 100%);
-      mask-image: linear-gradient(to bottom, #000 0%, #000 90%, transparent 100%);
+      /* no alpha mask on mobile: relying on mask-image fade to hide a
+         background-color mismatch only works reliably on the edge(s) the
+         box doesn't actually need to show page background through — true
+         for the published home hero (full viewport width, fade only where
+         it meets .services below) but not here, where page background is
+         exposed on all four sides of this in-column box. Instead, paint
+         the fade directly in the page's own background color on an overlay
+         (below), which reaches true, exact-color zero at every edge
+         regardless of any filter/contrast mismatch in the photo itself. */
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
+    .svc-hero-wrap .bulb-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      /* the color stop is spelled out as rgba(...,0) rather than the bare
+         "transparent" keyword — CSS interpolates that keyword as black at
+         zero alpha, not this color at zero alpha, which was muddying the
+         whole fade zone a shade too dark instead of cleanly thinning out. */
+      background:
+        linear-gradient(to bottom, #0c0d10 0, rgba(12,13,16,0) 64px, rgba(12,13,16,0) calc(100% - 72px), #0c0d10 100%),
+        linear-gradient(to right, #0c0d10 0, rgba(12,13,16,0) 30px, rgba(12,13,16,0) calc(100% - 30px), #0c0d10 100%);
     }
     .svc-hero-wrap .bulb-frame img {
       transform: none;
