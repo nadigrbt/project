@@ -37,6 +37,13 @@ const og = ogImage ?? new URL(img('og'), Astro.site).href;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {/* Тестовая копия на GitHub Pages не должна попадать в поиск (npm run preview-build) */}
     {(noindex || import.meta.env.PUBLIC_NOINDEX === '1') && <meta name="robots" content="noindex, nofollow" />}
+    {/* GitHub Pages не умеет редиректы: если открыли /lpg.html, убираем .html из адреса в браузере.
+        На боевом сайте это делает 301-редирект в public/.htaccess */}
+    {import.meta.env.PUBLIC_NOINDEX === '1' && (
+      <script is:inline>
+        if (/\.html$/.test(location.pathname)) history.replaceState(null, '', location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '') + location.search + location.hash);
+      </script>
+    )}
     <meta name="format-detection" content="telephone=no" />
     <title>{title}</title>
     <meta name="description" content={description} />
