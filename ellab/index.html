@@ -1332,17 +1332,27 @@
       -webkit-mask-image: none;
     }
     .svc-hero-wrap .bulb-frame::after {
+      /* a flat, opaque matte in the page's own background color, with a
+         soft-edged window into it around the bulb — the same
+         window-into-dark-background idea the desktop oval uses, just
+         painted directly instead of leaning on the photo's own filtered
+         background matching the page color closely enough. That approach
+         (crush the photo's background via contrast/brightness, let a thin
+         fade hide any residual mismatch) left a visible tinted rectangle
+         on a real phone screen — small as the mismatch measured in
+         testing, OLED blacks and image/screenshot compression make it
+         read as a hard edge. Painted directly in the exact page color,
+         there's no mismatch to hide: everywhere outside the window is
+         pixel-exact page background. This is a plain background
+         radial-gradient (not mask-image/-webkit-mask-image) on purpose —
+         CSS masking on a layer next to one with an animated filter is a
+         known trouble spot in WebKit (stale raster, masks silently not
+         applying); a background gradient has none of that risk. */
       content: '';
       position: absolute;
       inset: 0;
       pointer-events: none;
-      /* the color stop is spelled out as rgba(...,0) rather than the bare
-         "transparent" keyword — CSS interpolates that keyword as black at
-         zero alpha, not this color at zero alpha, which was muddying the
-         whole fade zone a shade too dark instead of cleanly thinning out. */
-      background:
-        linear-gradient(to bottom, #0c0d10 0, rgba(12,13,16,0) 64px, rgba(12,13,16,0) calc(100% - 72px), #0c0d10 100%),
-        linear-gradient(to right, #0c0d10 0, rgba(12,13,16,0) 30px, rgba(12,13,16,0) calc(100% - 30px), #0c0d10 100%);
+      background: radial-gradient(ellipse 60% 52% at 66% 66%, rgba(12,13,16,0) 0%, rgba(12,13,16,0) 34%, #0c0d10 88%);
     }
     .svc-hero-wrap .bulb-frame img {
       transform: none;
