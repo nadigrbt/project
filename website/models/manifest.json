@@ -1,0 +1,5 @@
+{
+  "sunglasses": { "image": "sunglasses.png", "size": 2.0 },
+  "chain": { "image": "chain.png", "size": 1.7 },
+  "chunkySneaker": { "image": "sneaker-chunky.png", "size": 2.2 }
+}

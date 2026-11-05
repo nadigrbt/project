@@ -358,6 +358,11 @@ const crossbody = () => group(
   put(to(0.47, 0.025, C.gold, PI), [0, 0.3, 0]),
 );
 
+const chain = () => group(
+  put(to(0.55, 0.1, C.gold), [0, 0, 0], [0.6, 0, 0], [1, 1.1, 1]),
+  put(sp(0.1, C.gold), [0, 0.55, 0]),
+);
+
 // --- Абстрактные фигуры (внутреннее кольцо) ---
 function glossy(color, roughness = 0.3) {
   return new THREE.MeshPhysicalMaterial({
@@ -407,7 +412,7 @@ const rings = [
   },
   {
     rx: 4.9, rz: 3.8, dir: 1, speed: 0.11, tilt: -0.34, spin: 0.3, spinStep: 0.15, yScale: 0.74,
-    ys: [-1.0, 1.2, 0.4, -1.6, 1.7, -0.3, 1.0, -1.9, 0.1, -0.8],
+    ys: [-1.0, 1.2, 0.4, -1.6, 1.7, -0.3, 1.0, -1.9, 0.1, -0.8, 1.4],
     make: [
       item('chunkySneaker', () => sneaker({ upper: C.grey, accent: C.orange, toe: C.white, sole: C.white, midsole: C.black, chunk: 2 }), 1.9),
       item('sunglasses', sunglasses, 1.6),
@@ -419,6 +424,7 @@ const rings = [
       item('phone', smartphone, 1.5),
       item('wallet', wallet, 1.3),
       item('earbuds', earbudsCase, 1.1),
+      item('chain', chain, 1.6),
     ],
   },
 ];
@@ -436,6 +442,7 @@ rings.forEach((ring, ri) => {
       mesh: obj,
       slot: make.slot,
       size: make.size,
+      flip: i * 1.3,
       ring,
       angle: (i / ring.make.length) * Math.PI * 2 + ri * 0.6,
       y0: ring.ys[i] * (ring.yScale ?? 1),
@@ -448,26 +455,54 @@ rings.forEach((ring, ri) => {
 });
 const MAX_RX = Math.max(...rings.map((r) => r.rx));
 
-// --- Реалистичные модели (необязательно) ---
-// Если рядом лежит models/manifest.json, вещи из списка заменяются на GLB-файлы:
-//   { "sneaker": { "file": "sneaker.glb", "size": 1.9, "rotation": [0, 0, 0] } }
+// --- Реалистичные предметы (необязательно) ---
+// Если рядом лежит models/manifest.json, вещи из списка заменяются на модели или фото:
+//   "sneaker":  { "file": "sneaker.glb", "size": 1.9, "rotation": [0, 0, 0] }   — 3D-модель из models/
+//   "sunglasses": { "image": "sunglasses.png", "size": 2.0 }                       — фото с прозрачным фоном из images/
 // Нет манифеста или файла — остаются встроенные заглушки.
 fetch('models/manifest.json')
   .then((r) => (r.ok ? r.json() : {}))
   .catch(() => ({}))
   .then(async (manifest) => {
-    if (!manifest || !Object.keys(manifest).length) return;
-    const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
-    const loader = new GLTFLoader();
+    const entries = Object.entries(manifest || {});
+    if (!entries.length) return;
+    const needGltf = entries.some(([, e]) => typeof e === 'string' || e.file);
+    const loader = needGltf
+      ? new (await import('three/addons/loaders/GLTFLoader.js')).GLTFLoader()
+      : null;
+    const textures = new THREE.TextureLoader();
+
     for (const b of bodies) {
       const entry = b.slot && manifest[b.slot];
       if (!entry) continue;
+      const size = entry.size ?? b.size;
+
+      if (entry.image) {
+        // Фото всегда повёрнуто к зрителю; «разворот» и покачивание считаются в цикле
+        textures.load(`images/${entry.image}`, (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.anisotropy = 8;
+          const aspect = tex.image.width / tex.image.height;
+          const w = aspect >= 1 ? size : size * aspect;
+          const h = aspect >= 1 ? size / aspect : size;
+          const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: tex, transparent: true, alphaTest: 0.03, toneMapped: false,
+          }));
+          sprite.scale.set(w, h, 1);
+          b.mesh.clear();
+          b.mesh.add(sprite);
+          b.sprite = sprite;
+          b.spriteW = w;
+        }, undefined, () => { /* файла нет — остаётся заглушка */ });
+        continue;
+      }
+
       const file = typeof entry === 'string' ? entry : entry.file;
       loader.load(`models/${file}`, (gltf) => {
         const model = gltf.scene;
         if (entry.rotation) model.rotation.set(...entry.rotation);
         b.mesh.clear();
-        b.mesh.add(fit(model, entry.size ?? b.size));
+        b.mesh.add(fit(model, size));
       }, undefined, () => { /* файла нет — остаётся заглушка */ });
     }
   });
@@ -581,9 +616,16 @@ function frame() {
 
   // Каждая вещь вращается вокруг своей оси и слегка плавает; свайп разгоняет вращение
   for (const b of bodies) {
-    const rate = (reduceMotion ? 0 : b.speed) + boost * 7;
-    q.setFromAxisAngle(b.axis, rate * dt);
-    b.mesh.quaternion.premultiply(q);
+    if (b.sprite) {
+      // Фото: псевдо-разворот (сжатие по ширине), наклон в плоскости, свайп ускоряет
+      b.flip += ((reduceMotion ? 0 : 0.7) + boost * 5) * dt;
+      b.sprite.scale.x = b.spriteW * (0.72 + 0.28 * Math.abs(Math.cos(b.flip + b.phase)));
+      b.sprite.material.rotation = Math.sin(b.flip * 0.8 + b.phase) * 0.26;
+    } else {
+      const rate = (reduceMotion ? 0 : b.speed) + boost * 7;
+      q.setFromAxisAngle(b.axis, rate * dt);
+      b.mesh.quaternion.premultiply(q);
+    }
     b.mesh.position.y = b.baseY + (reduceMotion ? 0 : Math.sin(t * 0.9 + b.phase) * 0.14);
   }
 
