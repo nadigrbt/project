@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studio</title>
+  <meta name="description" content="Первый экран сайта">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <main class="hero">
+    <canvas id="stage" aria-hidden="true"></canvas>
+
+    <header class="bar">
+      <h1 class="bar__name"><a href="/">Studio</a></h1>
+      <div class="bar__toggle" aria-hidden="true">
+        <span class="bar__dot"></span>
+        <span class="bar__count">2</span>
+        <span class="bar__dot"></span>
+      </div>
+      <button class="bar__menu" type="button" aria-label="Меню">
+        <span>Menu</span>
+        <i class="bar__kebab" aria-hidden="true"></i>
+      </button>
+    </header>
+  </main>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

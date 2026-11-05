@@ -1,0 +1,136 @@
+:root {
+  --bg: #f7f7f7;
+  --ink: #000;
+  --lime: #e4ff7a;
+  --brown: #5b3a1e;
+  --white: #fff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+
+#stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  cursor: grab;
+}
+#stage.is-ready { opacity: 1; }
+#stage:active { cursor: grabbing; }
+
+/* Плашка по центру: название | переключатель | Menu */
+.bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: stretch;
+  font-size: 14px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.bar > * { pointer-events: auto; }
+
+.bar__name {
+  font: inherit;
+  display: flex;
+  align-items: center;
+  padding: 0 9px;
+  height: 28px;
+  background: var(--white);
+}
+.bar__name a { color: inherit; text-decoration: none; }
+
+.bar__toggle,
+.bar__menu {
+  background: var(--lime);
+  height: 28px;
+}
+
+.bar__toggle {
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 8px;
+}
+
+.bar__menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 9px 0 8px;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Коричневая «таблетка» со счётчиком и двумя вращающимися кружками */
+.bar__toggle {
+  position: relative;
+}
+.bar__toggle::before {
+  content: "";
+  position: absolute;
+  left: 4px; right: -4px;
+  top: 4px; bottom: 4px;
+  background: var(--brown);
+  border-radius: 999px;
+  z-index: 0;
+}
+.bar__toggle > * { position: relative; z-index: 1; }
+
+.bar__dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--white);
+  perspective: 80px;
+  animation: spin 3.2s linear infinite;
+}
+.bar__dot:last-child { animation-direction: reverse; margin-right: 6px; }
+
+.bar__count {
+  color: var(--white);
+  font-size: 11px;
+  padding: 0 7px;
+}
+
+.bar__kebab {
+  display: block;
+  width: 4px;
+  height: 11px;
+  background:
+    radial-gradient(circle, var(--ink) 1.6px, transparent 1.8px) 0 0 / 4px 5.5px repeat-y;
+}
+
+@keyframes spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar__dot { animation: none; }
+}
