@@ -24,6 +24,10 @@ body {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
+  /* Свайп пальцем не должен прокручивать страницу или перехватываться браузером */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #stage {
