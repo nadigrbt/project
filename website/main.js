@@ -374,7 +374,13 @@ const shapes = [
   () => new THREE.Mesh(new THREE.SphereGeometry(0.46, 48, 32), glossy(0xe4ff7a, 0.15)),
 ];
 
-const item = (build, size) => () => fit(build(), size);
+// slot — имя слота для подмены на GLB-модель (см. models/README.md)
+const item = (slot, build, size) => {
+  const make = () => fit(build(), size);
+  make.slot = slot;
+  make.size = size;
+  return make;
+};
 
 // --- Три орбиты: разный радиус, наклон, направление и скорость ---
 const rings = [
@@ -387,32 +393,32 @@ const rings = [
     rx: 5.6, rz: 3.3, dir: -1, speed: 0.09, tilt: 0.38, spin: 0.3, spinStep: 0.15, yScale: 0.74,
     ys: [1.4, -1.2, 0.2, 1.9, -0.5, -1.8, 0.9, -0.1, 1.6, -1.5],
     make: [
-      item(tote, 1.5),
-      item(() => sneaker({ upper: C.white, accent: C.red, toe: C.cream, sole: C.rubber }), 1.9),
-      item(perfume, 1.4),
-      item(headphones, 1.6),
-      item(instantCamera, 1.5),
-      item(skateboard, 2.1),
-      item(backpack, 1.6),
-      item(smartwatch, 1.5),
-      item(speaker, 1.4),
-      item(cap, 1.6),
+      item('tote', tote, 1.5),
+      item('sneaker', () => sneaker({ upper: C.white, accent: C.red, toe: C.cream, sole: C.rubber }), 1.9),
+      item('perfume', perfume, 1.4),
+      item('headphones', headphones, 1.6),
+      item('camera', instantCamera, 1.5),
+      item('skateboard', skateboard, 2.1),
+      item('backpack', backpack, 1.6),
+      item('smartwatch', smartwatch, 1.5),
+      item('speaker', speaker, 1.4),
+      item('cap', cap, 1.6),
     ],
   },
   {
     rx: 4.9, rz: 3.8, dir: 1, speed: 0.11, tilt: -0.34, spin: 0.3, spinStep: 0.15, yScale: 0.74,
     ys: [-1.0, 1.2, 0.4, -1.6, 1.7, -0.3, 1.0, -1.9, 0.1, -0.8],
     make: [
-      item(() => sneaker({ upper: C.grey, accent: C.orange, toe: C.white, sole: C.white, midsole: C.black, chunk: 2 }), 1.9),
-      item(sunglasses, 1.6),
-      item(crossbody, 1.4),
-      item(lipstick, 1.4),
-      item(vinyl, 1.6),
-      item(controller, 1.5),
-      item(tumbler, 1.6),
-      item(smartphone, 1.5),
-      item(wallet, 1.3),
-      item(earbudsCase, 1.1),
+      item('chunkySneaker', () => sneaker({ upper: C.grey, accent: C.orange, toe: C.white, sole: C.white, midsole: C.black, chunk: 2 }), 1.9),
+      item('sunglasses', sunglasses, 1.6),
+      item('crossbody', crossbody, 1.4),
+      item('lipstick', lipstick, 1.4),
+      item('vinyl', vinyl, 1.6),
+      item('controller', controller, 1.5),
+      item('tumbler', tumbler, 1.6),
+      item('phone', smartphone, 1.5),
+      item('wallet', wallet, 1.3),
+      item('earbuds', earbudsCase, 1.1),
     ],
   },
 ];
@@ -428,6 +434,8 @@ rings.forEach((ring, ri) => {
     ring.group.add(obj);
     bodies.push({
       mesh: obj,
+      slot: make.slot,
+      size: make.size,
       ring,
       angle: (i / ring.make.length) * Math.PI * 2 + ri * 0.6,
       y0: ring.ys[i] * (ring.yScale ?? 1),
@@ -439,6 +447,30 @@ rings.forEach((ring, ri) => {
   });
 });
 const MAX_RX = Math.max(...rings.map((r) => r.rx));
+
+// --- Реалистичные модели (необязательно) ---
+// Если рядом лежит models/manifest.json, вещи из списка заменяются на GLB-файлы:
+//   { "sneaker": { "file": "sneaker.glb", "size": 1.9, "rotation": [0, 0, 0] } }
+// Нет манифеста или файла — остаются встроенные заглушки.
+fetch('models/manifest.json')
+  .then((r) => (r.ok ? r.json() : {}))
+  .catch(() => ({}))
+  .then(async (manifest) => {
+    if (!manifest || !Object.keys(manifest).length) return;
+    const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+    const loader = new GLTFLoader();
+    for (const b of bodies) {
+      const entry = b.slot && manifest[b.slot];
+      if (!entry) continue;
+      const file = typeof entry === 'string' ? entry : entry.file;
+      loader.load(`models/${file}`, (gltf) => {
+        const model = gltf.scene;
+        if (entry.rotation) model.rotation.set(...entry.rotation);
+        b.mesh.clear();
+        b.mesh.add(fit(model, entry.size ?? b.size));
+      }, undefined, () => { /* файла нет — остаётся заглушка */ });
+    }
+  });
 
 // --- Размер ---
 function resize() {
