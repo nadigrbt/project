@@ -5,7 +5,6 @@
   var CDN_VID = 'https://framerusercontent.com/assets/';
 
   // Every card has the same size; the one in the centre is scaled up by 30%.
-  // and takes more room along the arc, so its neighbours do not overlap it.
   var HERO_SLOT = 1;      // room along the arc, in "cards"
 
   var people = [
