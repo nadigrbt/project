@@ -191,11 +191,6 @@ h1 {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
   width: min(1080px, 100%);
   margin: 0 auto;
-  border: 1px solid #26262c;
-  border-radius: 24px;
-  overflow: hidden;
-  background: linear-gradient(160deg, #1a1a1e 0%, #121215 100%);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
 }
 
 .product-media,
@@ -206,7 +201,6 @@ h1 {
   align-items: center;
   justify-content: center;
   padding: clamp(16px, 3vw, 36px);
-  background: radial-gradient(circle at 50% 42%, #34343c 0%, #1d1d22 55%, #151518 100%);
 }
 
 .product-media img {
@@ -225,18 +219,8 @@ h1 {
   padding: clamp(24px, 4vw, 48px);
 }
 
-.product-chip {
-  padding: 6px 12px;
-  border: 1px solid #34343b;
-  border-radius: 999px;
-  color: var(--muted);
-  font-size: 12px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
 .product-title {
-  margin-top: 16px;
+  margin-top: 0;
   font-size: clamp(26px, 3.2vw, 40px);
   font-weight: 600;
   line-height: 1.12;
