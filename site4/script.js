@@ -33,7 +33,7 @@
   var items = [
     { hero: true, name: 'Краскопистолет SATA HRS с нижним бачком', sku: 'HRS-48213',
       spec: 'Макс. давление 10 бар / 145 psi', price: '12 900 руб.', src: 'images/sata-hrs-card.jpg' }
-  ].concat(products, people.map(function (p, i) {
+  ].concat(products, people.filter(function (p) { return !!p.vid; }).map(function (p, i) {
     // Placeholder data for the remaining demo cards.
     return { name: p.name, sku: 'DEMO-' + (1001 + i), spec: '', price: 'по запросу',
              video: !!p.vid, src: p.vid ? CDN_VID + p.vid : CDN_IMG + p.img };
