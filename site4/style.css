@@ -2,6 +2,7 @@
   --bg: #0b0b0d;
   --fg: #f4f4f5;
   --muted: #9a9aa3;
+  --footer-h: 44px;
   --header-h: 73px;                                        /* measured and updated by script.js */
   --card-w: clamp(130px, min(18vw, 24svh), 260px);
   --card-h: calc(var(--card-w) * 1.5);
@@ -102,8 +103,8 @@ body {
 .carousel {
   position: sticky;
   top: var(--header-h);
-  height: calc(100vh - var(--header-h));
-  height: calc(100svh - var(--header-h));
+  height: calc(100vh - var(--header-h) - var(--footer-h));
+  height: calc(100svh - var(--header-h) - var(--footer-h));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -221,3 +222,25 @@ body {
 .arrow:hover { background: #1c1c21; border-color: #3a3a42; }
 .arrow:focus-visible,
 .stage:focus-visible { outline: 2px solid #6d8bff; outline-offset: 2px; }
+
+/* ---------- Footer ---------- */
+/* Fixed, because the carousel scrolls endlessly and the page has no real bottom. */
+.site-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  height: var(--footer-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--bg);
+  border-top: 1px solid #1c1c21;
+  color: var(--muted);
+  font-size: 14px;
+}
+.site-footer a { color: var(--fg); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.site-footer a:focus-visible { outline: 2px solid #6d8bff; outline-offset: 3px; border-radius: 4px; }

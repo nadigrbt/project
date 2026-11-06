@@ -6,7 +6,7 @@
 
   // The product is the first card. It is larger than the rest (see --hero in style.css)
   // and takes more room along the arc, so its neighbours do not overlap it.
-  var HERO_SLOT = 1.3;   // room along the arc, in "cards"
+  var HERO_SLOT = 1.25;   // room along the arc, in "cards"
 
   var people = [
     { name: 'Mara Okafor',   role: 'Creative Director',  tagline: 'Leads brand and campaign vision',           img: 'KbhZ8TSifLt6oom0DJy3I6dtRk.png' },
@@ -159,7 +159,8 @@
   function render() {
     var w = stage.clientWidth;
     var R = Math.max(w * 0.85, 640);   // arc radius
-    var STEP = 0.2;                    // radians per card
+    var STEP = 0.2;                    // tilt per card, radians
+    var STEP_X = 0.155;                 // spacing per card along the arc: tighter, cards overlap a little
     var f = focusAt(offset);
 
     for (var i = 0; i < N; i++) {
@@ -174,7 +175,7 @@
         continue;
       }
 
-      var x = Math.sin(angle) * R;
+      var x = Math.sin(d * STEP_X) * R;
       var y = (1 - Math.cos(angle)) * R * 0.55;
       var scale = Math.max(0.55, 1 - ad * 0.07);
       var opacity = ad > 3.6 ? Math.max(0, 1 - (ad - 3.6)) : 1;
