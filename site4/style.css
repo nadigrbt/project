@@ -2,9 +2,9 @@
   --bg: #0b0b0d;
   --fg: #f4f4f5;
   --muted: #9a9aa3;
-  --footer-h: 44px;
+  --footer-h: 56px;
   --header-h: 73px;                                        /* measured and updated by script.js */
-  --card-w: clamp(130px, min(18vw, 24svh), 260px);
+  --card-w: clamp(130px, min(18vw, 21svh), 260px);
   --card-h: calc(var(--card-w) * 1.5);
   --hero-w: calc(var(--card-w) * 1.5);                     /* the product card is 1.5x the others */
   --hero-h: calc(var(--card-h) * 1.5);
@@ -45,7 +45,6 @@ body {
   padding: 10px clamp(16px, 4vw, 48px) 14px;
   overflow-x: auto;
   scrollbar-width: none;
-  border-bottom: 1px solid #1c1c21;
 }
 .filters::-webkit-scrollbar { display: none; }
 
@@ -115,6 +114,7 @@ body {
   width: 100%;
   flex: 1;
   min-height: 240px;
+  margin-top: 28px;   /* air under the filters */
   overflow: hidden;
   cursor: grab;
   touch-action: pan-y;
@@ -165,12 +165,12 @@ body {
 
 .caption {
   text-align: center;
-  padding: 6px 16px 18px;
+  padding: 10px 16px 32px;   /* air above the footer */
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  min-height: 176px;
+  min-height: 200px;
 }
 
 .caption h2 {
@@ -237,7 +237,6 @@ body {
   justify-content: center;
   gap: 8px;
   background: var(--bg);
-  border-top: 1px solid #1c1c21;
   color: var(--muted);
   font-size: 14px;
 }
