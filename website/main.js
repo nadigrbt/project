@@ -631,9 +631,9 @@ function frame() {
   for (const b of bodies) {
     if (b.sprite) {
       // Фото: псевдо-разворот (сжатие по ширине), наклон в плоскости, свайп ускоряет
-      b.flip += ((reduceMotion ? 0 : 0.7) + boost * 5) * dt;
-      b.sprite.scale.x = b.spriteW * (0.72 + 0.28 * Math.abs(Math.cos(b.flip + b.phase)));
-      b.sprite.material.rotation = Math.sin(b.flip * 0.8 + b.phase) * 0.26;
+      b.flip += ((reduceMotion ? 0 : 0.35) + boost * 2.5) * dt;
+      b.sprite.scale.x = b.spriteW * (0.93 + 0.07 * Math.abs(Math.cos(b.flip + b.phase)));
+      b.sprite.material.rotation = Math.sin(b.flip * 0.8 + b.phase) * 0.08;
     } else {
       const rate = (reduceMotion ? 0 : b.speed) + boost * 7;
       q.setFromAxisAngle(b.axis, rate * dt);
