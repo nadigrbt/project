@@ -160,7 +160,7 @@
     var w = stage.clientWidth;
     var R = Math.max(w * 0.85, 640);   // arc radius
     var STEP = 0.2;                    // tilt per card, radians
-    var STEP_X = 0.155;                 // spacing per card along the arc: tighter, cards overlap a little
+    var STEP_X = 0.2;                  // spacing per card along the arc, same as site2
     var f = focusAt(offset);
 
     for (var i = 0; i < N; i++) {
@@ -277,7 +277,8 @@
   // Dragging sideways moves the page scroll, so everything stays in sync.
   stage.addEventListener('pointerdown', function (e) {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    drag = { x0: e.clientX, y0: scrollYNow(), moved: false, id: e.pointerId };
+    var hit = e.target.closest ? e.target.closest('.card') : null;
+    drag = { x0: e.clientX, y0: scrollYNow(), moved: false, id: e.pointerId, card: hit };
   });
 
   stage.addEventListener('pointermove', function (e) {
@@ -297,9 +298,18 @@
 
   function endDrag() {
     if (!drag) return;
-    var moved = drag.moved;
+    var moved = drag.moved, hit = drag.card;
     drag = null;
-    if (!moved) return;
+    if (!moved) {
+      // A plain click on a card brings it to the centre.
+      var k = cards.map(function (c) { return c.el; }).indexOf(hit);
+      if (k >= 0) {
+        var p = Math.round(posFromScroll());
+        var diff = wrapTo(k - mod(p, N), N);
+        if (diff) { dir = diff > 0 ? 1 : -1; scrollToY(scrollForItem(p + diff), true); }
+      }
+      return;
+    }
     dragging = false;
     stage.classList.remove('dragging');
     settle();
