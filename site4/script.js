@@ -21,10 +21,19 @@
     { name: 'Theo Brandt',   role: 'Product Designer',   tagline: 'Turns rough ideas into clear interfaces',   img: 'bw0gFHiTF8Q4IDcQFWSfWh6pyg.png' }
   ];
 
+  var products = [
+    { name: 'Краскопистолет HVLP с верхним бачком', sku: 'HVLP-20418',
+      spec: 'Сопло 1,4 мм · бачок 600 мл · давление 2–3 бар', price: '8 400 руб.', src: 'images/hvlp.jpg' },
+    { name: 'Блок подготовки воздуха со спиральным шлангом', sku: 'AIR-31760',
+      spec: 'Фильтр-регулятор и маслёнка · манометр 0–10 бар', price: '5 200 руб.', src: 'images/air-unit.jpg' },
+    { name: 'Респиратор-полумаска со сменными фильтрами', sku: 'RSP-52907',
+      spec: 'Фильтры A1P2 · силиконовый обтюратор', price: '3 700 руб.', src: 'images/respirator.jpg' }
+  ];
+
   var items = [
     { hero: true, name: 'Краскопистолет SATA HRS с нижним бачком', sku: 'HRS-48213',
       spec: 'Макс. давление 10 бар / 145 psi', price: '12 900 руб.', src: 'images/sata-hrs-card.jpg' }
-  ].concat(people.map(function (p, i) {
+  ].concat(products, people.map(function (p, i) {
     // Placeholder data for the remaining demo cards.
     return { name: p.name, sku: 'DEMO-' + (1001 + i), spec: '', price: 'по запросу',
              video: !!p.vid, src: p.vid ? CDN_VID + p.vid : CDN_IMG + p.img };
