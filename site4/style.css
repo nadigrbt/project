@@ -5,7 +5,8 @@
   --header-h: 73px;                                        /* measured and updated by script.js */
   --card-w: clamp(130px, min(18vw, 24svh), 260px);
   --card-h: calc(var(--card-w) * 1.5);
-  --hero: calc(var(--card-h) * 1.35);                      /* the product card is larger than the rest */
+  --hero-w: calc(var(--card-w) * 1.5);                     /* the product card is 1.5x the others */
+  --hero-h: calc(var(--card-h) * 1.5);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -118,21 +119,23 @@ body {
   -webkit-user-drag: none;
 }
 
-/* The product: bigger than the other cards, no background, frame or shadow. */
+/* The product: a larger card in the centre, in front of its neighbours. */
 .card--hero {
-  width: var(--hero);
-  height: var(--hero);
-  margin-left: calc(var(--hero) / -2);
-  margin-top: calc(var(--hero) / -2);
-  border-radius: 0;
-  overflow: visible;
-  background: none;
-  box-shadow: none;
+  width: var(--hero-w);
+  height: var(--hero-h);
+  margin-left: calc(var(--hero-w) / -2);
+  margin-top: calc(var(--hero-h) / -2);
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 70% at 62% 18%, rgba(120, 150, 185, .55) 0%, rgba(120, 150, 185, 0) 60%),
+    linear-gradient(180deg, #34475c 0%, #1b2634 55%, #0f151d 100%);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, .6);
 }
 
 .card--hero img {
   object-fit: contain;
-  filter: drop-shadow(0 28px 32px rgba(0, 0, 0, .55));
+  padding: 4% 0;
+  filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .5));
 }
 
 .caption {

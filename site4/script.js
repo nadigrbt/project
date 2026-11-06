@@ -6,7 +6,7 @@
 
   // The product is the first card. It is larger than the rest (see --hero in style.css)
   // and takes more room along the arc, so its neighbours do not overlap it.
-  var HERO_SLOT = 1.6;   // room along the arc, in "cards"
+  var HERO_SLOT = 1.3;   // room along the arc, in "cards"
 
   var people = [
     { name: 'Mara Okafor',   role: 'Creative Director',  tagline: 'Leads brand and campaign vision',           img: 'KbhZ8TSifLt6oom0DJy3I6dtRk.png' },
