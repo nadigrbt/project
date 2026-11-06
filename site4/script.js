@@ -4,9 +4,9 @@
   var CDN_IMG = 'https://framerusercontent.com/images/';
   var CDN_VID = 'https://framerusercontent.com/assets/';
 
-  // The product is the first card. It is larger than the rest (see --hero in style.css)
+  // Every card has the same size; the one in the centre is scaled up by 30%.
   // and takes more room along the arc, so its neighbours do not overlap it.
-  var HERO_SLOT = 1.25;   // room along the arc, in "cards"
+  var HERO_SLOT = 1;      // room along the arc, in "cards"
 
   var people = [
     { name: 'Mara Okafor',   role: 'Creative Director',  tagline: 'Leads brand and campaign vision',           img: 'KbhZ8TSifLt6oom0DJy3I6dtRk.png' },
@@ -182,6 +182,7 @@
     var STEP = 0.2;                    // tilt per card, radians
     var STEP_X = 0.2;                  // spacing per card along the arc, same as site2
     var f = focusAt(offset);
+    var cardW = cards[0].el.offsetWidth || 200;
 
     for (var i = 0; i < N; i++) {
       var c = cards[i];
@@ -197,7 +198,12 @@
 
       var x = Math.sin(d * STEP_X) * R;
       var y = (1 - Math.cos(angle)) * R * 0.55;
-      var scale = Math.max(0.55, 1 - ad * 0.07);
+      // The card in the centre grows by 30%, smoothly as it arrives.
+      var e = Math.max(0, 1 - ad);
+      e = e * e * (3 - 2 * e);
+      var scale = Math.max(0.55, 1 - ad * 0.07) * (1 + 0.3 * e);
+      // Neighbours move out a little so the enlarged card has room.
+      x += (d < 0 ? -1 : 1) * Math.min(ad, 1) * cardW * 0.15;
       var opacity = ad > 3.6 ? Math.max(0, 1 - (ad - 3.6)) : 1;
 
       c.el.style.visibility = 'visible';

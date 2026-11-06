@@ -4,11 +4,8 @@
   --muted: #9a9aa3;
   --footer-h: 44px;
   --header-h: 73px;                                        /* measured and updated by script.js */
-  --card-w: clamp(150px, 20vw, 260px);                     /* same as site2 */
+  --card-w: clamp(150px, min(20vw, calc((100svh - 360px) / 1.95)), 260px);   /* site2 size, capped so the centre card (+30%) fits */
   --card-h: calc(var(--card-w) * 1.5);
-  /* The product card is larger than the rest, as far as the screen height allows. */
-  --hero-h: max(var(--card-h), min(calc(var(--card-h) * 1.3), calc(100svh - 370px)));
-  --hero-w: calc(var(--hero-h) / 1.5);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -151,21 +148,6 @@ body {
   pointer-events: none;
   -webkit-user-drag: none;
 }
-
-/* The product: a larger card in the centre, in front of its neighbours. */
-.card--hero {
-  width: var(--hero-w);
-  height: var(--hero-h);
-  margin-left: calc(var(--hero-w) / -2);
-  margin-top: calc(var(--hero-h) / -2);
-  border-radius: 24px;
-  background:
-    radial-gradient(120% 70% at 62% 18%, rgba(120, 150, 185, .55) 0%, rgba(120, 150, 185, 0) 60%),
-    linear-gradient(180deg, #34475c 0%, #1b2634 55%, #0f151d 100%);
-  box-shadow: 0 32px 80px rgba(0, 0, 0, .6);
-}
-
-.card--hero img { object-fit: cover; }
 
 .caption {
   position: relative;
