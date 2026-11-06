@@ -30,13 +30,24 @@
       spec: 'Фильтры A1P2 · силиконовый обтюратор', price: '3 700 руб.', src: 'images/respirator.jpg' }
   ];
 
+  // Text for the four video cards, in order.
+  var videoInfo = [
+    { name: 'Краскопистолет SATA mini для подкраски', sku: 'MIN-60215',
+      spec: 'Сопло 1,0 мм · бачок 125 мл · расход воздуха 130 л/мин', price: '6 900 руб.' },
+    { name: 'Набор сопел и игл для краскопистолета', sku: 'NZL-74392',
+      spec: 'Комплекты 1,3 / 1,4 / 1,8 мм · нержавеющая сталь', price: '2 300 руб.' },
+    { name: 'Одноразовые бачки для краски, 600 мл', sku: 'CUP-83051',
+      spec: 'Набор 50 шт · адаптеры в комплекте', price: '1 850 руб.' },
+    { name: 'Набор для чистки краскопистолетов', sku: 'CLN-19846',
+      spec: '12 предметов · щётки, иглы, смазка', price: '1 450 руб.' }
+  ];
+
   var items = [
     { hero: true, name: 'Краскопистолет SATA HRS с нижним бачком', sku: 'HRS-48213',
       spec: 'Макс. давление 10 бар / 145 psi', price: '12 900 руб.', src: 'images/sata-hrs-card.jpg' }
   ].concat(products, people.filter(function (p) { return !!p.vid; }).map(function (p, i) {
-    // Placeholder data for the remaining demo cards.
-    return { name: p.name, sku: 'DEMO-' + (1001 + i), spec: '', price: 'по запросу',
-             video: !!p.vid, src: p.vid ? CDN_VID + p.vid : CDN_IMG + p.img };
+    var d = videoInfo[i];
+    return { name: d.name, sku: d.sku, spec: d.spec, price: d.price, video: true, src: CDN_VID + p.vid };
   }));
 
   var N = items.length;
