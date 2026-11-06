@@ -25,36 +25,14 @@
     videoPlayback: 'visible' // 'visible' = every visible card, 'centre' = only the middle one
   };
 
-  var IMG = 'https://framerusercontent.com/images/';
-  var VID = 'https://framerusercontent.com/assets/';
-
+  // The media sits next to the page in ./media. Title and description are optional:
+  // a card without them simply shows no caption on hover.
   var ITEMS = [
-    { media: 'image', title: 'Mara Okafor', description: 'Creative Director — leads brand and campaign vision',
-      src: IMG + 'KbhZ8TSifLt6oom0DJy3I6dtRk.png?width=800&height=1200',
-      srcset: IMG + 'KbhZ8TSifLt6oom0DJy3I6dtRk.png?scale-down-to=1024&width=800&height=1200 682w, ' + IMG + 'KbhZ8TSifLt6oom0DJy3I6dtRk.png?width=800&height=1200 800w' },
-    { media: 'video', title: 'Nora Vance', description: 'UX Researcher — listens first, then shapes the product',
-      src: VID + 'NN6Lx6k4t7M9vGURDbnyq40sQ.mp4' },
-    { media: 'image', title: 'Julian Reyes', description: 'Lead Engineer — builds fast, reliable front-end systems',
-      src: IMG + 'xUSdDKegY1epCfmV1Z59ievg1LI.png?width=1536&height=2048',
-      srcset: IMG + 'xUSdDKegY1epCfmV1Z59ievg1LI.png?scale-down-to=1024&width=1536&height=2048 768w, ' + IMG + 'xUSdDKegY1epCfmV1Z59ievg1LI.png?width=1536&height=2048 1536w' },
-    { media: 'video', title: 'Kai Nakamura', description: 'Motion Designer — crafts transitions that feel alive',
-      src: VID + 'evzABRU4WEqu8p0fD9C5sDiGY9s.mp4' },
-    { media: 'image', title: 'Iris Calder', description: 'Brand Strategist — finds the story behind each name',
-      src: IMG + 'tMsaCZMLrhptj9Km3aVihdywnlw.jpg?width=600&height=749',
-      srcset: IMG + 'tMsaCZMLrhptj9Km3aVihdywnlw.jpg?width=600&height=749 600w' },
-    { media: 'image', title: 'Lena Moreau', description: 'Art Director — sets the visual tone for every launch',
-      src: IMG + 'FnA0lOktORlmJAnlNebTalpe6ZM.png?width=1796&height=2400',
-      srcset: IMG + 'FnA0lOktORlmJAnlNebTalpe6ZM.png?scale-down-to=1024&width=1796&height=2400 766w, ' + IMG + 'FnA0lOktORlmJAnlNebTalpe6ZM.png?scale-down-to=2048&width=1796&height=2400 1532w, ' + IMG + 'FnA0lOktORlmJAnlNebTalpe6ZM.png?width=1796&height=2400 1796w' },
-    { media: 'video', title: 'Sofia Lind', description: 'Content Lead — writes words people actually remember',
-      src: VID + 'roSTU06jbgGlsYXGIPH26maBtQQ.mp4' },
-    { media: 'image', title: 'Amara Diallo', description: 'Head of Operations — keeps every project on rhythm',
-      src: IMG + 'HKrd4wmSAWqLUZ2RqMnQJF5bxw.jpg?width=736&height=915',
-      srcset: IMG + 'HKrd4wmSAWqLUZ2RqMnQJF5bxw.jpg?width=736&height=915 736w' },
-    { media: 'video', title: 'Elias Hart', description: 'Photographer — captures light, texture and quiet moments',
-      src: VID + 'kGZt3pMAG52JXRenq65ma0fZw.mp4' },
-    { media: 'image', title: 'Theo Brandt', description: 'Product Designer — turns rough ideas into clear interfaces',
-      src: IMG + 'bw0gFHiTF8Q4IDcQFWSfWh6pyg.png?width=1796&height=2400',
-      srcset: IMG + 'bw0gFHiTF8Q4IDcQFWSfWh6pyg.png?scale-down-to=1024&width=1796&height=2400 766w, ' + IMG + 'bw0gFHiTF8Q4IDcQFWSfWh6pyg.png?scale-down-to=2048&width=1796&height=2400 1532w, ' + IMG + 'bw0gFHiTF8Q4IDcQFWSfWh6pyg.png?width=1796&height=2400 1796w' }
+    { media: 'image', src: 'media/photo-1.jpg', alt: 'Portrait of a woman in profile, backlit by warm light, with a gold teardrop earring' },
+    { media: 'video', src: 'media/video-1.mp4' },
+    { media: 'image', src: 'media/photo-2.jpg', alt: 'Portrait of a woman in a grey turtleneck sweater against a purple background' },
+    { media: 'video', src: 'media/video-2.mp4' },
+    { media: 'image', src: 'media/photo-3.jpg', alt: 'Close-up of a face with a gold hoop earring' }
   ];
 
   /* ------------------------------------------------------------------
@@ -159,12 +137,13 @@
     plate.setAttribute('role', item.link ? 'link' : 'button');
     plate.tabIndex = -1;
     plate.setAttribute('aria-hidden', 'true');
-    plate.setAttribute('aria-label', item.title + ', ' + item.description + (item.link ? ' (opens in a new tab)' : ', bring to centre'));
+    var label = [item.title, item.description].filter(Boolean).join(', ') || item.alt || ('Card ' + (n % itemCount + 1));
+    plate.setAttribute('aria-label', label + (item.link ? ' (opens in a new tab)' : ', bring to centre'));
 
     var media, video = null;
     if (item.media === 'video') {
       video = media = document.createElement('video');
-      media.src = item.src;
+      media.src = item.src + '#t=0.001';   // makes browsers show the first frame before playing
       media.muted = true;
       media.loop = true;
       media.playsInline = true;
@@ -176,7 +155,7 @@
       media = document.createElement('img');
       media.src = item.src;
       if (item.srcset) media.srcset = item.srcset;
-      media.alt = '';
+      media.alt = item.alt || '';
       media.draggable = false;
       media.loading = 'lazy';
     }
@@ -187,17 +166,23 @@
     dim.className = 'arc-dim';
     plate.appendChild(dim);
 
-    var veil = document.createElement('div');
-    veil.className = 'arc-veil';
-    var title = document.createElement('div');
-    title.className = 'arc-title';
-    title.textContent = item.title;
-    var desc = document.createElement('div');
-    desc.className = 'arc-desc';
-    desc.textContent = item.description;
-    veil.appendChild(title);
-    veil.appendChild(desc);
-    plate.appendChild(veil);
+    if (item.title || item.description) {
+      var veil = document.createElement('div');
+      veil.className = 'arc-veil';
+      if (item.title) {
+        var title = document.createElement('div');
+        title.className = 'arc-title';
+        title.textContent = item.title;
+        veil.appendChild(title);
+      }
+      if (item.description) {
+        var desc = document.createElement('div');
+        desc.className = 'arc-desc';
+        desc.textContent = item.description;
+        veil.appendChild(desc);
+      }
+      plate.appendChild(veil);
+    }
 
     plate.addEventListener('click', function () { bringToCentre(n); });
     plate.addEventListener('keydown', function (e) {
