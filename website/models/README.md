@@ -4,7 +4,7 @@
 
 ## Слоты
 
-`tote`, `sneaker`, `chunkySneaker`, `perfume`, `sunglasses`, `headphones`, `earbuds`, `smartwatch`, `backpack`, `wallet`, `lipstick`, `camera`, `cap`, `skateboard`, `vinyl`, `controller`, `tumbler`, `phone`, `speaker`, `crossbody`, `chain`
+`tote`, `sneaker`, `chunkySneaker`, `perfume`, `sunglasses`, `headphones`, `earbuds`, `smartwatch`, `backpack`, `wallet`, `lipstick`, `camera`, `cap`, `skateboard`, `vinyl`, `controller`, `tumbler`, `phone`, `speaker`, `crossbody`, `chain`, `perfume2`, `letterS`
 
 ## Пример `manifest.json`
 
@@ -39,3 +39,4 @@
 | Слот | Источник | Лицензия | Автор |
 | --- | --- | --- | --- |
 | `sunglasses`, `chain`, `chunkySneaker` | Фото, предоставленные заказчиком | Права нужно подтвердить | Не указан |
+| `sneaker`, `perfume`, `perfume2`, `tote`, `letterS` | Фото, предоставленные заказчиком (товарные фото брендов и стеклянная буква) | Права нужно подтвердить: на фото видны логотипы и товарные знаки | Не указан |

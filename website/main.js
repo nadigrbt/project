@@ -363,6 +363,18 @@ const chain = () => group(
   put(sp(0.1, C.gold), [0, 0.55, 0]),
 );
 
+const perfume2 = () => group(
+  put(rb(0.8, 0.9, 0.34, 0.1, C.glassPink)),
+  put(rb(0.66, 0.6, 0.24, 0.07, C.rose), [0, -0.12, 0]),
+  put(cy(0.12, 0.12, 0.12, C.gold), [0, 0.5, 0]),
+  put(rb(0.42, 0.3, 0.3, 0.06, C.white), [0, 0.72, 0]),
+);
+
+const letterS = () => group(
+  put(to(0.3, 0.12, C.glass, PI * 1.5), [0, 0.3, 0], [0, 0, PI * 0.25]),
+  put(to(0.3, 0.12, C.glass, PI * 1.5), [0, -0.3, 0], [0, 0, PI * 1.25]),
+);
+
 // --- Абстрактные фигуры (внутреннее кольцо) ---
 function glossy(color, roughness = 0.3) {
   return new THREE.MeshPhysicalMaterial({
@@ -391,12 +403,12 @@ const item = (slot, build, size) => {
 const rings = [
   {
     rx: 4.15, rz: 2.7, dir: 1, speed: 0.14, tilt: 0.12, spin: 0.5, spinStep: 0.35,
-    ys: [0.95, -1.05, 1.5, -0.35, 1.1, -1.4, 0.2],
-    make: shapes,
+    ys: [0.95, -1.05, 1.5, -0.35, 1.1, -1.4, 0.2, -0.2],
+    make: [...shapes, item('letterS', letterS, 1.9)],
   },
   {
     rx: 5.6, rz: 3.3, dir: -1, speed: 0.09, tilt: 0.38, spin: 0.3, spinStep: 0.15, yScale: 0.74,
-    ys: [1.4, -1.2, 0.2, 1.9, -0.5, -1.8, 0.9, -0.1, 1.6, -1.5],
+    ys: [1.4, -1.2, 0.2, 1.9, -0.5, -1.8, 0.9, -0.1, 1.6, -1.5, 0.7],
     make: [
       item('tote', tote, 1.5),
       item('sneaker', () => sneaker({ upper: C.white, accent: C.red, toe: C.cream, sole: C.rubber }), 1.9),
@@ -408,6 +420,7 @@ const rings = [
       item('smartwatch', smartwatch, 1.5),
       item('speaker', speaker, 1.4),
       item('cap', cap, 1.6),
+      item('perfume2', perfume2, 1.4),
     ],
   },
   {
