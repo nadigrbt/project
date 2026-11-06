@@ -8,18 +8,27 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header" id="header">
-    <a class="logo" href="#">лого</a>
-    <nav class="site-nav" aria-label="Основная навигация">
-      <ul>
-        <li><a href="#">Корзина</a></li>
-        <li><a href="#">О Нас</a></li>
-        <li><a href="#">Вкладка обратной связи</a></li>
-        <li><a href="#">Контакты</a></li>
-        <li><a href="#catalog">Каталог</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="top" id="header">
+    <header class="site-header">
+      <a class="logo" href="#">лого</a>
+      <nav class="site-nav" aria-label="Основная навигация">
+        <ul>
+          <li><a href="#">Корзина</a></li>
+          <li><a href="#">О нас</a></li>
+          <li><a href="#">Контакты</a></li>
+          <li><a href="#catalog">Каталог</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="filters" role="group" aria-label="Фильтры">
+      <button type="button" class="chip is-active" aria-pressed="true">Все</button>
+      <button type="button" class="chip" aria-pressed="false">Краскопистолеты</button>
+      <button type="button" class="chip" aria-pressed="false">Бачки</button>
+      <button type="button" class="chip" aria-pressed="false">Запчасти</button>
+      <button type="button" class="chip" aria-pressed="false">Аксессуары</button>
+    </div>
+  </div>
 
   <main>
     <!-- Tall scroll area. The carousel stays pinned inside it while the page scrolls,
@@ -27,16 +36,18 @@
     <div class="track" id="catalog">
       <section class="carousel" id="carousel" aria-label="Каталог">
         <div class="stage" id="stage" tabindex="0" aria-roledescription="carousel"></div>
+        <button type="button" class="arrow arrow--prev" id="prev" aria-label="Назад">&larr;</button>
+        <button type="button" class="arrow arrow--next" id="next" aria-label="Вперёд">&rarr;</button>
 
         <div class="caption" aria-live="polite">
           <h2 id="name"></h2>
-          <p id="role"></p>
-          <p id="tagline"></p>
-        </div>
-
-        <div class="controls">
-          <button type="button" id="prev" aria-label="Previous">&larr;</button>
-          <button type="button" id="next" aria-label="Next">&rarr;</button>
+          <p class="sku" id="sku"></p>
+          <p class="spec" id="spec"></p>
+          <p class="price" id="price"></p>
+          <div class="actions">
+            <button type="button" class="btn btn--ghost" id="more">Подробнее</button>
+            <button type="button" class="btn btn--primary" id="buy">Купить</button>
+          </div>
         </div>
       </section>
     </div>

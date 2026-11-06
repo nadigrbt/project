@@ -22,9 +22,12 @@
   ];
 
   var items = [
-    { hero: true, name: 'Краскопистолет SATA HRS с нижним бачком', role: '', tagline: '', src: 'images/sata-hrs-card.jpg' }
-  ].concat(people.map(function (p) {
-    return { name: p.name, role: p.role, tagline: p.tagline, video: !!p.vid, src: p.vid ? CDN_VID + p.vid : CDN_IMG + p.img };
+    { hero: true, name: 'Краскопистолет SATA HRS с нижним бачком', sku: 'HRS-48213',
+      spec: 'Макс. давление 10 бар / 145 psi', price: '12 900 руб.', src: 'images/sata-hrs-card.jpg' }
+  ].concat(people.map(function (p, i) {
+    // Placeholder data for the remaining demo cards.
+    return { name: p.name, sku: 'DEMO-' + (1001 + i), spec: '', price: 'по запросу',
+             video: !!p.vid, src: p.vid ? CDN_VID + p.vid : CDN_IMG + p.img };
   }));
 
   var N = items.length;
@@ -34,8 +37,9 @@
   var carousel = document.getElementById('carousel');
   var header = document.getElementById('header');
   var nameEl = document.getElementById('name');
-  var roleEl = document.getElementById('role');
-  var taglineEl = document.getElementById('tagline');
+  var skuEl = document.getElementById('sku');
+  var specEl = document.getElementById('spec');
+  var priceEl = document.getElementById('price');
 
   var mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
   var reduceMotion = !!(mq && mq.matches);
@@ -51,7 +55,7 @@
     var el = document.createElement('div');
     el.className = 'card' + (it.hero ? ' card--hero' : '');
     el.setAttribute('role', 'group');
-    el.setAttribute('aria-label', it.role ? it.name + ', ' + it.role : it.name);
+    el.setAttribute('aria-label', it.name);
 
     var media;
     if (it.video) {
@@ -115,17 +119,28 @@
     return window.pageYOffset || document.documentElement.scrollTop || 0;
   }
 
-  // How far the page can scroll while the carousel is pinned.
-  function travel() {
-    return Math.max(1, track.offsetHeight - carousel.offsetHeight);
-  }
+  // Infinite scroll: the track holds several identical "laps" of the carousel and
+  // the page is silently moved back to the middle lap, so there is no last card.
+  var LAPS = 5;
+  var step = 300;                       // scroll distance per card, px (set in layout)
+  function lapPx() { return N * step; }
+  function travel() { return LAPS * lapPx(); }
 
-  function posFromScroll() {
-    return clamp(scrollYNow() / travel(), 0, 1) * (N - 1);
-  }
+  function posFromScroll() { return scrollYNow() / step; }
+  function scrollForItem(i) { return i * step; }
 
-  function scrollForItem(i) {
-    return i / (N - 1) * travel();
+  // Move the page by whole laps; the picture does not change.
+  function recentre(force) {
+    var lap = lapPx(), y = scrollYNow();
+    var shift = 0;
+    var lo = lap * (force ? 1.5 : 0.6), hi = lap * (force ? 3.5 : 4.4);
+    if (y < lo) shift = Math.ceil((lo - y) / lap) * lap;
+    else if (y > hi) shift = -Math.ceil((y - hi) / lap) * lap;
+    if (!shift) return;
+    window.scrollTo(0, y + shift);
+    lastY = y + shift;
+    offset += shift / step;
+    target += shift / step;
   }
 
   function scrollToY(y, smooth) {
@@ -136,8 +151,9 @@
     if (i === shownIndex) return;
     shownIndex = i;
     nameEl.textContent = items[i].name;
-    roleEl.textContent = items[i].role;
-    taglineEl.textContent = items[i].tagline;
+    skuEl.textContent = 'Артикул: ' + items[i].sku;
+    specEl.textContent = items[i].spec;
+    priceEl.textContent = 'Цена: ' + items[i].price;
   }
 
   function render() {
@@ -210,9 +226,9 @@
   function settle() {
     var p = posFromScroll();
     var idx = dir > 0 ? Math.ceil(p - 0.08) : Math.floor(p + 0.08);
-    idx = clamp(idx, 0, N - 1);
     var y = scrollForItem(idx);
     if (Math.abs(y - scrollYNow()) > 1) scrollToY(y, true);
+    else recentre(true);
   }
 
   function onScroll() {
@@ -221,6 +237,7 @@
       dir = y > lastY ? 1 : -1;
       lastY = y;
     }
+    recentre(false);
     target = posFromScroll();
     kick();
     if (!dragging) {
@@ -230,7 +247,7 @@
   }
 
   function go(delta) {
-    var i = clamp(Math.round(posFromScroll()) + delta, 0, N - 1);
+    var i = Math.round(posFromScroll()) + delta;
     dir = delta;
     scrollToY(scrollForItem(i), true);
   }
@@ -240,8 +257,14 @@
    * ---------------------------------------------------------------- */
   function layout() {
     document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
-    var step = clamp(window.innerHeight * 0.38, 240, 420);   // scroll distance per card
-    track.style.height = (carousel.offsetHeight + (N - 1) * step) + 'px';
+    var oldPos = posFromScroll(), hadLayout = !!track.style.height;
+    var oldStep = step;
+    step = clamp(window.innerHeight * 0.38, 240, 420);
+    track.style.height = (carousel.offsetHeight + travel()) + 'px';
+    // keep the same card in the centre after a resize; first time, start on lap 3 (the product)
+    var pos = hadLayout ? oldPos * oldStep / oldStep : 2 * N;
+    window.scrollTo(0, Math.round(pos * step));
+    lastY = scrollYNow();
     target = posFromScroll();
     offset = target;
     render();
@@ -268,8 +291,7 @@
       try { stage.setPointerCapture(drag.id); } catch (err) { /* not supported */ }
     }
     var unit = Math.max(stage.clientWidth * 0.17, 110);   // pixels per card
-    var perCard = travel() / (N - 1);
-    scrollToY(clamp(drag.y0 - dx / unit * perCard, 0, travel()), false);
+    scrollToY(drag.y0 - dx / unit * step, false);
   });
 
   function endDrag() {
@@ -300,6 +322,15 @@
   document.getElementById('next').addEventListener('click', function () { go(1); });
   document.getElementById('prev').addEventListener('click', function () { go(-1); });
 
+  Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (chip) {
+    chip.addEventListener('click', function () {
+      Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (c) {
+        c.classList.toggle('is-active', c === chip);
+        c.setAttribute('aria-pressed', c === chip ? 'true' : 'false');
+      });
+    });
+  });
+
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', layout);
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(layout).observe(header);
@@ -309,6 +340,6 @@
     if (mq.addEventListener) mq.addEventListener('change', onMq); else if (mq.addListener) mq.addListener(onMq);
   }
 
-  lastY = scrollYNow();
+  try { history.scrollRestoration = 'manual'; } catch (err) { /* ignore */ }
   layout();
 })();
