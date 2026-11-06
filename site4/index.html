@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" id="header">
     <a class="logo" href="#">лого</a>
     <nav class="site-nav" aria-label="Основная навигация">
       <ul>
@@ -21,59 +21,25 @@
     </nav>
   </header>
 
-  <main class="page">
-    <section class="product-section" id="catalog" aria-label="Товар">
-      <article class="product-card">
-        <div class="product-media">
-          <img src="images/sata-hrs.png" alt="Краскопистолет SATA HRS с нижним бачком" width="1254" height="1254">
+  <main>
+    <!-- Tall scroll area. The carousel stays pinned inside it while the page scrolls,
+         and the scroll position decides which card is in the centre. -->
+    <div class="track" id="catalog">
+      <section class="carousel" id="carousel" aria-label="Каталог">
+        <div class="stage" id="stage" tabindex="0" aria-roledescription="carousel"></div>
+
+        <div class="caption" aria-live="polite">
+          <h2 id="name"></h2>
+          <p id="role"></p>
+          <p id="tagline"></p>
         </div>
 
-        <div class="product-info">
-          <h1 class="product-title">Краскопистолет SATA HRS с нижним бачком</h1>
-
-          <p class="product-lead">
-            Напорный краскопистолет для консервации скрытых полостей. Давление в бачке до&nbsp;10&nbsp;бар
-            даёт тонкое распыление даже вязких материалов.
-          </p>
-
-          <ul class="product-benefits">
-            <li>Тонкое распыление вязких материалов</li>
-            <li>Точная регулировка факела</li>
-            <li>Быстрая смена зондов по системе SATA</li>
-          </ul>
-
-          <dl class="product-specs">
-            <div><dt>Макс. давление</dt><dd>10 бар / 145 psi</dd></div>
-            <div><dt>Подача материала</dt><dd>Нижний бачок</dd></div>
-            <div><dt>Конструкция</dt><dd>Цельнометаллическая</dd></div>
-            <div><dt>Маркировка</dt><dd>CE</dd></div>
-          </dl>
-
-          <div class="product-buy">
-            <p class="product-price"><span>Цена</span><strong>По запросу</strong></p>
-            <div class="product-actions">
-              <a class="btn btn-primary" href="#">Запросить цену</a>
-              <a class="btn btn-ghost" href="#">Задать вопрос</a>
-            </div>
-          </div>
+        <div class="controls">
+          <button type="button" id="prev" aria-label="Previous">&larr;</button>
+          <button type="button" id="next" aria-label="Next">&rarr;</button>
         </div>
-      </article>
-    </section>
-
-    <section class="carousel" aria-label="Team carousel">
-      <div class="stage" id="stage" tabindex="0" aria-roledescription="carousel"></div>
-
-      <div class="caption" aria-live="polite">
-        <h2 id="name"></h2>
-        <p id="role"></p>
-        <p id="tagline"></p>
-      </div>
-
-      <div class="controls">
-        <button type="button" id="prev" aria-label="Previous">&larr;</button>
-        <button type="button" id="next" aria-label="Next">&rarr;</button>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
   <script src="script.js"></script>
