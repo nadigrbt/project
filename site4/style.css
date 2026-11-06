@@ -115,7 +115,9 @@ body {
   flex: 1;
   min-height: 240px;
   margin-top: 28px;   /* air under the filters */
-  overflow: hidden;
+  z-index: 2;         /* cards sit above the caption */
+  overflow-x: clip;   /* clip the sides only: cards may hang over the caption */
+  overflow-y: visible;
   cursor: grab;
   touch-action: pan-y;
   outline: none;
@@ -164,6 +166,8 @@ body {
 .card--hero img { object-fit: cover; }
 
 .caption {
+  position: relative;
+  z-index: 1;
   text-align: center;
   padding: 10px 16px 32px;   /* air above the footer */
   display: flex;
@@ -243,3 +247,14 @@ body {
 .site-footer a { color: var(--fg); text-decoration: none; }
 .site-footer a:hover { text-decoration: underline; }
 .site-footer a:focus-visible { outline: 2px solid #6d8bff; outline-offset: 3px; border-radius: 4px; }
+
+/* ---------- Phones ---------- */
+@media (max-width: 600px) {
+  :root { --card-w: clamp(100px, 31vw, 160px); --footer-h: 48px; }
+  .site-header { padding-top: 14px; padding-bottom: 8px; gap: 6px 24px; }
+  .stage { margin-top: 12px; }
+  .caption { min-height: 0; padding-bottom: 24px; }
+  .caption h2 { font-size: 18px; }
+  .price { font-size: 18px; }
+  .arrow { display: none; }
+}
