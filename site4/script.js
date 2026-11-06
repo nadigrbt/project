@@ -22,7 +22,7 @@
   ];
 
   var items = [
-    { hero: true, name: 'Краскопистолет SATA HRS с нижним бачком', role: '', tagline: '', src: 'images/sata-hrs.png' }
+    { hero: true, name: 'Краскопистолет SATA HRS с нижним бачком', role: '', tagline: '', src: 'images/sata-hrs-card.jpg' }
   ].concat(people.map(function (p) {
     return { name: p.name, role: p.role, tagline: p.tagline, video: !!p.vid, src: p.vid ? CDN_VID + p.vid : CDN_IMG + p.img };
   }));
