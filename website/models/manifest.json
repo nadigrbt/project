@@ -1,10 +1,38 @@
 {
-  "sunglasses": { "image": "sunglasses.png", "size": 2.0 },
-  "chain": { "image": "chain.png", "size": 1.7 },
-  "chunkySneaker": { "image": "sneaker-chunky.png", "size": 2.2 },
-  "sneaker": { "image": "sneaker-suede.png", "size": 2.4 },
-  "perfume": { "image": "perfume-gold.png", "size": 1.8 },
-  "perfume2": { "image": "perfume-rose.png", "size": 1.7 },
-  "tote": { "image": "bag-monogram.png", "size": 1.9 },
-  "letterS": { "image": "letter-s.png", "size": 2.0 }
+  "sunglasses": {
+    "image": "sunglasses.png",
+    "size": 2.0
+  },
+  "chain": {
+    "image": "chain.png",
+    "size": 1.7
+  },
+  "chunkySneaker": {
+    "image": "sneaker-chunky.png",
+    "size": 2.2
+  },
+  "sneaker": {
+    "image": "sneaker-suede.png",
+    "size": 2.4
+  },
+  "perfume": {
+    "image": "perfume-gold.png",
+    "size": 1.8
+  },
+  "perfume2": {
+    "image": "perfume-rose.png",
+    "size": 1.7
+  },
+  "tote": {
+    "image": "bag-monogram.png",
+    "size": 1.9
+  },
+  "letterS": {
+    "image": "letter-s.png",
+    "size": 2.0
+  },
+  "headphones": {
+    "image": "headphones.png",
+    "size": 1.9
+  }
 }
