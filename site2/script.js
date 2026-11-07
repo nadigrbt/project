@@ -3,16 +3,16 @@
   var CDN_VID = "https://framerusercontent.com/assets/";
 
   var people = [
-    { name: "Mara Okafor",   role: "Creative Director",  tagline: "Leads brand and campaign vision",           img: "KbhZ8TSifLt6oom0DJy3I6dtRk.png" },
-    { name: "Nora Vance",    role: "UX Researcher",      tagline: "Listens first, then shapes the product",    vid: "NN6Lx6k4t7M9vGURDbnyq40sQ.mp4" },
-    { name: "Julian Reyes",  role: "Lead Engineer",      tagline: "Builds fast, reliable front-end systems",   img: "xUSdDKegY1epCfmV1Z59ievg1LI.png" },
-    { name: "Kai Nakamura",  role: "Motion Designer",    tagline: "Crafts transitions that feel alive",        vid: "evzABRU4WEqu8p0fD9C5sDiGY9s.mp4" },
-    { name: "Iris Calder",   role: "Brand Strategist",   tagline: "Finds the story behind each name",          img: "tMsaCZMLrhptj9Km3aVihdywnlw.jpg" },
-    { name: "Lena Moreau",   role: "Art Director",       tagline: "Sets the visual tone for every launch",     img: "FnA0lOktORlmJAnlNebTalpe6ZM.png" },
-    { name: "Sofia Lind",    role: "Content Lead",       tagline: "Writes words people actually remember",     vid: "roSTU06jbgGlsYXGIPH26maBtQQ.mp4" },
-    { name: "Amara Diallo",  role: "Head of Operations", tagline: "Keeps every project on rhythm",             img: "HKrd4wmSAWqLUZ2RqMnQJF5bxw.jpg" },
-    { name: "Elias Hart",    role: "Photographer",       tagline: "Captures light, texture and quiet moments", vid: "kGZt3pMAG52JXRenq65ma0fZw.mp4" },
-    { name: "Theo Brandt",   role: "Product Designer",   tagline: "Turns rough ideas into clear interfaces",   img: "bw0gFHiTF8Q4IDcQFWSfWh6pyg.png" }
+    { name: "Надежда Горбатенко", role: "AI/digital creator", tagline: "Создаёт цифровые образы с помощью нейросетей",           img: "KbhZ8TSifLt6oom0DJy3I6dtRk.png" },
+    { name: "Виктория Соколова", role: "UX-исследователь", tagline: "Сначала слушает, потом проектирует продукт",    vid: "NN6Lx6k4t7M9vGURDbnyq40sQ.mp4" },
+    { name: "Артём Лебедев", role: "Ведущий инженер", tagline: "Строит быстрые и надёжные интерфейсы",   img: "xUSdDKegY1epCfmV1Z59ievg1LI.png" },
+    { name: "Кирилл Назаров", role: "Моушн-дизайнер", tagline: "Делает переходы, которые оживают",        vid: "evzABRU4WEqu8p0fD9C5sDiGY9s.mp4" },
+    { name: "Ирина Калинина", role: "Бренд-стратег", tagline: "Находит историю за каждым именем",          img: "tMsaCZMLrhptj9Km3aVihdywnlw.jpg" },
+    { name: "Елена Морозова", role: "Арт-директор", tagline: "Задаёт визуальный тон каждого запуска",     img: "FnA0lOktORlmJAnlNebTalpe6ZM.png" },
+    { name: "Софья Линдт", role: "Контент-редактор", tagline: "Пишет тексты, которые запоминаются",     vid: "roSTU06jbgGlsYXGIPH26maBtQQ.mp4" },
+    { name: "Амина Дьяконова", role: "Руководитель операций", tagline: "Держит ритм каждого проекта",             img: "HKrd4wmSAWqLUZ2RqMnQJF5bxw.jpg" },
+    { name: "Илья Харитонов", role: "Фотограф", tagline: "Ловит свет, фактуру и тихие моменты", vid: "kGZt3pMAG52JXRenq65ma0fZw.mp4" },
+    { name: "Фёдор Брандт", role: "Продуктовый дизайнер", tagline: "Превращает наброски в понятные интерфейсы",   img: "bw0gFHiTF8Q4IDcQFWSfWh6pyg.png" }
   ];
 
   var N = people.length;
