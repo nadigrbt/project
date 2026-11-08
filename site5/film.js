@@ -8,7 +8,7 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;                       // leave the first frame, no scroll-driven motion
 
-  var FPS = 48;                             // frame rate of the prepared file
+  var FPS = 24;                             // frame rate of the original video
   var LOOPS = 3;                            // how many times the video runs over the whole section
   var STIFF = 9;                            // lower = softer, longer glide
 
