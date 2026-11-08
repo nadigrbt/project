@@ -310,8 +310,8 @@ body {
   .about { padding-top: 40px; padding-bottom: 0; row-gap: 28px; }
   .film {
     margin-top: 55px;
-    height: 72vw;
+    height: 50vw;
   }
-  .film video { top: -90vw; height: 162vw; object-position: 62% 50%; }
+  .film video { top: -60vw; height: 110vw; object-position: 62% 50%; }
 }
 

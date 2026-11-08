@@ -8,6 +8,27 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;                       // leave the first frame, no scroll-driven motion
 
+  // Phones: seeking frame by frame is jerky on iOS, so let the video play on its own
+  // while the page is being scrolled and pause it when scrolling stops.
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+    var lastY = window.scrollY, lastT = performance.now(), idle = 0, rate = 1;
+    video.loop = true;
+    window.addEventListener('scroll', function () {
+      var r = film.getBoundingClientRect();
+      var now = performance.now(), y = window.scrollY;
+      var speed = Math.abs(y - lastY) / Math.max(1, now - lastT);   // px per ms
+      lastY = y; lastT = now;
+      if (r.top > window.innerHeight || r.bottom < 0) return;
+      var target = Math.min(2, Math.max(0.5, 0.5 + speed * 0.9));
+      rate += (target - rate) * 0.3;                                // smooth speed changes
+      video.playbackRate = rate;
+      if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+      clearTimeout(idle);
+      idle = setTimeout(function () { video.pause(); }, 220);
+    }, { passive: true });
+    return;
+  }
+
   var FPS = 24;                             // frame rate of the original video
   var LOOPS = 1;                            // video runs once while it scrolls into view
   var STIFF = 9;                            // lower = softer, longer glide
