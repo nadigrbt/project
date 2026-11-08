@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <div id="carousel" class="carousel"></div>
@@ -16,6 +16,18 @@
     <p class="eyebrow">The team</p>
     <h1>People behind the work</h1>
   </header>
-  <script src="script.js"></script>
+  <script>
+    // Keep the carousel always below the heading, whatever the screen size.
+    (function () {
+      var intro = document.querySelector('.intro');
+      var root = document.getElementById('carousel');
+      function fit() { root.style.top = Math.ceil(intro.getBoundingClientRect().bottom + 32) + 'px'; }
+      fit();
+      window.addEventListener('resize', fit);
+      window.addEventListener('load', fit);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    })();
+  </script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
