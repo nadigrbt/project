@@ -22,7 +22,10 @@
     // 1 when it fills the screen (the end of the page). The page itself scrolls normally.
     var r = film.getBoundingClientRect();
     var h = Math.min(window.innerHeight, film.offsetHeight || window.innerHeight);
-    var p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / h));
+    // On a phone the video block is short, so the whole clip would flash by in a few swipes.
+    // Start the progress earlier, while the text above is still scrolling, to stretch it out.
+    var run = window.innerWidth <= 820 ? window.innerHeight * 1.6 : 0;
+    var p = Math.min(1, Math.max(0, (window.innerHeight + run - r.top) / (h + run)));
     return p * LOOPS * (video.duration || 0);
   }
 
