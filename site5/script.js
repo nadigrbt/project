@@ -38,7 +38,7 @@
     { media: 'video', src: 'media/work-v2.mp4' },
     { media: 'image', src: 'media/work-5.jpg', alt: 'Невеста в платье с накидкой в музейном коридоре' },
     { media: 'image', src: 'media/work-10.jpg', alt: 'Невеста в многоярусном платье оглядывается на прогулке' },
-    { media: 'image', src: 'media/work-6.jpg', alt: 'Вечернее платье из жаккарда на лестнице' },
+    { media: 'image', src: 'media/work-6.jpg?v=2', alt: 'Вечернее платье из жаккарда на лестнице' },
     { media: 'image', src: 'media/work-7.jpg?v=2', alt: 'Атласное платье с открытой спиной на балконе' },
     { media: 'image', src: 'media/work-11.jpg', alt: 'Белый костюм с топом на прогулке по воде' },
     { media: 'image', src: 'media/work-12.jpg', alt: 'Невеста в лёгком платье с открытыми плечами у реки' }
