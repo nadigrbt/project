@@ -99,39 +99,5 @@
   window.addEventListener('resize', kick);
   video.addEventListener('loadedmetadata', function () { pos = target(); vel = 0; kick(); });
   video.addEventListener('seeked', kick);
-  // iOS Safari will not decode/seek a video until it has been played once. Muted inline play
-  // is allowed, so prime it on load and again on the first touch/scroll.
-  var primed = false;
-  function prime() {
-    if (primed) return;
-    var pr = video.play();
-    if (pr && pr.then) {
-      pr.then(function () { video.pause(); primed = true; kick(); }).catch(function () {});
-    } else { video.pause(); primed = true; }
-  }
-  prime();
-  ['touchend', 'pointerup', 'scroll'].forEach(function (ev) {
-    window.addEventListener(ev, prime, { passive: true });
-  });
-
-  // Fallback: if the browser still refuses to scrub (frame never changes while the video is
-  // on screen), simply play it on a loop so the block is never a black hole.
-  var fell = false;
-  setInterval(function () {
-    if (fell) return;
-    var r = film.getBoundingClientRect();
-    if (r.top > innerHeight * 0.7 || r.bottom < 0) return;
-    if (!video.paused) return;
-    var before = video.currentTime;
-    setTimeout(function () {
-      if (fell || !video.paused) return;
-      var moved = Math.abs(video.currentTime - before) > 0.01;
-      var scrolled = Math.abs(target() - 0) > 0.01;
-      if (!moved && scrolled && (video.readyState < 2 || video.currentTime === 0)) {
-        fell = true; video.loop = true;
-        var p = video.play(); if (p && p.catch) p.catch(function () {});
-      }
-    }, 900);
-  }, 1200);
   kick();
 })();
