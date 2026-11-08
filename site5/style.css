@@ -236,3 +236,28 @@ body {
   .about { grid-template-columns: minmax(0, 1fr); justify-content: stretch; row-gap: 40px; }
   .about-intro { padding-right: 0; }
 }
+
+/* ---------- Scroll-driven video ---------- */
+
+.film {
+  position: relative;
+  height: 300svh;          /* the scroll distance that plays the whole video */
+}
+
+.film-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+}
+
+.film video {
+  display: block;
+  /* almost the full width, but never taller than the screen */
+  width: min(calc(100vw - 2 * clamp(20px, 4vw, 64px)), calc(88svh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 20px;
+  background: #0b0b0d;
+}
