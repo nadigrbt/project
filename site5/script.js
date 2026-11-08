@@ -451,8 +451,10 @@
   root.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
   root.addEventListener('wheel', function (e) {
+    // Only sideways swipes turn the carousel; vertical scrolling moves the page to the text below.
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
     e.preventDefault();
-    var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    var d = e.deltaX;
     if (e.deltaMode === 1) d *= 16; else if (e.deltaMode === 2) d *= 400;
 
     var base = st.aim === null ? st.pos : st.aim;

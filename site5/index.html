@@ -8,26 +8,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
-  <div id="carousel" class="carousel"></div>
   <header class="intro">
     <p class="eyebrow">Портфолио</p>
     <h1><a href="https://www.avito.ru/brands/1421713c992652e5e2eb586738f8e766?gdlkerfdnwq=101&amp;page_from=from_item_header&amp;iid=2677020262&amp;page_from=from_item_card&amp;iid=2677020262" target="_blank" rel="noopener">Katezu</a></h1>
   </header>
-  <script>
-    // Keep the carousel always below the heading, whatever the screen size.
-    (function () {
-      var intro = document.querySelector('.intro');
-      var root = document.getElementById('carousel');
-      function fit() { root.style.top = Math.ceil(intro.getBoundingClientRect().bottom + 32) + 'px'; }
-      fit();
-      window.addEventListener('resize', fit);
-      window.addEventListener('load', fit);
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-    })();
-  </script>
-  <script src="script.js?v=2"></script>
+  <div id="carousel" class="carousel"></div>
+
+  <section class="about" aria-label="О мастере">
+    <h2>Создаю не просто платья. Создаю ваш особенный образ.</h2>
+    <p>Я дизайнер и мастер по индивидуальному пошиву свадебных, вечерних и детских нарядных платьев.</p>
+    <p>Для меня каждое платье — это отдельная история, в которой важны не только красота ткани и точность строчек, но и характер, настроение, индивидуальность той, для кого оно создаётся.</p>
+    <p>Благодаря образованию стилиста я смотрю на платье комплексно: учитываю особенности фигуры, пропорции, линии силуэта и детали, которые делают образ гармоничным.</p>
+    <p>Я помогу определиться с фасоном, подобрать ткани и кружево, продумать отделку и найти именно те решения, которые воплотят вашу идею в жизнь.</p>
+    <p>Вам не обязательно приходить с готовым эскизом. Достаточно желания создать что-то своё — остальное мы придумаем вместе.</p>
+  </section>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
