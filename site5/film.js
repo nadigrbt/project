@@ -9,7 +9,7 @@
   if (reduce) return;                       // leave the first frame, no scroll-driven motion
 
   var FPS = 24;                             // frame rate of the original video
-  var LOOPS = 3;                            // how many times the video runs over the whole section
+  var LOOPS = 1;                            // video runs once while it scrolls into view
   var STIFF = 9;                            // lower = softer, longer glide
 
   var pos = 0;                              // eased position, in seconds of unwrapped time
@@ -18,9 +18,10 @@
   var last = 0;
 
   function target() {
+    // 0 when the video starts to come into view at the bottom of the screen,
+    // 1 when it fills the screen (the end of the page). The page itself scrolls normally.
     var r = film.getBoundingClientRect();
-    var span = Math.max(1, r.height - window.innerHeight);
-    var p = Math.min(1, Math.max(0, -r.top / span));
+    var p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / window.innerHeight));
     return p * LOOPS * (video.duration || 0);
   }
 

@@ -238,44 +238,44 @@ body {
 }
 
 /* ---------- Scroll-driven video ---------- */
-/* The video fills the whole screen and fades into the black page at the top and bottom,
-   so it has no visible edges and does not read as a separate block. */
+/* The last block of the page: one screen high, full width, scrolls like the rest of the page.
+   The video plays as it scrolls into view and runs back when scrolling up.
+   It ends flush with the bottom of the page, with no black strip under it. */
 
 .film {
   position: relative;
-  height: 900svh;          /* three runs of the video, one after another, without a visible join */
-  background: #000;
-}
-
-.film-stage {
-  position: sticky;
-  top: 0;
   height: 100vh;
   height: 100svh;
   overflow: hidden;
   background: #000;
 }
 
-.film video {
+.film-stage {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  /* the fabric lies in the lower part of the frame; lift it towards the text above */
-  transform: translateY(-26%);
 }
 
-.film-stage::before,
-.film-stage::after {
+.film video {
+  position: absolute;
+  left: 0;
+  /* the fabric lies in the lower part of the frame: lift the picture towards the text above
+     while still covering the whole block down to its bottom edge */
+  top: -26%;
+  width: 100%;
+  height: 126%;
+  object-fit: cover;
+  display: block;
+}
+
+/* soft join with the text above */
+.film-stage::before {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
+  top: 0;
   z-index: 1;
   height: 16%;
   pointer-events: none;
+  background: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.6) 40%, rgba(0,0,0,0) 100%);
 }
-.film-stage::before { top: 0;    background: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.6) 40%, rgba(0,0,0,0) 100%); }
-.film-stage::after  { bottom: 0; background: linear-gradient(to top,    #000 0%, rgba(0,0,0,.6) 40%, rgba(0,0,0,0) 100%); }
