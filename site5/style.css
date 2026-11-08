@@ -168,20 +168,21 @@ body {
 
 .about {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 44%) minmax(0, 1fr);
+  column-gap: clamp(24px, 2.5vw, 40px);   /* the two blocks sit close together */
   align-items: start;
   padding: clamp(48px, 9vh, 96px) clamp(20px, 2.6vw, 40px) clamp(64px, 12vh, 120px);
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color: #e4e4e8;
 }
 
-.about-intro { padding-right: clamp(24px, 4vw, 64px); }
+.about-intro { padding-right: 0; }
 
 .about h2 {
   margin: 0;
   color: #f4f4f5;
   font-family: "Cormorant Garamond", "Times New Roman", serif;
-  font-size: clamp(30px, 3.6vw, 52px);
+  font-size: clamp(30px, 3.3vw, 48px);
   font-weight: 500;
   line-height: 1.12;
   letter-spacing: -.005em;
