@@ -184,7 +184,11 @@
       plate.appendChild(veil);
     }
 
-    plate.addEventListener('click', function () { bringToCentre(n); });
+    plate.addEventListener('click', function () {
+      var small = window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
+      if (small && !ITEMS[n % itemCount].link && Math.abs(wrap(n - st.pos, count)) < 0.5) openZoom(n);
+      else bringToCentre(n);
+    });
     plate.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -360,6 +364,32 @@
   /* ------------------------------------------------------------------
    * Interaction
    * ---------------------------------------------------------------- */
+  // Tap on the centre card: show it 70% larger than on the page, tap again to close.
+  function openZoom(n) {
+    var plate = plates[n], src = plate.querySelector('.arc-media');
+    var r = plate.getBoundingClientRect();
+    var w = r.width * 1.7, h = r.height * 1.7;
+    var k = Math.min(1, (window.innerWidth - 16) / w, (window.innerHeight - 16) / h);
+    var el = src.tagName === 'VIDEO' ? document.createElement('video') : document.createElement('img');
+    el.src = src.currentSrc || src.src;
+    if (el.tagName === 'VIDEO') { el.muted = true; el.loop = true; el.playsInline = true; el.autoplay = true; }
+    el.style.width = (w * k) + 'px';
+    el.style.height = (h * k) + 'px';
+    var box = document.createElement('div');
+    box.className = 'zoom';
+    box.appendChild(el);
+    document.body.appendChild(box);
+    requestAnimationFrame(function () { box.classList.add('on'); });
+    function close() {
+      box.classList.remove('on');
+      setTimeout(function () { box.remove(); }, 240);
+      window.removeEventListener('keydown', onKey);
+    }
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    box.addEventListener('click', close);
+    window.addEventListener('keydown', onKey);
+  }
+
   function bringToCentre(n) {
     if (ITEMS[n % itemCount].link) {
       window.open(ITEMS[n % itemCount].link, '_blank', 'noopener,noreferrer');

@@ -21,7 +21,8 @@
     // 0 when the video starts to come into view at the bottom of the screen,
     // 1 when it fills the screen (the end of the page). The page itself scrolls normally.
     var r = film.getBoundingClientRect();
-    var p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / window.innerHeight));
+    var h = Math.min(window.innerHeight, film.offsetHeight || window.innerHeight);
+    var p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / h));
     return p * LOOPS * (video.duration || 0);
   }
 
@@ -59,5 +60,12 @@
   window.addEventListener('resize', kick);
   video.addEventListener('loadedmetadata', function () { pos = target(); vel = 0; kick(); });
   video.addEventListener('seeked', kick);
+  // iOS Safari only lets a video seek/decode after a user gesture: unlock it on the first touch.
+  function unlock() {
+    var pr = video.play();
+    if (pr && pr.then) pr.then(function () { video.pause(); kick(); }).catch(function () {});
+    else video.pause();
+  }
+  window.addEventListener('touchstart', unlock, { once: true, passive: true });
   kick();
 })();

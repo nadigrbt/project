@@ -239,6 +239,37 @@ body {
   .about-intro { padding-right: 0; }
 }
 
+/* ---------- Phone ---------- */
+@media (max-width: 820px) {
+  .intro { padding-bottom: 8px; }
+  .carousel { height: 340px; }
+  .about { padding-top: 40px; padding-bottom: 0; row-gap: 28px; }
+  .film {
+    margin-top: 55px;
+    height: 56vh;
+    height: 56svh;
+  }
+  .film video { top: -30%; height: 130%; object-position: 62% 50%; }
+}
+
+/* ---------- Tap-to-zoom ---------- */
+.zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, .86);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .22s;
+  cursor: zoom-out;
+  -webkit-tap-highlight-color: transparent;
+}
+.zoom.on { opacity: 1; }
+.zoom > * { display: block; object-fit: cover; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+
+
 /* ---------- Scroll-driven video ---------- */
 /* The last block of the page: one screen high, full width, scrolls like the rest of the page.
    The video plays as it scrolls into view and runs back when scrolling up.
