@@ -19,8 +19,8 @@
       return r.top < window.innerHeight && r.bottom > 0;
     }
     function go(speed) {
-      var target = Math.min(2, Math.max(0.6, 0.6 + speed * 0.9));
-      rate += (target - rate) * 0.3;
+      var target = Math.min(3.5, Math.max(1.8, 1.8 + speed * 1.6));
+      rate += (target - rate) * 0.5;
       try { video.playbackRate = rate; } catch (e) {}
       if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
       clearTimeout(idle);
