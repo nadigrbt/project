@@ -194,8 +194,7 @@
     }
 
     plate.addEventListener('click', function () {
-      var small = window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
-      if (small && !ITEMS[n % itemCount].link && Math.abs(wrap(n - st.pos, count)) < 0.5) openZoom(n);
+      if (!ITEMS[n % itemCount].link && Math.abs(wrap(n - st.pos, count)) < 0.5) openZoom(n);
       else bringToCentre(n);
     });
     plate.addEventListener('keydown', function (e) {
@@ -271,7 +270,7 @@
       var video = videos[i];
 
       if (video) {
-        var want = live && !!p && p.alpha > 0.05 && (CONFIG.videoPlayback === 'visible' || Math.abs(e) < 0.5);
+        var want = live;   // videos always play in a loop, even when they are not the front card
         if (want && !video.__want) {
           video.__want = true;
           var played = video.play();
@@ -377,7 +376,9 @@
   function openZoom(n) {
     var plate = plates[n], src = plate.querySelector('.arc-media');
     var r = plate.getBoundingClientRect();
-    var w = r.width * 1.7, h = r.height * 1.7;
+    var small = window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
+    var z = small ? 1.87 : 1.7;      // phones: 10% more than on a computer
+    var w = r.width * z, h = r.height * z;
     var k = Math.min(1, (window.innerWidth - 16) / w, (window.innerHeight - 16) / h);
     var el = src.tagName === 'VIDEO' ? document.createElement('video') : document.createElement('img');
     el.src = src.currentSrc || src.src;
@@ -386,7 +387,20 @@
     el.style.height = (h * k) + 'px';
     var box = document.createElement('div');
     box.className = 'zoom';
-    box.appendChild(el);
+    var wrapEl = document.createElement('div');
+    wrapEl.className = 'zoom-frame';
+    wrapEl.style.width = el.style.width;
+    wrapEl.style.height = el.style.height;
+    el.style.width = '100%';
+    el.style.height = '100%';
+    wrapEl.appendChild(el);
+    var x = document.createElement('button');
+    x.type = 'button';
+    x.className = 'zoom-x';
+    x.setAttribute('aria-label', 'Закрыть');
+    x.innerHTML = '<svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>';
+    wrapEl.appendChild(x);
+    box.appendChild(wrapEl);
     document.body.appendChild(box);
     requestAnimationFrame(function () { box.classList.add('on'); });
     function close() {
@@ -398,6 +412,18 @@
     box.addEventListener('click', close);
     window.addEventListener('keydown', onKey);
   }
+
+  // If the browser refused to autoplay a video, try again on the first touch, click or scroll.
+  function retryVideos() {
+    var again = false;
+    for (var i = 0; i < count; i++) {
+      if (videos[i] && videos[i].paused) { videos[i].__want = false; again = true; }
+    }
+    if (again) render();
+  }
+  ['touchstart', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
+    window.addEventListener(ev, retryVideos, { passive: true });
+  });
 
   function bringToCentre(n) {
     if (ITEMS[n % itemCount].link) {

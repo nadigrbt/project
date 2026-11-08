@@ -254,7 +254,19 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 .zoom.on { opacity: 1; }
-.zoom > * { display: block; object-fit: cover; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+.zoom-frame { position: relative; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+.zoom-frame > img, .zoom-frame > video { display: block; object-fit: cover; }
+.zoom-x {
+  position: absolute; top: 12px; right: 12px;
+  width: 32px; height: 32px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 50%;
+  background: rgba(0,0,0,.42); color: #fff;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: background .2s;
+}
+.zoom-x:hover, .zoom-x:focus-visible { background: rgba(0,0,0,.7); outline: none; }
 
 
 /* ---------- Scroll-driven video ---------- */
