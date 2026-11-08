@@ -247,8 +247,8 @@ body {
 /* pulled up under the text so the fabric starts close to it; the text stays on top */
 .film {
   position: relative;
-  margin-top: -17vh;
-  margin-top: -17svh;
+  margin-top: -11vh;
+  margin-top: -11svh;
   height: 100vh;
   height: 100svh;
   overflow: hidden;
