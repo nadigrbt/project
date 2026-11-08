@@ -14,7 +14,8 @@ body {
 .carousel {
   --s: 1;
   position: fixed;
-  inset: 0;
+  /* leave room at the top for the heading */
+  inset: calc(clamp(32px, 6vh, 72px) + clamp(76px, 9vw, 104px) + 16px) 0 0 0;
   overflow: hidden;
   background: #000;
   touch-action: pan-y;
