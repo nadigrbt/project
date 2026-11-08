@@ -1,0 +1,133 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+}
+
+body {
+  overflow: hidden;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* The carousel fills the whole viewport. */
+.carousel {
+  --s: 1;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.arc-ring {
+  position: absolute;
+  inset: 0;
+  perspective-origin: 50% 50%;
+}
+
+.arc-plate {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  overflow: hidden;
+  background: #17171b;
+  visibility: hidden;
+  outline: none;
+  will-change: transform, opacity;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.arc-plate:focus-visible {
+  box-shadow: 0 0 0 2px #000, 0 0 0 4px #fff;
+}
+
+.arc-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Darkening layer: opacity is driven from script.js by distance from centre. */
+.arc-dim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Name and role, revealed on hover or keyboard focus. */
+.arc-veil {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: calc(4px * var(--s));
+  padding: calc(18px * var(--s));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.arc-veil > * {
+  margin: 0;
+  transform: translateY(8px);
+  transition: transform 0.5s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.arc-plate:hover .arc-veil,
+.arc-plate:focus-visible .arc-veil {
+  opacity: 1;
+}
+
+.arc-plate:hover .arc-veil > *,
+.arc-plate:focus-visible .arc-veil > * {
+  transform: none;
+}
+
+.arc-title {
+  color: #fff;
+  font-size: calc(18px * var(--s));
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2em;
+}
+
+.arc-desc {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: calc(13px * var(--s));
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4em;
+}
+
+/* Soft black fade on the left and right edges. */
+.arc-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20%;
+  z-index: 900;
+  pointer-events: none;
+}
+
+.arc-edge-left {
+  left: 0;
+  background: linear-gradient(90deg, #000 0%, #000 10%, transparent 100%);
+}
+
+.arc-edge-right {
+  right: 0;
+  background: linear-gradient(270deg, #000 0%, #000 10%, transparent 100%);
+}
