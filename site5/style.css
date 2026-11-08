@@ -362,3 +362,5 @@ body {
   .points li { grid-template-columns: 40px 1fr; column-gap: 18px; }
   .points .rule { width: 40px; }
 }
+
+.credit u { text-decoration: underline; text-underline-offset: .2em; text-decoration-thickness: 1px; }
