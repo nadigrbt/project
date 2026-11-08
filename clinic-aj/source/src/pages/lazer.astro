@@ -5,6 +5,7 @@
 // «учтены недостатки прошлых поколений», «требует меньше процедур», «поколения 2025 года». Курс 6–10 процедур не пишем (число процедур не указываем, решение владельца). РЗН аппаратов эпиляции нет, не пишем.
 // MeDioStar — «диодный двухволновой и александритовый лазеры в одном аппарате» (подтверждено владельцем 21.10). Филиалы — со старой страницы. Рекомендации перед процедурой — со старой страницы /lazer_aleksandrit.
 // Противопоказания — как на /mediostar (подтверждены владельцем) + автозагар. SEO: страница /lazer_aleksandrit отдельная (решение владельца 21.10: люди ищут именно александритовый лазер), страницы ссылаются друг на друга.
+// Видео (public/video/lazer.mp4, из IMG_9113.MOV владельца 08.11, сжато до 720x1280, заставка lazer-poster.webp) — плавающее окошко слева внизу (public/video-widget.js), как на /lumecca. Что говорится в ролике — не проверяли, сверить с 38-ФЗ.
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Contacts from '../components/Contacts.astro';
@@ -204,6 +205,7 @@ const prep = [
     <Contacts />
   </main>
   <Footer />
+  <script is:inline src="/video-widget.js?v=2" data-src="/video/lazer.mp4" data-poster-src="/video/lazer-poster.webp" data-label="Видео: специалист клиники рассказывает о лазерной эпиляции" defer></script>
 </Base>
 
 <style>
