@@ -13,19 +13,34 @@
   if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
     var lastY = window.scrollY, lastT = performance.now(), idle = 0, rate = 1;
     video.loop = true;
-    window.addEventListener('scroll', function () {
+    video.muted = true;
+    function visible() {
       var r = film.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    }
+    function go(speed) {
+      var target = Math.min(2, Math.max(0.6, 0.6 + speed * 0.9));
+      rate += (target - rate) * 0.3;
+      try { video.playbackRate = rate; } catch (e) {}
+      if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+      clearTimeout(idle);
+      idle = setTimeout(function () { video.pause(); }, 300);
+    }
+    function poke(fast) {
       var now = performance.now(), y = window.scrollY;
       var speed = Math.abs(y - lastY) / Math.max(1, now - lastT);   // px per ms
       lastY = y; lastT = now;
-      if (r.top > window.innerHeight || r.bottom < 0) return;
-      var target = Math.min(2, Math.max(0.5, 0.5 + speed * 0.9));
-      rate += (target - rate) * 0.3;                                // smooth speed changes
-      video.playbackRate = rate;
-      if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
-      clearTimeout(idle);
-      idle = setTimeout(function () { video.pause(); }, 220);
+      if (!visible()) return;
+      go(fast ? Math.max(speed, 0.4) : speed);
+    }
+    // Any finger movement on the screen sets the video going, scrolling or not.
+    window.addEventListener('touchstart', function () {
+      // first touch also unlocks playback on iOS, wherever the finger lands
+      var p = video.play();
+      if (p && p.then) p.then(function () { if (!visible()) video.pause(); }).catch(function () {});
     }, { passive: true });
+    window.addEventListener('touchmove', function () { poke(true); }, { passive: true });
+    window.addEventListener('scroll', function () { poke(false); }, { passive: true });
     return;
   }
 
