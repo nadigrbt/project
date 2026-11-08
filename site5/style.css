@@ -131,3 +131,31 @@ body {
   right: 0;
   background: linear-gradient(270deg, #000 0%, #000 10%, transparent 100%);
 }
+
+/* Heading from site2, laid over the top of the carousel. */
+.intro {
+  position: fixed;
+  top: clamp(32px, 6vh, 72px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 16px;
+  text-align: center;
+  color: #f4f4f5;
+  pointer-events: none;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: 13px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #9a9aa3;
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 56px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
