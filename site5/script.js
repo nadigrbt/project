@@ -31,12 +31,17 @@
     { media: 'image', src: 'media/work-1.jpg', alt: 'Платье цвета айвори с корсетом и объёмными рукавами' },
     { media: 'image', src: 'media/work-2.jpg', alt: 'Невеста поправляет серьгу, платье с кружевом на рукавах' },
     { media: 'video', src: 'media/work-v1.mp4' },
+    { media: 'image', src: 'media/work-8.jpg', alt: 'Кружевной лиф и жемчужные пуговицы, крупный план' },
     { media: 'image', src: 'media/work-3.jpg', alt: 'Жемчужные пуговицы на спине свадебного платья' },
     { media: 'image', src: 'media/work-4.jpg', alt: 'Пара на прогулке, свадебное платье с открытым плечом' },
+    { media: 'image', src: 'media/work-9.jpg', alt: 'Чёрно-белый портрет пары, платье с вышивкой и объёмными рукавами' },
     { media: 'video', src: 'media/work-v2.mp4' },
     { media: 'image', src: 'media/work-5.jpg', alt: 'Невеста в платье с накидкой в музейном коридоре' },
+    { media: 'image', src: 'media/work-10.jpg', alt: 'Невеста в многоярусном платье оглядывается на прогулке' },
     { media: 'image', src: 'media/work-6.jpg', alt: 'Вечернее платье из жаккарда на лестнице' },
-    { media: 'image', src: 'media/work-7.jpg', alt: 'Атласное платье с открытой спиной на балконе' }
+    { media: 'image', src: 'media/work-7.jpg', alt: 'Атласное платье с открытой спиной на балконе' },
+    { media: 'image', src: 'media/work-11.jpg', alt: 'Белый костюм с топом на прогулке по воде' },
+    { media: 'image', src: 'media/work-12.jpg', alt: 'Невеста в лёгком платье с открытыми плечами у реки' }
   ];
 
   /* ------------------------------------------------------------------
