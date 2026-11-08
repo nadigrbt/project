@@ -3,6 +3,9 @@
   var s = document.currentScript;
   var src = s && s.getAttribute('data-src');
   if (!src) return;
+  // Необязательные: картинка-заставка до загрузки видео и подпись для экранного диктора
+  var poster = s.getAttribute('data-poster-src');
+  var label = s.getAttribute('data-label') || 'Видео о процедуре';
 
   var css = document.createElement('style');
   css.textContent =
@@ -19,25 +22,37 @@
   var box = document.createElement('div');
   box.className = 'vw';
   box.innerHTML =
-    '<video muted loop playsinline autoplay preload="metadata" aria-label="Видео о процедуре"></video>' +
+    '<video muted loop playsinline autoplay preload="metadata"></video>' +
     '<button class="vw__btn vw__min" type="button" aria-label="Свернуть видео">&minus;</button>' +
     '<button class="vw__btn vw__close" type="button" aria-label="Закрыть видео">&times;</button>';
   var v = box.querySelector('video');
+  v.setAttribute('aria-label', label);
+  if (poster) v.poster = poster;
   v.src = src;
 
   function open() {
     box.classList.add('vw--open');
+    box.removeAttribute('role'); box.removeAttribute('aria-label');
     v.muted = false; v.controls = true; v.currentTime = 0; v.loop = false;
     var p = v.play(); if (p && p.catch) p.catch(function () {});
   }
   function shrink() {
     box.classList.remove('vw--open');
+    box.setAttribute('role', 'button'); box.setAttribute('aria-label', 'Открыть видео со звуком: ' + label);
     v.controls = false; v.muted = true; v.loop = true;
     var p = v.play(); if (p && p.catch) p.catch(function () {});
   }
   box.addEventListener('click', function (e) {
     if (e.target.closest('.vw__btn')) return;
     if (!box.classList.contains('vw--open')) open();
+  });
+  // С клавиатуры: Tab до окошка, Enter или пробел открывают видео со звуком
+  box.tabIndex = 0;
+  box.setAttribute('role', 'button');
+  box.setAttribute('aria-label', 'Открыть видео со звуком: ' + label);
+  box.addEventListener('keydown', function (e) {
+    if (e.target !== box || box.classList.contains('vw--open')) return;
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
   });
   box.querySelector('.vw__min').addEventListener('click', shrink);
   box.querySelector('.vw__close').addEventListener('click', function () {
