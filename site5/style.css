@@ -167,6 +167,8 @@ body {
    Right: the story, starting at the middle of the page and level with the statement. */
 
 .about {
+  position: relative;
+  z-index: 2;
   display: grid;
   /* both columns have a fixed, comfortable width and the pair is centred,
      so the margin on the left equals the margin on the right */
@@ -242,8 +244,11 @@ body {
    The video plays as it scrolls into view and runs back when scrolling up.
    It ends flush with the bottom of the page, with no black strip under it. */
 
+/* pulled up under the text so the fabric starts close to it; the text stays on top */
 .film {
   position: relative;
+  margin-top: -17vh;
+  margin-top: -17svh;
   height: 100vh;
   height: 100svh;
   overflow: hidden;
