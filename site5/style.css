@@ -243,7 +243,7 @@ body {
 
 .film {
   position: relative;
-  height: 320svh;          /* the scroll distance that plays the whole video */
+  height: 900svh;          /* three runs of the video, one after another, without a visible join */
   background: #000;
 }
 
