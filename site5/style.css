@@ -165,20 +165,21 @@ body {
 /* ---------- About ---------- */
 
 .about {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: clamp(40px, 8vh, 88px) 20px clamp(64px, 12vh, 120px);
+  /* almost the full width of the carousel block */
+  max-width: none;
+  margin: 0;
+  padding: clamp(40px, 8vh, 88px) clamp(20px, 4vw, 64px) clamp(64px, 12vh, 120px);
   color: #c9c9d1;
-  font-size: clamp(16px, 1.4vw, 18px);
-  line-height: 1.65;
+  font-size: clamp(17px, 1.7vw, 24px);
+  line-height: 1.6;
 }
 
 .about h2 {
   margin: 0 0 28px;
   color: #f4f4f5;
-  font-size: clamp(26px, 3.6vw, 40px);
+  font-size: clamp(28px, 4.2vw, 64px);
   font-weight: 600;
-  line-height: 1.15;
+  line-height: 1.12;
   letter-spacing: -.02em;
   text-wrap: balance;
 }
