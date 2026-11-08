@@ -238,26 +238,42 @@ body {
 }
 
 /* ---------- Scroll-driven video ---------- */
+/* The video fills the whole screen and fades into the black page at the top and bottom,
+   so it has no visible edges and does not read as a separate block. */
 
 .film {
   position: relative;
-  height: 300svh;          /* the scroll distance that plays the whole video */
+  height: 320svh;          /* the scroll distance that plays the whole video */
+  background: #000;
 }
 
 .film-stage {
   position: sticky;
   top: 0;
+  height: 100vh;
   height: 100svh;
-  display: grid;
-  place-items: center;
+  overflow: hidden;
+  background: #000;
 }
 
 .film video {
-  display: block;
-  /* almost the full width, but never taller than the screen */
-  width: min(calc(100vw - 2 * clamp(20px, 4vw, 64px)), calc(88svh * 16 / 9));
-  aspect-ratio: 16 / 9;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 20px;
-  background: #0b0b0d;
+  display: block;
 }
+
+.film-stage::before,
+.film-stage::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 22%;
+  pointer-events: none;
+}
+.film-stage::before { top: 0;    background: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.6) 40%, rgba(0,0,0,0) 100%); }
+.film-stage::after  { bottom: 0; background: linear-gradient(to top,    #000 0%, rgba(0,0,0,.6) 40%, rgba(0,0,0,0) 100%); }

@@ -8,33 +8,49 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;                       // leave the first frame, no scroll-driven motion
 
-  var target = 0;                           // wanted time, seconds
+  var FPS = 24;
+  var cur = 0;                              // the time we are showing, seconds (eased)
   var raf = 0;
+  var last = 0;
 
-  function progress() {
+  function target() {
     var r = film.getBoundingClientRect();
     var span = Math.max(1, r.height - window.innerHeight);
-    return Math.min(1, Math.max(0, -r.top / span));
+    var p = Math.min(1, Math.max(0, -r.top / span));
+    return p * (video.duration || 0);
   }
 
-  function update() {
+  function tick(now) {
     raf = 0;
     var d = video.duration;
     if (!d || !isFinite(d)) return;
-    target = progress() * d;
-    var diff = target - video.currentTime;
-    // seek only when the previous seek has finished, otherwise the browser queues them up
-    if (Math.abs(diff) > 0.03 && !video.seeking) {
-      video.currentTime = video.currentTime + diff * 0.6;
+
+    var dt = Math.min(0.05, (now - (last || now)) / 1000 || 0.016);
+    last = now;
+
+    // Ease towards the scroll position. The speed of the scroll does not matter:
+    // a fast flick is spread over a short, smooth glide instead of a jump.
+    var t = target();
+    cur += (t - cur) * (1 - Math.exp(-dt * 6));
+
+    // Show whole frames only, and never queue seeks.
+    var frame = Math.round(cur * FPS) / FPS;
+    if (!video.seeking && Math.abs(frame - video.currentTime) >= 0.5 / FPS) {
+      video.currentTime = frame;
     }
-    if (Math.abs(diff) > 0.03) raf = requestAnimationFrame(update);
+
+    if (Math.abs(t - cur) > 0.004 || video.seeking) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      last = 0;
+    }
   }
 
-  function kick() { if (!raf) raf = requestAnimationFrame(update); }
+  function kick() { if (!raf) raf = requestAnimationFrame(tick); }
 
   window.addEventListener('scroll', kick, { passive: true });
   window.addEventListener('resize', kick);
-  video.addEventListener('loadedmetadata', kick);
-  video.addEventListener('seeked', function () { if (Math.abs(target - video.currentTime) > 0.03) kick(); });
+  video.addEventListener('loadedmetadata', function () { cur = target(); kick(); });
+  video.addEventListener('seeked', kick);
   kick();
 })();
