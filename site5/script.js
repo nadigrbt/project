@@ -28,11 +28,15 @@
   // The media sits next to the page in ./media. Title and description are optional:
   // a card without them simply shows no caption on hover.
   var ITEMS = [
-    { media: 'image', src: 'media/photo-1.jpg', alt: 'Portrait of a woman in profile, backlit by warm light, with a gold teardrop earring' },
-    { media: 'video', src: 'media/video-1.mp4' },
-    { media: 'image', src: 'media/photo-2.jpg', alt: 'Portrait of a woman in a grey turtleneck sweater against a purple background' },
-    { media: 'video', src: 'media/video-2.mp4' },
-    { media: 'image', src: 'media/photo-3.jpg', alt: 'Close-up of a face with a gold hoop earring' }
+    { media: 'image', src: 'media/work-1.jpg', alt: 'Платье цвета айвори с корсетом и объёмными рукавами' },
+    { media: 'image', src: 'media/work-2.jpg', alt: 'Невеста поправляет серьгу, платье с кружевом на рукавах' },
+    { media: 'video', src: 'media/work-v1.mp4' },
+    { media: 'image', src: 'media/work-3.jpg', alt: 'Жемчужные пуговицы на спине свадебного платья' },
+    { media: 'image', src: 'media/work-4.jpg', alt: 'Пара на прогулке, свадебное платье с открытым плечом' },
+    { media: 'video', src: 'media/work-v2.mp4' },
+    { media: 'image', src: 'media/work-5.jpg', alt: 'Невеста в платье с накидкой в музейном коридоре' },
+    { media: 'image', src: 'media/work-6.jpg', alt: 'Вечернее платье из жаккарда на лестнице' },
+    { media: 'image', src: 'media/work-7.jpg', alt: 'Атласное платье с открытой спиной на балконе' }
   ];
 
   /* ------------------------------------------------------------------
