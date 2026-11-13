@@ -1,19 +1,44 @@
-<div class="cookie" id="cookie" hidden>
+---
+// Уведомление о cookie. Текст — как на рабочем сайте и в Политике (раздел 9: «Пользователь уведомляется
+// об использовании cookie при входе на Сайт»). Выбор запоминается в localStorage `aj-cookie-ok`,
+// а если браузер его не даёт (приватный режим, запрет) — в cookie `aj_cookie_ok` на год.
+// Пока плашка видна, её высота лежит в переменной --cookie-h на <html>: плавающее видео (video-widget.js)
+// поднимается над плашкой и не прячется под ней.
+---
+<div class="cookie" id="cookie" role="region" aria-label="Уведомление о файлах cookie" hidden>
   <p>Мы используем файлы cookie для анализа посещаемости сайта. Подробнее: <a href="/policy">Политика конфиденциальности</a>.</p>
   <button type="button" data-cookie-ok>Понятно</button>
 </div>
 
 <script>
   const KEY = 'aj-cookie-ok';
+  const COOKIE = 'aj_cookie_ok';
   const box = document.getElementById('cookie')!;
-  let accepted = false;
-  try { accepted = localStorage.getItem(KEY) === '1'; } catch {}
-  if (!accepted) box.hidden = false;
+  const root = document.documentElement;
 
-  box.querySelector('[data-cookie-ok]')!.addEventListener('click', () => {
+  const isAccepted = () => {
+    try { if (localStorage.getItem(KEY) === '1') return true; } catch {}
+    return document.cookie.split('; ').includes(`${COOKIE}=1`);
+  };
+  const remember = () => {
     try { localStorage.setItem(KEY, '1'); } catch {}
-    box.hidden = true;
-  });
+    document.cookie = `${COOKIE}=1; max-age=31536000; path=/; SameSite=Lax`;
+  };
+
+  if (!isAccepted()) {
+    box.hidden = false;
+    const setHeight = () => root.style.setProperty('--cookie-h', `${box.offsetHeight}px`);
+    setHeight();
+    const ro = 'ResizeObserver' in window ? new ResizeObserver(setHeight) : null;
+    ro?.observe(box);
+
+    box.querySelector('[data-cookie-ok]')!.addEventListener('click', () => {
+      remember();
+      box.hidden = true;
+      ro?.disconnect();
+      root.style.removeProperty('--cookie-h');
+    });
+  }
 </script>
 
 <style>
@@ -35,6 +60,7 @@
     color: var(--graphite);
   }
   .cookie[hidden] { display: none; }
+  .cookie p { margin: 0; }
   .cookie a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
   .cookie a:hover { color: var(--wine); }
   .cookie button {
@@ -48,10 +74,28 @@
     font-size: var(--fs-small);
     cursor: pointer;
   }
-  .cookie button:hover { background: var(--graphite); color: var(--white); }
+  .cookie button:hover,
+  .cookie button:focus-visible { background: var(--graphite); color: var(--white); }
+  .cookie :focus-visible { outline: 2px solid var(--wine); outline-offset: 3px; }
 
   @media (max-width: 640px) {
     /* На телефоне — плашка во всю ширину, прижата к самому низу экрана */
     .cookie { left: 0; right: 0; bottom: 0; max-width: none; gap: 16px; padding: 14px 20px calc(14px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12); }
   }
+
+  /* Версия для слабовидящих: крупный шрифт — кнопка переносится под текст, плашка во всю ширину
+     с рамкой сверху, чтобы не сливалась со страницей */
+  :global(html.a11y) .cookie {
+    left: 0; right: 0; bottom: 0;
+    max-width: none;
+    max-height: 70vh;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+    border-top: 3px solid var(--a11y-fg) !important;
+    box-shadow: none;
+  }
+  :global(html.a11y) .cookie p { flex: 1 1 320px; }
+  :global(html.a11y) .cookie button { padding: 8px 20px; min-height: 44px; }
 </style>
