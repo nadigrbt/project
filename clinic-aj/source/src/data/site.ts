@@ -1,5 +1,7 @@
 // Общие данные клиники. Меняете здесь — меняется на всех страницах.
 
+export type Branch = { address: string; yandex: string; coords: [number, number] | null };
+
 export const site = {
   name: 'A&J',
   legalName: 'ООО «Эстетика»',
@@ -12,11 +14,19 @@ export const site = {
     href: 'tel:+78152787030',
   },
 
-  addresses: [
-    'Мурманск, улица Карла Либкнехта, 28, 4 этаж, 411',
-    'Мурманск, улица Воровского, 5/23, 4 этаж, 413',
-    'Мурманск, Кольский проспект, 97/3',
-  ],
+  // Филиалы. Адреса показываются в «Контактах», на карте и в разметке для поисковиков.
+  //   yandex — ссылка на карточку филиала в Яндекс Картах (Яндекс Бизнес);
+  //   coords — координаты точки [широта, долгота], например [68.97, 33.07].
+  // Пока ссылки нет, адрес ведёт на поиск этого адреса в Яндекс Картах.
+  // Пока координат нет хотя бы у одного филиала, карта показывает поиск клиники в Яндексе.
+  branches: [
+    { address: 'Мурманск, улица Карла Либкнехта, 28, 4 этаж, 411', yandex: '', coords: null },
+    { address: 'Мурманск, улица Воровского, 5/23, 4 этаж, 413', yandex: '', coords: null },
+    { address: 'Мурманск, Кольский проспект, 97/3', yandex: '', coords: null },
+  ] as Branch[],
+
+  // Что искать на карте, пока у филиалов нет координат
+  mapSearch: 'Клиника A&J, Мурманск',
 
   // Онлайн-запись (Taplink)
   bookingUrl: 'https://taplink.cc/estetic.aj',
@@ -48,3 +58,23 @@ export const legalLinks = [
   { label: 'Согласие на обработку персональных данных', href: '/agreement' },
   { label: 'Права и обязанности граждан в сфере здравоохранения', href: '/rights' },
 ];
+
+/** Адреса филиалов строками (для разметки schema.org) */
+export const addresses = site.branches.map((b) => b.address);
+
+/** Ссылка на филиал в Яндекс Картах: карточка, а если её нет — поиск по адресу */
+export const branchUrl = (b: Branch) =>
+  b.yandex || `https://yandex.ru/maps/?text=${encodeURIComponent(b.address)}`;
+
+/** Адрес виджета Яндекс Карт: три метки по координатам или, пока координат нет, поиск клиники */
+export function mapWidgetUrl() {
+  const pts = site.branches.map((b) => b.coords);
+  if (pts.every(Boolean)) {
+    const c = pts as [number, number][];
+    const lat = c.reduce((s, p) => s + p[0], 0) / c.length;
+    const lon = c.reduce((s, p) => s + p[1], 0) / c.length;
+    const pt = c.map(([la, lo], i) => `${lo},${la},pm2rdm${i + 1}`).join('~');
+    return `https://yandex.ru/map-widget/v1/?ll=${lon.toFixed(6)},${lat.toFixed(6)}&z=13&pt=${pt}`;
+  }
+  return `https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(site.mapSearch)}&z=12`;
+}
