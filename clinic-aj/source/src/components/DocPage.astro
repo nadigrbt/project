@@ -1,6 +1,7 @@
 ---
 // Текстовая страница-документ (лицензия, политика, правила, согласие, права граждан).
-// blocks — текст документа из data/docs/*.json: h2, h3, p, li (подряд идущие собираются в список), c — ссылка на закон мелким шрифтом.
+// blocks — текст документа из data/docs/*.json: h2, h3, p, li (подряд идущие собираются в список), oi (то же, но нумерованный список),
+// c — ссылка на закон мелким шрифтом. Адреса https://… и e-mail в тексте сами становятся ссылками (ссылки на clinic-aj.ru — внутренние).
 // Тексты документов перенесены с Тильды дословно (это не реклама), исправлены только опечатки. Стили — styles/inner.css.
 import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
@@ -8,7 +9,7 @@ import Footer from './Footer.astro';
 import { legalLinks } from '../data/site';
 import '../styles/inner.css';
 
-export interface DocBlock { t: 'h2' | 'h3' | 'p' | 'li' | 'c'; x: string }
+export interface DocBlock { t: 'h2' | 'h3' | 'p' | 'li' | 'oi' | 'c'; x: string }
 interface Props {
   title: string;        // заголовок h1
   crumb: string;        // последняя «хлебная крошка»
@@ -21,15 +22,26 @@ interface Props {
 const { title, crumb, metaTitle, description, lead, path, blocks = [] } = Astro.props;
 
 // подряд идущие пункты li — в один список
-type Group = { t: 'ul'; items: string[] } | DocBlock;
+type Group = { t: 'ul' | 'ol'; items: string[] } | DocBlock;
 const groups: Group[] = [];
 for (const b of blocks) {
   const last = groups[groups.length - 1];
-  if (b.t === 'li') {
-    if (last && last.t === 'ul') last.items.push(b.x);
-    else groups.push({ t: 'ul', items: [b.x] });
+  const list = b.t === 'li' ? 'ul' : b.t === 'oi' ? 'ol' : null;
+  if (list) {
+    if (last && last.t === list) last.items.push(b.x);
+    else groups.push({ t: list, items: [b.x] });
   } else groups.push(b);
 }
+
+// текст → HTML: экранируем и делаем ссылками адреса сайтов и почту (точку/запятую в конце в ссылку не берём)
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const link = (s: string) =>
+  esc(s).replace(/https?:\/\/[^\s<]+?(?=[.,;)]*(?:\s|$))|[\w.-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,}/gi, (m) => {
+    const href = m.includes('@') && !m.startsWith('http') ? `mailto:${m}`
+      : m.replace(/^https:\/\/clinic-aj\.ru(?=\/|$)/, '') || '/';
+    const ext = /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : '';
+    return `<a href="${href}"${ext}>${m}</a>`;
+  });
 const others = legalLinks.filter((l) => l.href !== path);
 ---
 <Base title={metaTitle} description={description}>
@@ -52,11 +64,12 @@ const others = legalLinks.filter((l) => l.href !== path);
       <div class="doc__body">
         <slot />
         {groups.map((g) =>
-          g.t === 'ul' ? <ul>{g.items.map((i) => <li>{i}</li>)}</ul>
+          g.t === 'ul' ? <ul>{g.items.map((i) => <li set:html={link(i)} />)}</ul>
+          : g.t === 'ol' ? <ol>{g.items.map((i) => <li set:html={link(i)} />)}</ol>
           : g.t === 'h2' ? <h2>{g.x}</h2>
           : g.t === 'h3' ? <h3>{g.x}</h3>
-          : g.t === 'c' ? <p class="doc__cite">{g.x}</p>
-          : <p>{g.x}</p>
+          : g.t === 'c' ? <p class="doc__cite" set:html={link(g.x)} />
+          : <p set:html={link(g.x)} />
         )}
         <nav class="doc__other" aria-label="Другие документы">
           <h2>Другие документы клиники</h2>

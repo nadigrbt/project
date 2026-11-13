@@ -1,6 +1,6 @@
 <div class="cookie" id="cookie" hidden>
-  <p>Мы обязаны Вас проинформировать, что используем cookie</p>
-  <button type="button" data-cookie-ok>Ок, согласен</button>
+  <p>Мы используем файлы cookie для анализа посещаемости сайта. Подробнее: <a href="/policy">Политика конфиденциальности</a>.</p>
+  <button type="button" data-cookie-ok>Понятно</button>
 </div>
 
 <script>
@@ -35,6 +35,8 @@
     color: var(--graphite);
   }
   .cookie[hidden] { display: none; }
+  .cookie a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .cookie a:hover { color: var(--wine); }
   .cookie button {
     flex: none;
     padding: 6px 16px;
