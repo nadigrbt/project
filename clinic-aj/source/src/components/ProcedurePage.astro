@@ -1,0 +1,198 @@
+---
+// Шаблон страницы инъекционной процедуры (13.11): мезотерапия, контурная пластика, липолитики, коллагенотерапия, нитевой лифтинг, озонотерапия.
+// Дизайн — как у /plazma и /sfero (стили — styles/inner.css), крошки через /injections, разметка schema.org: хлебные крошки и вопросы-ответы.
+// Новая страница процедуры = файл в src/pages с данными для этого шаблона. Цены, время процедуры, названия препаратов не пишем (правила владельца, 38-ФЗ).
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Contacts from './Contacts.astro';
+import Footer from './Footer.astro';
+import Directions from './Directions.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+import { breadcrumbsLd, abs } from '../data/schema';
+import '../styles/inner.css';
+
+type Item = { title: string; text: string };
+type Link = { href: string; label: string };
+
+interface Props {
+  /** title и description для поисковиков */
+  title: string;
+  description: string;
+  /** Адрес страницы, например /mezoterapiya */
+  path: string;
+  /** Название в хлебных крошках */
+  crumb: string;
+  h1: string;
+  h1Accent: string;
+  lead: string;
+  benefits: Item[];
+  introTitle: string;
+  intro: string;
+  how: Item[];
+  zonesEyebrow?: string;
+  zonesTitle: string;
+  zones: Item[];
+  whenTitle?: string;
+  whenList: string[];
+  steps: Item[];
+  faq: { q: string; a: string }[];
+  contra: string[];
+  crossText: string;
+  cross: Link[];
+  ctaTitle: string;
+  ctaSub: string;
+}
+
+const p = Astro.props;
+
+const jsonLd = [
+  breadcrumbsLd([
+    { name: 'Главная', href: '/' },
+    { name: 'Инъекционная косметология', href: '/injections' },
+    { name: p.crumb, href: p.path },
+  ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    url: abs(p.path),
+    mainEntity: p.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base title={p.title} description={p.description} jsonLd={jsonLd}>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/injections">Инъекционная косметология</a><span class="cs-crumbs__sep" aria-hidden="true">/</span><span aria-current="page">{p.crumb}</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">Инъекционная косметология</p>
+        <h1 class="cs-hero__title">{p.h1} <span>{p.h1Accent}</span></h1>
+        <p class="cs-hero__lead">{p.lead}</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href="#contact">Записаться на консультацию</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual" aria-hidden="true">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" />
+        <img class="in-hero__woman" src={img('promoWoman')} alt="" width="700" height="700" fetchpriority="high" />
+      </div>
+    </div>
+
+    <div class="cs-benefits">
+      <ul class="container cs-benefits__list">
+        {p.benefits.map((b) => (
+          <li>
+            <img src={img('star')} alt="" width="15" height="15" />
+            <div><strong>{b.title}</strong><span>{b.text}</span></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <main>
+    <section class="container cs-intro">
+      <p class="cs-eyebrow">О процедуре</p>
+      <h2 class="cs-title">{p.introTitle}</h2>
+      <p class="cs-intro__text">{p.intro}</p>
+    </section>
+
+    <section class="container bio-block">
+      <p class="cs-eyebrow">Принцип</p>
+      <h2 class="cs-title">Как это работает</h2>
+      <ul class="bio-pair">
+        {p.how.map((x) => <li><h3>{x.title}</h3><p>{x.text}</p></li>)}
+      </ul>
+    </section>
+
+    <section class="container bio-block">
+      <p class="cs-eyebrow">{p.zonesEyebrow ?? 'Запросы'}</p>
+      <h2 class="cs-title">{p.zonesTitle}</h2>
+      <ul class="bio-zones">
+        {p.zones.map((z) => <li><h3>{z.title}</h3><p>{z.text}</p></li>)}
+      </ul>
+    </section>
+
+    <section class="cs-results bio-results">
+      <div class="container cs-results__inner">
+        <div>
+          <h2 class="cs-results__title">{p.whenTitle ?? 'Когда стоит задуматься о процедуре'}</h2>
+          <p class="cs-results__note">Нужна ли процедура именно вам, решит врач на консультации.</p>
+        </div>
+        <ul class="cs-results__list">
+          {p.whenList.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="container cs-steps">
+      <h2 class="section-title">Как проходит процедура</h2>
+      <ol class="cs-steps__list">
+        {p.steps.map((s, i) => (
+          <li>
+            <span class="cs-steps__num">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="container in-faq">
+      <p class="cs-eyebrow">Вопросы и ответы</p>
+      <h2 class="cs-title">Что обычно спрашивают</h2>
+      <div class="in-faq__list">
+        {p.faq.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="container cs-med">
+      <div class="cs-med__card">
+        <h2>Когда процедура может быть невозможна</h2>
+        <ul>
+          {p.contra.map((c) => <li>{c}</li>)}
+        </ul>
+        <p>Это общий перечень, окончательное решение принимает врач. Имеются противопоказания. Необходима консультация специалиста.</p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>Другие процедуры для кожи</h2>
+        <p class="in-cross__text">{p.crossText}</p>
+        <p class="in-cross__links">
+          {p.cross.map((l) => <a href={l.href}>{l.label} →</a>)}
+        </p>
+      </div>
+    </section>
+
+    <Directions current="/injections" />
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">{p.ctaTitle}</h2>
+          <p class="cs-cta__sub">{p.ctaSub}</p>
+          <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+</Base>
