@@ -54,15 +54,15 @@ export const services: ServiceGroup[] = [
     body: `
 <p>В категорию услуг входит:</p>
 <ul>
-  <li>Биоревитализация</li>
-  <li>Мезотерапия</li>
-  <li>Контурная пластика лица</li>
-  <li>Плазмолифтинг. PRP терапия</li>
-  <li>Инъекции липолитиков</li>
-  <li>Коллагенотерапия</li>
-  <li>Нитевой лифтинг</li>
-  <li>Ботулинотерапия</li>
-  <li>Озонотерапия</li>
+  <li><a href="/biorevitalization">Биоревитализация</a></li>
+  <li><a href="/mezoterapiya">Мезотерапия</a></li>
+  <li><a href="/konturnaya-plastika">Контурная пластика лица</a></li>
+  <li><a href="/plazma">Плазмолифтинг. PRP терапия</a></li>
+  <li><a href="/lipolitiki">Инъекции липолитиков</a></li>
+  <li><a href="/kollagenoterapiya">Коллагенотерапия</a></li>
+  <li><a href="/nitevoy-lifting">Нитевой лифтинг</a></li>
+  <li><a href="/botulino">Ботулинотерапия</a></li>
+  <li><a href="/ozonoterapiya">Озонотерапия</a></li>
 </ul>
 <p><a href="/injections">Подробнее →</a></p>`,
   },
