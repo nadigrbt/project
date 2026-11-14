@@ -25,15 +25,6 @@ export const site = {
     { address: 'Мурманск, Кольский проспект, 97/3', yandex: 'https://yandex.ru/maps/org/a_j/183161304221/', coords: [68.915565, 33.088608] },
   ] as Branch[],
 
-  // Картинка-карта филиалов в «Контактах» (статичная, без кода Яндекса и рекламы).
-  // Основа — выгрузка OpenStreetMap ровно по этой рамке bbox: [запад, юг, восток, север].
-  // Метки ставятся по coords филиалов. Пока src пустой, карта не показывается.
-  mapImage: {
-    src: '', // сюда: '/images/map-branches.webp', когда будет картинка
-    width: 1400,
-    height: 1400,
-    bbox: [32.9497, 68.9, 33.2113, 68.994] as [number, number, number, number],
-  },
 
   // Онлайн-запись (Taplink)
   bookingUrl: 'https://taplink.cc/estetic.aj',
@@ -72,13 +63,3 @@ export const addresses = site.branches.map((b) => b.address);
 /** Ссылка на филиал в Яндекс Картах: карточка, а если её нет — поиск по адресу */
 export const branchUrl = (b: Branch) =>
   b.yandex || `https://yandex.ru/maps/?text=${encodeURIComponent(b.address)}`;
-
-/** Где метка филиала на картинке-карте, в % от левого и верхнего края (проекция как у OSM) */
-export function markerPos([lat, lon]: [number, number]) {
-  const [w, south, e, north] = site.mapImage.bbox;
-  const y = (la: number) => Math.log(Math.tan(Math.PI / 4 + (la * Math.PI) / 360));
-  return {
-    left: ((lon - w) / (e - w)) * 100,
-    top: ((y(north) - y(lat)) / (y(north) - y(south))) * 100,
-  };
-}
