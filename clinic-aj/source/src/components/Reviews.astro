@@ -168,12 +168,12 @@ const star = 'M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7
 
       // вызывается, когда панель показана (у скрытой нет размеров)
       return () => {
-        const wasLooped = looped;
+        // какая настоящая карточка сейчас первая — после пересчёта встанем ровно на неё
+        const idx = looped && setW ? ((Math.round((track.scrollLeft - setW) / step()) % n) + n) % n : 0;
         makeLoop();
         nav.hidden = !looped;
-        const offset = wasLooped && setW ? ((track.scrollLeft - setW) % setW + setW) % setW : 0;
         measure();
-        if (looped) jump(setW + offset);
+        if (looped) jump(setW + (originals[idx].offsetLeft - originals[0].offsetLeft));
         checkLong(panel);
       };
     };
@@ -205,6 +205,9 @@ const star = 'M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7
     let rt = 0;
     window.addEventListener('resize', () => { clearTimeout(rt); rt = window.setTimeout(() => show[current](), 150); });
     select(0);
+    // после загрузки шрифтов ширина карточек меняется — выравниваем ленту ещё раз
+    document.fonts?.ready.then(() => show[current]());
+    window.addEventListener('load', () => show[current]());
   });
 </script>
 
@@ -336,7 +339,8 @@ const star = 'M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7
   /* заглушки — пунктирная рамка, чтобы сразу было видно, что это не настоящий отзыв */
   .review--stub { outline: 1px dashed var(--wine); outline-offset: -1px; }
 
-  .reviews__links { display: flex; flex-wrap: wrap; gap: 12px 48px; margin: 32px 0 0; padding: 0; list-style: none; }
+  /* ссылки «Все отзывы на …» — столбиком, друг под другом (решение владельца 14.11) */
+  .reviews__links { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 32px 0 0; padding: 0; list-style: none; }
   .reviews__links .arrow-link__arrow { color: var(--ink); }
 
   @media (max-width: 1199px) {
@@ -352,6 +356,5 @@ const star = 'M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7
     /* карточка чуть уже экрана — видно, что дальше есть ещё */
     .reviews__track { grid-auto-columns: 86%; gap: 12px; }
     .review { padding: 24px; border-radius: 16px; }
-    .reviews__links { flex-direction: column; gap: 8px; }
   }
 </style>
