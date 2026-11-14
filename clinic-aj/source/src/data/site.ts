@@ -1,6 +1,6 @@
 // Общие данные клиники. Меняете здесь — меняется на всех страницах.
 
-export type Branch = { address: string; yandex: string; coords: [number, number] | null };
+export type Branch = { address: string; yandex: string; twogis?: string; coords: [number, number] | null };
 
 export const site = {
   name: 'A&J',
@@ -16,15 +16,19 @@ export const site = {
 
   // Филиалы. Адреса показываются в «Контактах», на карте и в разметке для поисковиков.
   //   yandex — ссылка на карточку филиала в Яндекс Картах (Яндекс Бизнес);
+  //   twogis — ссылка на отзывы филиала в 2ГИС (из taplink.cc/aj_review, 14.11);
   //   coords — координаты точки [широта, долгота], например [68.97, 33.07].
   // Координаты взяты из ссылок на карточки (параметр ll), 14.11.
   // Если у филиала нет ссылки, адрес ведёт на поиск адреса; если нет координат — карта показывает поиск клиники.
   branches: [
-    { address: 'Мурманск, улица Карла Либкнехта, 28, 4 этаж, 411', yandex: 'https://yandex.ru/maps/org/a_j/58572006858/', coords: [68.979153, 33.088186] },
-    { address: 'Мурманск, улица Воровского, 5/23, 4 этаж, 413', yandex: 'https://yandex.ru/maps/org/a_j/120331577389/', coords: [68.969792, 33.072352] },
-    { address: 'Мурманск, Кольский проспект, 97/3', yandex: 'https://yandex.ru/maps/org/a_j/183161304221/', coords: [68.915565, 33.088608] },
+    { address: 'Мурманск, улица Карла Либкнехта, 28, 4 этаж, 411', yandex: 'https://yandex.ru/maps/org/a_j/58572006858/', twogis: 'https://2gis.ru/murmansk/firm/70000001095077248/tab/reviews', coords: [68.979153, 33.088186] },
+    { address: 'Мурманск, улица Воровского, 5/23, 4 этаж, 413', yandex: 'https://yandex.ru/maps/org/a_j/120331577389/', twogis: 'https://2gis.ru/murmansk/firm/70000001039797440/tab/reviews', coords: [68.969792, 33.072352] },
+    { address: 'Мурманск, Кольский проспект, 97/3', yandex: 'https://yandex.ru/maps/org/a_j/183161304221/', twogis: 'https://2gis.ru/murmansk/firm/70000001060599072/tab/reviews', coords: [68.915565, 33.088608] },
   ] as Branch[],
 
+
+  // Отзывы о клинике на ПроДокторов — общая страница сети, все филиалы (из taplink.cc/aj_review, 14.11)
+  prodoctorovUrl: 'https://prodoctorov.ru/murmansk/set/5869-aj/',
 
   // Онлайн-запись (Taplink)
   bookingUrl: 'https://taplink.cc/estetic.aj',
