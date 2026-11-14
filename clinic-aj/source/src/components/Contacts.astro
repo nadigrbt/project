@@ -14,23 +14,10 @@ const pins = site.branches.flatMap((b, i) =>
         <p class="contacts__sub">Три локации в Мурманске — один высокий стандарт заботы.</p>
         <ul class="contacts__list">
           <li class="contacts__phone"><a href={site.phone.href}>{site.phone.display}</a></li>
-          {site.branches.map((b, i) => (
-            <li class="contacts__branch">
-              <span class="contacts__num" aria-hidden="true">{i + 1}</span>
-              <a class="contacts__addr" href={branchUrl(b)} target="_blank" rel="noopener">{b.address}<span class="visually-hidden">{newTab}</span></a>
-            </li>
+          {site.branches.map((b) => (
+            <li><a class="contacts__addr" href={branchUrl(b)} target="_blank" rel="noopener">{b.address}<span class="visually-hidden">{newTab}</span></a></li>
           ))}
         </ul>
-
-        <!-- Карта OpenStreetMap (Leaflet, без рекламы). Грузится, только когда посетитель
-             докрутил до неё или нажал кнопку. Метки открывают карточки в Яндекс Картах в новом окне. -->
-        <div class="contacts__map" data-osm={JSON.stringify(pins)}>
-          <div class="contacts__map-stub">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-            <p>Три филиала на карте Мурманска</p>
-            <button class="btn-outline" type="button">Показать карту</button>
-          </div>
-        </div>
       </div>
 
       <div class="contacts__ask">
@@ -70,6 +57,16 @@ const pins = site.branches.flatMap((b, i) =>
     </div>
 
 
+    <!-- Карта OpenStreetMap (Leaflet, без рекламы). Грузится, только когда посетитель
+         докрутил до неё или нажал кнопку. Метки открывают карточки в Яндекс Картах в новом окне. -->
+    <div class="contacts__map" data-osm={JSON.stringify(pins)}>
+      <div class="contacts__map-stub">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        <p>Три филиала на карте Мурманска</p>
+        <button class="btn-outline" type="button">Показать карту</button>
+      </div>
+    </div>
+
     <h2 class="section-title contacts__booking-title">Онлайн запись</h2>
     <div class="contacts__booking">
       <p>Вы можете записаться самостоятельно, выбрав филиал, специалиста, процедуру и&nbsp;дату.</p>
@@ -97,7 +94,9 @@ const pins = site.branches.flatMap((b, i) =>
         scrollWheelZoom: false, // колесо мыши крутит страницу, а не карту
         dragging: !L.Browser.mobile, // на телефоне один палец листает страницу
         attributionControl: false,
+        zoomControl: false,
       });
+      L.control.zoom({ position: 'topright', zoomInTitle: 'Приблизить', zoomOutTitle: 'Отдалить' }).addTo(map);
       L.control.attribution({ prefix: false }).addTo(map);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -108,12 +107,17 @@ const pins = site.branches.flatMap((b, i) =>
           title: `Филиал ${p.n}: ${p.label} — открыть в Яндекс Картах`,
           alt: `Филиал ${p.n}`,
           keyboard: true,
-          icon: L.divIcon({ className: 'contacts__pin', html: String(p.n), iconSize: [34, 34], iconAnchor: [17, 17] }),
+          icon: L.divIcon({
+            className: 'contacts__pin',
+            html: `<svg width="32" height="42" viewBox="0 0 32 42" aria-hidden="true"><path d="M16 41s14-13.4 14-25A14 14 0 0 0 2 16c0 11.6 14 25 14 25z" fill="#784443" stroke="#fff" stroke-width="2"/></svg><span>${p.n}</span>`,
+            iconSize: [32, 42],
+            iconAnchor: [16, 41], // кончик капли — точно в адресе
+          }),
         })
           .on('click', () => window.open(p.href, '_blank', 'noopener'))
           .addTo(map);
       }
-      map.fitBounds(L.latLngBounds(pins.map((p) => p.coords)), { padding: [40, 40] });
+      map.fitBounds(L.latLngBounds(pins.map((p) => p.coords)), { paddingTopLeft: [40, 60], paddingBottomRight: [70, 30] });
       box.classList.add('is-loaded');
     };
     box.querySelector('button')?.addEventListener('click', start);
@@ -208,29 +212,12 @@ const pins = site.branches.flatMap((b, i) =>
   .contacts__addr:hover { border-bottom-color: currentColor; }
   .contacts__phone { margin-bottom: -7px; }
 
-  .contacts__branch::before { display: none; }
-  .contacts__list li.contacts__branch { padding-left: 0; display: flex; gap: 12px; align-items: baseline; }
-  .contacts__num {
-    flex: none;
-    display: inline-grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--wine);
-    color: var(--white);
-    font-family: var(--font);
-    font-size: var(--fs-small);
-    line-height: 1;
-    text-decoration: none;
-  }
-  .contacts__num { transform: translateY(-1px); }
 
-  /* ---------- Карта OpenStreetMap ---------- */
+  /* ---------- Карта OpenStreetMap (размеры и вид — как было с Яндекс Картами) ---------- */
   .contacts__map {
     position: relative;
-    margin-top: 40px;
-    height: 420px;
+    margin-top: 72px;
+    height: 460px;
     border-radius: 24px;
     overflow: hidden;
     background: var(--ivory);
@@ -247,20 +234,35 @@ const pins = site.branches.flatMap((b, i) =>
     text-align: center;
   }
   .contacts__map.is-loaded .contacts__map-stub { display: none; }
-  .contacts__map :global(.contacts__map-canvas) { position: absolute; inset: 0; background: var(--ivory); font: inherit; }
-  .contacts__map :global(.contacts__pin) {
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: var(--wine);
+  .contacts__map :global(.contacts__map-canvas) { position: absolute; inset: 0; background: #f2efe9; font: inherit; }
+  /* светлая спокойная подложка, как у Яндекс Карт */
+  .contacts__map :global(.leaflet-tile-pane) { filter: saturate(0.55) brightness(1.04) contrast(0.95); }
+
+  /* метки-капли с номером филиала */
+  .contacts__map :global(.contacts__pin) { background: none; border: 0; }
+  .contacts__map :global(.contacts__pin svg) { display: block; filter: drop-shadow(0 2px 3px rgba(38, 35, 35, 0.35)); cursor: pointer; }
+  .contacts__map :global(.contacts__pin span) {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 32px;
+    text-align: center;
     color: var(--white);
     font-family: var(--font);
     font-size: var(--fs-small);
-    border: 2px solid var(--white);
-    box-shadow: 0 2px 8px rgba(38, 35, 35, 0.35);
-    cursor: pointer;
+    font-weight: var(--w-medium);
+    line-height: 20px;
+    pointer-events: none;
   }
-  .contacts__map :global(.leaflet-control-attribution) { font-size: var(--fs-small); line-height: 20px; }
+  .contacts__map :global(.contacts__pin:hover svg) { transform: translateY(-2px); transition: transform .15s; }
+
+  /* кнопки +/− справа посередине, белые со скруглением */
+  .contacts__map :global(.leaflet-top.leaflet-right) { top: 50%; transform: translateY(-50%); }
+  .contacts__map :global(.leaflet-bar) { border: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(38, 35, 35, 0.2); margin-right: 12px; }
+  .contacts__map :global(.leaflet-bar a) { width: 40px; height: 40px; line-height: 40px; font-size: 22px; color: var(--ink); border-bottom-color: var(--ivory); }
+  .contacts__map :global(.leaflet-bar a:hover) { background: var(--ivory); }
+
+  .contacts__map :global(.leaflet-control-attribution) { font-size: var(--fs-small); line-height: 20px; background: rgba(255, 255, 255, 0.8); border-top-left-radius: 8px; padding: 0 8px; }
   .contacts__map :global(.leaflet-control-attribution a) { color: var(--ink); }
   .contacts__phone a {
     font-size: var(--fs-h3);
@@ -369,6 +371,6 @@ const pins = site.branches.flatMap((b, i) =>
     .contacts__booking { grid-template-columns: 1fr; gap: 50px; }
     .contacts__booking { gap: 24px; }
     .contacts__booking-title { margin-top: 70px; }
-    .contacts__map { margin-top: 32px; height: 340px; border-radius: 16px; }
+    .contacts__map { margin-top: 56px; height: 380px; border-radius: 16px; }
   }
 </style>
