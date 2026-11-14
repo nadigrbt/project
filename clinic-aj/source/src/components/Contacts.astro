@@ -1,6 +1,10 @@
 ---
-import { site, branchUrl, mapWidgetUrl } from '../data/site';
-const mapSrc = mapWidgetUrl();
+import { site, branchUrl, markerPos } from '../data/site';
+const map = site.mapImage;
+const newTab = ' (карточка в Яндекс Картах, откроется в новом окне)';
+// Метки на картинке-карте: номер, ссылка на карточку и место в % от краёв картинки
+const pins = site.branches.flatMap((b, i) =>
+  b.coords ? [{ n: i + 1, href: branchUrl(b), pos: markerPos(b.coords), label: b.address.replace(/^Мурманск,\s*/, '') }] : []);
 ---
 <section class="contacts" id="contact">
   <div class="container">
@@ -11,10 +15,30 @@ const mapSrc = mapWidgetUrl();
         <p class="contacts__sub">Три локации в Мурманске — один высокий стандарт заботы.</p>
         <ul class="contacts__list">
           <li class="contacts__phone"><a href={site.phone.href}>{site.phone.display}</a></li>
-          {site.branches.map((b) => (
-            <li><a class="contacts__addr" href={branchUrl(b)} target="_blank" rel="noopener">{b.address}<span class="visually-hidden"> (открывается Яндекс Карты в новой вкладке)</span></a></li>
+          {site.branches.map((b, i) => (
+            <li class="contacts__branch">
+              <span class="contacts__num" aria-hidden="true">{i + 1}</span>
+              <a class="contacts__addr" href={branchUrl(b)} target="_blank" rel="noopener">{b.address}<span class="visually-hidden">{newTab}</span></a>
+            </li>
           ))}
         </ul>
+
+        <!-- Картинка-карта: метки — ссылки на карточки филиалов в Яндекс Картах (новое окно).
+             Кода Яндекса на сайте нет: только картинка OpenStreetMap и обычные ссылки. -->
+        {map.src && (
+          <figure class="contacts__map">
+            <img src={map.src} width={map.width} height={map.height} loading="lazy" decoding="async"
+                 alt="Карта Мурманска с тремя филиалами клиники A&J" />
+            {pins.map((p) => (
+              <a class="contacts__pin" href={p.href} target="_blank" rel="noopener"
+                 style={`left:${p.pos.left.toFixed(2)}%;top:${p.pos.top.toFixed(2)}%`}
+                 aria-label={`Филиал ${p.n}: ${p.label}${newTab}`}>{p.n}</a>
+            ))}
+            <figcaption class="contacts__map-credit">
+              © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">участники OpenStreetMap</a>
+            </figcaption>
+          </figure>
+        )}
       </div>
 
       <div class="contacts__ask">
@@ -53,15 +77,6 @@ const mapSrc = mapWidgetUrl();
       </div>
     </div>
 
-    <!-- Карта филиалов. Яндекс Карты — сторонний код, поэтому грузим их только когда
-         посетитель докрутил до карты или нажал кнопку (сайт не тормозит). -->
-    <div class="contacts__map" data-map={mapSrc}>
-      <div class="contacts__map-stub">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-        <p>Три филиала клиники на карте Мурманска</p>
-        <button class="btn-outline contacts__map-btn" type="button">Показать карту</button>
-      </div>
-    </div>
 
     <h2 class="section-title contacts__booking-title">Онлайн запись</h2>
     <div class="contacts__booking">
@@ -72,30 +87,6 @@ const mapSrc = mapWidgetUrl();
 </section>
 
 <script>
-  // Карта: подгружаем iframe Яндекс Карт, когда блок почти на экране, или по кнопке
-  document.querySelectorAll<HTMLElement>('[data-map]').forEach((box) => {
-    let done = false;
-    const load = () => {
-      if (done) return;
-      done = true;
-      const f = document.createElement('iframe');
-      f.src = box.dataset.map!;
-      f.title = 'Филиалы клиники A&J на Яндекс Картах';
-      f.loading = 'lazy';
-      f.allowFullscreen = true;
-      f.referrerPolicy = 'strict-origin-when-cross-origin';
-      f.addEventListener('load', () => box.classList.add('is-loaded'));
-      box.appendChild(f);
-    };
-    box.querySelector('button')?.addEventListener('click', load);
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
-      }, { rootMargin: '300px 0px' });
-      io.observe(box);
-    }
-  });
-
   // Маска телефона: (912) 345-67-89
   document.querySelectorAll<HTMLInputElement>('[data-phone]').forEach((input) => {
     input.addEventListener('input', () => {
@@ -179,37 +170,55 @@ const mapSrc = mapWidgetUrl();
   .contacts__addr:hover { border-bottom-color: currentColor; }
   .contacts__phone { margin-bottom: -7px; }
 
-  /* ---------- Карта ---------- */
+  .contacts__branch::before { display: none; }
+  .contacts__list li.contacts__branch { padding-left: 0; display: flex; gap: 12px; align-items: baseline; }
+  .contacts__num,
+  .contacts__pin {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--wine);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: var(--fs-small);
+    line-height: 1;
+    text-decoration: none;
+  }
+  .contacts__num { transform: translateY(-1px); }
+
+  /* ---------- Картинка-карта ---------- */
   .contacts__map {
     position: relative;
-    margin-top: 72px;
-    height: 460px;
+    margin: 40px 0 0;
     border-radius: 24px;
     overflow: hidden;
     background: var(--ivory);
   }
-  .contacts__map-stub {
+  .contacts__map img { width: 100%; height: auto; }
+  .contacts__pin {
     position: absolute;
-    inset: 0;
-    display: grid;
-    place-content: center;
-    justify-items: center;
-    gap: 16px;
-    padding: 24px;
-    text-align: center;
-    color: var(--ink);
+    width: 34px;
+    height: 34px;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--white);
+    box-shadow: 0 2px 8px rgba(38, 35, 35, 0.35);
+    transition: transform .2s;
   }
-  .contacts__map :global(iframe) {
+  .contacts__pin:hover { transform: translate(-50%, -50%) scale(1.12); }
+  .contacts__map-credit {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    opacity: 0;
-    transition: opacity .4s;
+    right: 0;
+    bottom: 0;
+    padding: 2px 8px;
+    background: var(--white);
+    font-size: var(--fs-small);
+    line-height: 20px;
+    border-top-left-radius: 8px;
   }
-  .contacts__map.is-loaded :global(iframe) { opacity: 1; }
-  .contacts__map.is-loaded .contacts__map-stub { visibility: hidden; }
+  .contacts__map-credit a { color: inherit; }
   .contacts__phone a {
     font-size: var(--fs-h3);
     line-height: 42px;
@@ -317,6 +326,6 @@ const mapSrc = mapWidgetUrl();
     .contacts__booking { grid-template-columns: 1fr; gap: 50px; }
     .contacts__booking { gap: 24px; }
     .contacts__booking-title { margin-top: 70px; }
-    .contacts__map { margin-top: 56px; height: 380px; border-radius: 16px; }
+    .contacts__map { margin-top: 32px; border-radius: 16px; }
   }
 </style>
