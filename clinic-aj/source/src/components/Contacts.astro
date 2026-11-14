@@ -1,6 +1,9 @@
 ---
-import { site, branchUrl, mapWidgetUrl } from '../data/site';
-const mapSrc = mapWidgetUrl();
+import { site, branchUrl } from '../data/site';
+const newTab = ' (карточка в Яндекс Картах, откроется в новом окне)';
+// Метки для карты: номер, координаты, ссылка на карточку в Яндекс Картах
+const pins = site.branches.flatMap((b, i) =>
+  b.coords ? [{ n: i + 1, coords: b.coords, href: branchUrl(b), label: b.address.replace(/^Мурманск,\s*/, '') }] : []);
 ---
 <section class="contacts" id="contact">
   <div class="container">
@@ -11,10 +14,23 @@ const mapSrc = mapWidgetUrl();
         <p class="contacts__sub">Три локации в Мурманске — один высокий стандарт заботы.</p>
         <ul class="contacts__list">
           <li class="contacts__phone"><a href={site.phone.href}>{site.phone.display}</a></li>
-          {site.branches.map((b) => (
-            <li><a class="contacts__addr" href={branchUrl(b)} target="_blank" rel="noopener">{b.address}<span class="visually-hidden"> (открывается Яндекс Карты в новой вкладке)</span></a></li>
+          {site.branches.map((b, i) => (
+            <li class="contacts__branch">
+              <span class="contacts__num" aria-hidden="true">{i + 1}</span>
+              <a class="contacts__addr" href={branchUrl(b)} target="_blank" rel="noopener">{b.address}<span class="visually-hidden">{newTab}</span></a>
+            </li>
           ))}
         </ul>
+
+        <!-- Карта OpenStreetMap (Leaflet, без рекламы). Грузится, только когда посетитель
+             докрутил до неё или нажал кнопку. Метки открывают карточки в Яндекс Картах в новом окне. -->
+        <div class="contacts__map" data-osm={JSON.stringify(pins)}>
+          <div class="contacts__map-stub">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            <p>Три филиала на карте Мурманска</p>
+            <button class="btn-outline" type="button">Показать карту</button>
+          </div>
+        </div>
       </div>
 
       <div class="contacts__ask">
@@ -53,15 +69,6 @@ const mapSrc = mapWidgetUrl();
       </div>
     </div>
 
-    <!-- Карта филиалов. Яндекс Карты — сторонний код, поэтому грузим их только когда
-         посетитель докрутил до карты или нажал кнопку (сайт не тормозит). -->
-    <div class="contacts__map" data-map={mapSrc}>
-      <div class="contacts__map-stub">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-        <p>Три филиала клиники на карте Мурманска</p>
-        <button class="btn-outline contacts__map-btn" type="button">Показать карту</button>
-      </div>
-    </div>
 
     <h2 class="section-title contacts__booking-title">Онлайн запись</h2>
     <div class="contacts__booking">
@@ -72,25 +79,47 @@ const mapSrc = mapWidgetUrl();
 </section>
 
 <script>
-  // Карта: подгружаем iframe Яндекс Карт, когда блок почти на экране, или по кнопке
-  document.querySelectorAll<HTMLElement>('[data-map]').forEach((box) => {
-    let done = false;
-    const load = () => {
-      if (done) return;
-      done = true;
-      const f = document.createElement('iframe');
-      f.src = box.dataset.map!;
-      f.title = 'Филиалы клиники A&J на Яндекс Картах';
-      f.loading = 'lazy';
-      f.allowFullscreen = true;
-      f.referrerPolicy = 'strict-origin-when-cross-origin';
-      f.addEventListener('load', () => box.classList.add('is-loaded'));
-      box.appendChild(f);
+  // Карта OpenStreetMap: Leaflet и тайлы грузим, когда карта почти на экране, или по кнопке
+  document.querySelectorAll<HTMLElement>('[data-osm]').forEach((box) => {
+    let started = false;
+    const start = async () => {
+      if (started) return;
+      started = true;
+      const [{ default: L }, { default: css }] = await Promise.all([import('leaflet'), import('leaflet/dist/leaflet.css?inline')]);
+      const style = document.createElement('style');
+      style.textContent = css; // стили Leaflet тоже грузятся только вместе с картой
+      document.head.appendChild(style);
+      const pins: { n: number; coords: [number, number]; href: string; label: string }[] = JSON.parse(box.dataset.osm!);
+      const el = document.createElement('div');
+      el.className = 'contacts__map-canvas';
+      box.appendChild(el);
+      const map = L.map(el, {
+        scrollWheelZoom: false, // колесо мыши крутит страницу, а не карту
+        dragging: !L.Browser.mobile, // на телефоне один палец листает страницу
+        attributionControl: false,
+      });
+      L.control.attribution({ prefix: false }).addTo(map);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">участники OpenStreetMap</a>',
+      }).addTo(map);
+      for (const p of pins) {
+        L.marker(p.coords, {
+          title: `Филиал ${p.n}: ${p.label} — открыть в Яндекс Картах`,
+          alt: `Филиал ${p.n}`,
+          keyboard: true,
+          icon: L.divIcon({ className: 'contacts__pin', html: String(p.n), iconSize: [34, 34], iconAnchor: [17, 17] }),
+        })
+          .on('click', () => window.open(p.href, '_blank', 'noopener'))
+          .addTo(map);
+      }
+      map.fitBounds(L.latLngBounds(pins.map((p) => p.coords)), { padding: [40, 40] });
+      box.classList.add('is-loaded');
     };
-    box.querySelector('button')?.addEventListener('click', load);
+    box.querySelector('button')?.addEventListener('click', start);
     if ('IntersectionObserver' in window) {
       const io = new IntersectionObserver((entries) => {
-        if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+        if (entries.some((e) => e.isIntersecting)) { io.disconnect(); start(); }
       }, { rootMargin: '300px 0px' });
       io.observe(box);
     }
@@ -179,14 +208,33 @@ const mapSrc = mapWidgetUrl();
   .contacts__addr:hover { border-bottom-color: currentColor; }
   .contacts__phone { margin-bottom: -7px; }
 
-  /* ---------- Карта ---------- */
+  .contacts__branch::before { display: none; }
+  .contacts__list li.contacts__branch { padding-left: 0; display: flex; gap: 12px; align-items: baseline; }
+  .contacts__num {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--wine);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: var(--fs-small);
+    line-height: 1;
+    text-decoration: none;
+  }
+  .contacts__num { transform: translateY(-1px); }
+
+  /* ---------- Карта OpenStreetMap ---------- */
   .contacts__map {
     position: relative;
-    margin-top: 72px;
-    height: 460px;
+    margin-top: 40px;
+    height: 420px;
     border-radius: 24px;
     overflow: hidden;
     background: var(--ivory);
+    isolation: isolate; /* слои Leaflet не перекрывают шапку и плашки */
   }
   .contacts__map-stub {
     position: absolute;
@@ -197,19 +245,23 @@ const mapSrc = mapWidgetUrl();
     gap: 16px;
     padding: 24px;
     text-align: center;
-    color: var(--ink);
   }
-  .contacts__map :global(iframe) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    opacity: 0;
-    transition: opacity .4s;
+  .contacts__map.is-loaded .contacts__map-stub { display: none; }
+  .contacts__map :global(.contacts__map-canvas) { position: absolute; inset: 0; background: var(--ivory); font: inherit; }
+  .contacts__map :global(.contacts__pin) {
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--wine);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: var(--fs-small);
+    border: 2px solid var(--white);
+    box-shadow: 0 2px 8px rgba(38, 35, 35, 0.35);
+    cursor: pointer;
   }
-  .contacts__map.is-loaded :global(iframe) { opacity: 1; }
-  .contacts__map.is-loaded .contacts__map-stub { visibility: hidden; }
+  .contacts__map :global(.leaflet-control-attribution) { font-size: var(--fs-small); line-height: 20px; }
+  .contacts__map :global(.leaflet-control-attribution a) { color: var(--ink); }
   .contacts__phone a {
     font-size: var(--fs-h3);
     line-height: 42px;
@@ -317,6 +369,6 @@ const mapSrc = mapWidgetUrl();
     .contacts__booking { grid-template-columns: 1fr; gap: 50px; }
     .contacts__booking { gap: 24px; }
     .contacts__booking-title { margin-top: 70px; }
-    .contacts__map { margin-top: 56px; height: 380px; border-radius: 16px; }
+    .contacts__map { margin-top: 32px; height: 340px; border-radius: 16px; }
   }
 </style>
