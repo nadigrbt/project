@@ -88,6 +88,11 @@ const star = 'M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7
 )}
 
 <script>
+  // Отзывы: табы по филиалам + лента по кругу (после последнего снова первый, в обе стороны).
+  // По кругу — за счёт копий карточек слева и справа: когда лента доезжает до копий,
+  // незаметно перескакиваем на такую же настоящую карточку.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   document.querySelectorAll<HTMLElement>('[data-reviews]').forEach((root) => {
     const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role=tab]'));
     const panels = Array.from(root.querySelectorAll<HTMLElement>('[role=tabpanel]'));
@@ -100,33 +105,79 @@ const star = 'M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7
       more.hidden = text.scrollHeight <= text.clientHeight + 2;
     });
 
-    // Стрелки листают ленту на одну карточку; гаснут на краях
-    const setupNav = (panel: HTMLElement) => {
+    const setupPanel = (panel: HTMLElement) => {
       const track = panel.querySelector<HTMLElement>('[data-track]')!;
+      const nav = panel.querySelector<HTMLElement>('.reviews__nav')!;
       const prev = panel.querySelector<HTMLButtonElement>('[data-prev]')!;
       const next = panel.querySelector<HTMLButtonElement>('[data-next]')!;
-      const step = () => (track.firstElementChild as HTMLElement | null)?.offsetWidth ?? track.clientWidth;
-      const gap = () => parseFloat(getComputedStyle(track).columnGap) || 0;
-      const update = () => {
-        const max = track.scrollWidth - track.clientWidth;
-        prev.disabled = track.scrollLeft <= 2;
-        next.disabled = track.scrollLeft >= max - 2;
-        panel.querySelector<HTMLElement>('.reviews__nav')!.hidden = max <= 2;
-      };
-      prev.addEventListener('click', () => track.scrollBy({ left: -(step() + gap()), behavior: 'smooth' }));
-      next.addEventListener('click', () => track.scrollBy({ left: step() + gap(), behavior: 'smooth' }));
-      track.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', () => { update(); checkLong(panel); });
-      return update;
-    };
-    const updaters = panels.map(setupNav);
+      const originals = Array.from(track.children) as HTMLElement[];
+      const n = originals.length;
+      let looped = false;
+      let setW = 0; // ширина одного полного набора карточек
 
-    root.querySelectorAll<HTMLButtonElement>('[data-more]').forEach((btn) => btn.addEventListener('click', () => {
-      const card = btn.closest('.review')!;
-      const open = card.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', String(open));
-      btn.textContent = open ? 'Свернуть' : 'Читать полностью';
-    }));
+      const gap = () => parseFloat(getComputedStyle(track).columnGap) || 0;
+      const step = () => originals[0].offsetWidth + gap();
+
+      // Копии добавляем, только когда все карточки не помещаются (иначе крутить нечего)
+      const makeLoop = () => {
+        if (looped || n < 2 || track.scrollWidth <= track.clientWidth + 2) return;
+        const clone = () => originals.map((li) => {
+          const c = li.cloneNode(true) as HTMLElement;
+          c.setAttribute('aria-hidden', 'true');
+          c.setAttribute('inert', '');
+          c.classList.remove('is-open');
+          return c;
+        });
+        track.prepend(...clone());
+        track.append(...clone());
+        looped = true;
+      };
+      const measure = () => { if (looped) setW = originals[0].offsetLeft - (track.children[0] as HTMLElement).offsetLeft; };
+      const jump = (left: number) => {
+        track.style.scrollSnapType = 'none';
+        track.scrollLeft = left;
+        track.offsetWidth; // применить сразу
+        track.style.scrollSnapType = '';
+      };
+      // держим ленту в середине (на настоящих карточках)
+      const normalize = () => {
+        if (!looped || !setW) return;
+        const x = track.scrollLeft;
+        if (x < setW - step() / 2) jump(x + setW);
+        else if (x >= 2 * setW - step() / 2) jump(x - setW);
+      };
+
+      let t = 0;
+      track.addEventListener('scroll', () => { clearTimeout(t); t = window.setTimeout(normalize, 120); }, { passive: true });
+      const go = (dir: number) => {
+        normalize();
+        track.scrollBy({ left: dir * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
+      };
+      prev.addEventListener('click', () => go(-1));
+      next.addEventListener('click', () => go(1));
+
+      // «Читать полностью» — и у копий тоже, поэтому через ленту
+      track.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-more]');
+        if (!btn) return;
+        const card = btn.closest('.review')!;
+        const open = card.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', String(open));
+        btn.textContent = open ? 'Свернуть' : 'Читать полностью';
+      });
+
+      // вызывается, когда панель показана (у скрытой нет размеров)
+      return () => {
+        const wasLooped = looped;
+        makeLoop();
+        nav.hidden = !looped;
+        const offset = wasLooped && setW ? ((track.scrollLeft - setW) % setW + setW) % setW : 0;
+        measure();
+        if (looped) jump(setW + offset);
+        checkLong(panel);
+      };
+    };
+    const show = panels.map(setupPanel);
 
     const select = (i: number, focus = false) => {
       tabs.forEach((t, j) => {
@@ -136,20 +187,23 @@ const star = 'M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7
         panels[j].hidden = !on;
       });
       if (focus) tabs[i].focus();
-      updaters[i]();
-      checkLong(panels[i]);
+      show[i]();
     };
+    let current = 0;
     tabs.forEach((t, i) => {
-      t.addEventListener('click', () => select(i));
+      t.addEventListener('click', () => select((current = i)));
       t.addEventListener('keydown', (e) => {
         const k = e.key;
         if (k === 'ArrowRight' || k === 'ArrowLeft' || k === 'Home' || k === 'End') {
           e.preventDefault();
           const n = tabs.length;
-          select(k === 'Home' ? 0 : k === 'End' ? n - 1 : (i + (k === 'ArrowRight' ? 1 : -1) + n) % n, true);
+          current = k === 'Home' ? 0 : k === 'End' ? n - 1 : (i + (k === 'ArrowRight' ? 1 : -1) + n) % n;
+          select(current, true);
         }
       });
     });
+    let rt = 0;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = window.setTimeout(() => show[current](), 150); });
     select(0);
   });
 </script>
