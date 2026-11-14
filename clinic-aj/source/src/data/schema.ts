@@ -1,5 +1,5 @@
 // Разметка schema.org (JSON-LD) для Яндекса и Google. Подключается через проп `jsonLd` у layouts/Base.astro.
-import { site } from './site';
+import { site, addresses } from './site';
 import { doctorUrl, type Doctor } from './doctors';
 
 export const SITE_URL = 'https://clinic-aj.ru';
@@ -18,7 +18,7 @@ export const clinicLd = () => ({
   logo: abs('/images/logo.webp'),
   image: abs('/images/og.jpg'),
   openingHours: 'Mo-Su 09:00-21:00',
-  address: site.addresses.map((a) => ({
+  address: addresses.map((a) => ({
     '@type': 'PostalAddress',
     addressCountry: 'RU',
     addressLocality: 'Мурманск',
