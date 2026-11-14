@@ -17,12 +17,12 @@ export const site = {
   // Филиалы. Адреса показываются в «Контактах», на карте и в разметке для поисковиков.
   //   yandex — ссылка на карточку филиала в Яндекс Картах (Яндекс Бизнес);
   //   coords — координаты точки [широта, долгота], например [68.97, 33.07].
-  // Пока ссылки нет, адрес ведёт на поиск этого адреса в Яндекс Картах.
-  // Пока координат нет хотя бы у одного филиала, карта показывает поиск клиники в Яндексе.
+  // Координаты взяты из ссылок на карточки (параметр ll), 14.11.
+  // Если у филиала нет ссылки, адрес ведёт на поиск адреса; если нет координат — карта показывает поиск клиники.
   branches: [
-    { address: 'Мурманск, улица Карла Либкнехта, 28, 4 этаж, 411', yandex: '', coords: null },
-    { address: 'Мурманск, улица Воровского, 5/23, 4 этаж, 413', yandex: '', coords: null },
-    { address: 'Мурманск, Кольский проспект, 97/3', yandex: '', coords: null },
+    { address: 'Мурманск, улица Карла Либкнехта, 28, 4 этаж, 411', yandex: 'https://yandex.ru/maps/org/a_j/58572006858/', coords: [68.979153, 33.088186] },
+    { address: 'Мурманск, улица Воровского, 5/23, 4 этаж, 413', yandex: 'https://yandex.ru/maps/org/a_j/120331577389/', coords: [68.969792, 33.072352] },
+    { address: 'Мурманск, Кольский проспект, 97/3', yandex: 'https://yandex.ru/maps/org/a_j/183161304221/', coords: [68.915565, 33.088608] },
   ] as Branch[],
 
   // Что искать на карте, пока у филиалов нет координат
@@ -74,7 +74,11 @@ export function mapWidgetUrl() {
     const lat = c.reduce((s, p) => s + p[0], 0) / c.length;
     const lon = c.reduce((s, p) => s + p[1], 0) / c.length;
     const pt = c.map(([la, lo], i) => `${lo},${la},pm2rdm${i + 1}`).join('~');
-    return `https://yandex.ru/map-widget/v1/?ll=${lon.toFixed(6)},${lat.toFixed(6)}&z=13&pt=${pt}`;
+    // масштаб подбираем так, чтобы все метки поместились в карту высотой 380 px (телефон)
+    const latSpan = Math.max(...c.map((p) => p[0])) - Math.min(...c.map((p) => p[0]));
+    const mPerPx = (latSpan * 111_000 * 1.2) / 340; // 1.2 — запас по краям
+    const z = Math.max(10, Math.min(16, Math.floor(Math.log2((156_543 * Math.cos((lat * Math.PI) / 180)) / mPerPx))));
+    return `https://yandex.ru/map-widget/v1/?ll=${lon.toFixed(6)},${lat.toFixed(6)}&z=${z}&pt=${pt}`;
   }
   return `https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(site.mapSearch)}&z=12`;
 }

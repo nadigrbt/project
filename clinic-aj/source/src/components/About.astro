@@ -14,7 +14,6 @@ const photos = [
 ---
 <section class="about" id="about">
   <img class="about__bg" src={img('aboutBg')} alt="" width="805" height="672" loading="lazy" aria-hidden="true" />
-  <div class="about__rule" aria-hidden="true"></div>
 
   <div class="container about__inner">
     <div class="about__text">
@@ -56,14 +55,6 @@ const photos = [
     width: 805px;
     pointer-events: none;
   }
-  .about__rule {
-    position: absolute;
-    top: 232px; /* линия под вступлением */
-    left: 0;
-    width: 60%;
-    height: 1px;
-    background: linear-gradient(90deg, var(--ink-2) 0%, var(--cream) 100%);
-  }
   .about__inner { position: relative; padding-top: 61px; padding-bottom: 64px; }
 
   .about__text { max-width: 500px; }
@@ -97,7 +88,6 @@ const photos = [
   @media (max-width: 959px) {
     .about__inner { padding-top: 60px; }
     .about__title { font-size: 28px; }
-    .about__rule { display: none; }
     .about__schedule { margin-top: 28px; }
     .about__photos {
       position: static;
