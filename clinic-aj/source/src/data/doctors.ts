@@ -55,7 +55,7 @@ export const doctors: Doctor[] = [
       { href: '/blog-ems1', label: 'Можно ли проходить процедуры на аппарате BTL EMSELLA при эндометриозе или аденомиозе?' },
     ],
   },
-  { slug: 'borovkova-yuliya', name: 'Боровкова (Чернова) Юлия Витальевна', specialties: ['Нейрохирург'], practiceSince: 2017, photo: 'doctorBorovkova' },
+  { slug: 'borovkova-yuliya', name: 'Боровкова (Чернова) Юлия Витальевна', specialties: ['Нейрохирург', 'Косметолог'], practiceSince: 2017, photo: 'doctorBorovkova' },
   { slug: 'harinova-oksana', name: 'Харинова Оксана Юрьевна', specialties: ['Косметолог-эстетист'], practiceSince: 2012, photo: 'doctorHarinova' },
   { slug: 'kogut-natalya', name: 'Когут Наталья Сергеевна', specialties: ['Массажист', 'Косметолог-эстетист'], practiceSince: 2005, photo: 'doctorKogut', services: [{ href: '/massage', label: 'Массаж лица и тела' }] },
   { slug: 'pogorelova-yuliya', name: 'Погорелова Юлия Евгеньевна', specialties: ['Косметолог-эстетист'], practiceSince: 2021, photo: 'doctorPogorelova' },

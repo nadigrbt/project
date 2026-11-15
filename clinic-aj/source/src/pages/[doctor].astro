@@ -27,8 +27,10 @@ const initials = d.name.split(' ').filter((w) => !w.startsWith('(')).slice(0, 2)
 const others = doctors.filter((x) => x.slug !== d.slug);
 const role = spec ? spec.toLowerCase() : 'специалист';
 
+// Title до ~70 знаков: если со всеми специальностями не помещается, в title только первая (в description — все).
+const fullTitle = `${d.name} — ${role} | A&J, Мурманск`;
 const title = spec
-  ? `${d.name} — ${role} | A&J, Мурманск`
+  ? (fullTitle.length > 72 ? `${d.name} — ${d.specialties[0].toLowerCase()} | A&J, Мурманск` : fullTitle)
   : `${d.name} — специалист клиники A&J в Мурманске`;
 const description = [
   `${d.name}${d.position ? `, ${d.position.toLowerCase()}` : ''}${spec ? `, ${role}` : ', специалист'} клиники эстетической косметологии A&J в Мурманске.`,
