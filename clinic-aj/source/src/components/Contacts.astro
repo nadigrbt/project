@@ -1,5 +1,8 @@
 ---
 import { site, branchUrl } from '../data/site';
+import Reviews from './Reviews.astro';
+// reviews={false} — показать «Контакты» без блока отзывов
+const { reviews = true } = Astro.props as { reviews?: boolean };
 const newTab = ' (карточка в Яндекс Картах, откроется в новом окне)';
 // Метки для карты: номер, координаты, ссылка на карточку в Яндекс Картах
 const pins = site.branches.flatMap((b, i) =>
@@ -73,7 +76,10 @@ const pins = site.branches.flatMap((b, i) =>
       </div>
     </div>
 
-    <!-- Сюда страница может вставить свой блок под картой (на главной — «Отзывы») -->
+    <!-- Отзывы с Яндекс Карт и 2ГИС — под картой на всех страницах с «Контактами» (решение владельца 15.11) -->
+    {reviews && <Reviews />}
+
+    <!-- Сюда страница может вставить свой блок под отзывами -->
     <slot />
   </div>
 </section>
