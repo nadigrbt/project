@@ -37,21 +37,6 @@ const steps = [
   { title: 'Процедура', text: 'Специалист обрабатывает выбранную зону насадкой аппарата. Вы чувствуете тепло, кожу защищает охлаждение.' },
   { title: 'После', text: 'Можно сразу вернуться к обычным делам. Возможны лёгкое покраснение и отёк, они проходят за несколько часов или дней.' },
 ];
-const indications = [
-  'Возрастные изменения кожи',
-  'Снижение тургора и эластичности',
-  'Появление морщин',
-  'Нечеткий овал лица',
-  'Дряблость кожи лица и шеи',
-  'Профилактика возрастных изменений',
-];
-const contraindications = [
-  'Беременность и период лактации',
-  'Онкологические заболевания',
-  'Острые инфекционные заболевания',
-  'Кардиостимулятор и некоторые металлические импланты',
-  'Воспалительные процессы в зоне воздействия',
-];
 // Вопросы и ответы (15.11, SEO): факты из analysis/volnewmer-fact-check.md и с этой страницы
 const faq = [
   { q: 'Volnewmer, Вольнюмер или Волньюмер — это одно и то же?', a: 'Да. Это одно название аппарата корейской компании Classys, по-русски его пишут по-разному: Volnewmer, Вольнюмер, Волньюмер. Процедуру также называют RF-лифтингом или радиочастотным лифтингом.' },
@@ -174,16 +159,11 @@ const photos: { key: ImageKey; alt: string }[] = [
       </ul>
     </section>
 
-    <!-- Показания и противопоказания -->
+    <!-- Противопоказания (15.11: списки показаний и противопоказаний убраны, не подтверждены инструкцией или реестром) -->
     <section class="container vr-med">
-      <div class="vr-med__card">
-        <h2>Показания</h2>
-        <ul>{indications.map((t) => <li>{t}</li>)}</ul>
-      </div>
       <div class="vr-med__card vr-med__card--alt">
         <h2>Противопоказания</h2>
-        <ul>{contraindications.map((t) => <li>{t}</li>)}</ul>
-        <p>Точный перечень противопоказаний определяется врачом на&nbsp;консультации.</p>
+        <p>Противопоказания к&nbsp;процедуре есть, их&nbsp;перечень врач называет на&nbsp;консультации после осмотра.</p>
       </div>
     </section>
 
@@ -361,7 +341,7 @@ const photos: { key: ImageKey; alt: string }[] = [
   .vr-photos__list img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
 
   /* ---------- Показания / противопоказания ---------- */
-  .vr-med { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 88px; padding-bottom: 88px; }
+  .vr-med { display: grid; grid-template-columns: 1fr; gap: 20px; padding-top: 88px; padding-bottom: 88px; }
   .vr-med__card { padding: 40px; background: var(--ivory); }
   .vr-med__card--alt { background: var(--white); border: 1px solid var(--line); }
   .vr-med__card h2 { font-size: var(--fs-h3); }
