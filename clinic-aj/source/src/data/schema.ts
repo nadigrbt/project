@@ -37,7 +37,7 @@ const branchLd = (b: Branch, i: number) => ({
   ...(b.yandex ? { hasMap: b.yandex } : {}),
   openingHoursSpecification: hours,
   parentOrganization: { '@id': CLINIC_ID },
-  sameAs: [b.yandex, b.twogis].filter(Boolean),
+  sameAs: [b.yandex, b.twogis?.replace(/\/tab\/reviews$/, '')].filter(Boolean),
 });
 
 /** Клиника (сеть из трёх филиалов): на всех страницах через layouts/Base.astro. Данные — data/site.ts */

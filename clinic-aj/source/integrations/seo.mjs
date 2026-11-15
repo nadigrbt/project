@@ -78,7 +78,7 @@ const faq = (html) => {
   const sec = html.match(/<section class="container in-faq"[^>]*>([\s\S]*?)<\/section>/);
   if (!sec) return null;
   const qa = [...sec[1].matchAll(/<details[^>]*>\s*<summary[^>]*>([\s\S]*?)<\/summary>([\s\S]*?)<\/details>/g)]
-    .map((m) => ({ q: text(m[1]), a: text(m[2]) }))
+    .map((m) => ({ q: text(m[1]), a: text(m[2].replace(/<p class="faq-links"[\s\S]*?<\/p>/g, '')) }))
     .filter((x) => x.q && x.a);
   if (!qa.length) return null;
   return {
@@ -146,8 +146,10 @@ const pageType = (slug, html, url, site) => {
 
 // Дата последнего изменения страницы для sitemap — из истории git (если git недоступен, дата сборки)
 const lastmod = (root, slug) => {
+  // Страницы врачей собираются из одного шаблона и data/doctors.ts
+  const src = slug.startsWith('vrach-') ? 'src/pages/[doctor].astro src/data/doctors.ts' : `src/pages/${slug}.astro`;
   try {
-    const d = execSync(`git log -1 --format=%cs -- "src/pages/${slug}.astro"`, { cwd: root, stdio: ['ignore', 'pipe', 'ignore'] })
+    const d = execSync(`git log -1 --format=%cs -- ${src.split(' ').map((p) => `"${p}"`).join(' ')}`, { cwd: root, stdio: ['ignore', 'pipe', 'ignore'] })
       .toString()
       .trim();
     if (d) return d;

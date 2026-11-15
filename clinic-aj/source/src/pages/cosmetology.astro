@@ -7,6 +7,7 @@ import Header from '../components/Header.astro';
 import Contacts from '../components/Contacts.astro';
 import Footer from '../components/Footer.astro';
 import Directions from '../components/Directions.astro';
+import Faq from '../components/Faq.astro';
 import { site } from '../data/site';
 import { img, type ImageKey } from '../data/images';
 
@@ -58,6 +59,15 @@ const slides: { id: string; name: string; text: string; key: ImageKey; w: number
 slides.forEach((x) => { x.href = devices.find((d) => d.id === x.id)!.href; });
 // у аппаратов без своей страницы слайд ведёт на запись
 const slideCta = (x: { href: string }) => (x.href ? { href: x.href, label: 'Подробнее о процедуре →', blank: false } : { href: '#contact', label: 'Записаться на консультацию →', blank: false });
+// Вопросы и ответы (15.11, SEO): только факты со страниц аппаратов и памяток
+const faq = [
+  { q: 'Что такое аппаратная косметология?', a: 'Это процедуры для кожи лица и тела, которые проводят на медицинских аппаратах: радиочастотный (RF) и ультразвуковой лифтинг, лазеры, фотоомоложение IPL, плазма, LED-терапия, микротоки, LPG-массаж и аппаратные чистки. В клинике A&J в Мурманске аппарат и параметры подбирает специалист после консультации.' },
+  { q: 'Какой аппарат выбрать для подтяжки лица: Volnewmer, Morpheus 8 или Liftera?', a: 'Аппараты работают по-разному: Volnewmer прогревает кожу монополярной радиочастотой через поверхность кожи, Morpheus 8 сочетает микроиглы и радиочастоту, Liftera воздействует на глубокие слои фокусированным ультразвуком (SMAS-лифтинг). Что подойдёт именно вам, решает врач после осмотра.', links: [{ href: '/volnewmer', label: 'Volnewmer' }, { href: '/rf', label: 'Morpheus 8' }, { href: '/smas', label: 'Liftera' }, { href: '/lifting', label: 'Подтяжка лица без хирургии' }] },
+  { q: 'Что помогает при пигментации и сосудистых звёздочках?', a: 'Для работы с пигментацией и сосудистыми проявлениями в клинике есть IPL-фотоомоложение Lumecca и лазер MeDioStar. Подходит ли процедура, врач определяет на консультации.', links: [{ href: '/lumecca', label: 'Lumecca' }, { href: '/mediostar', label: 'MeDioStar' }] },
+  { q: 'Можно ли делать лазер и фотоомоложение летом?', a: 'Перед процедурами со светом и лазером нельзя загорать и пользоваться автозагаром, после них важна защита от солнца. Как подготовиться к процедуре и что делать после неё, написано в памятках пациентам.', links: [{ href: '/instructions', label: 'Памятки пациентам' }, { href: '/blog-lazer', label: 'Почему нельзя автозагар перед лазером' }] },
+  { q: 'Можно ли сочетать аппаратные и инъекционные процедуры?', a: 'Процедуры часто сочетают, но порядок и интервалы между ними врач определяет индивидуально.', links: [{ href: '/injections', label: 'Инъекционная косметология' }] },
+  { q: 'В каком филиале проходят аппаратные процедуры?', a: 'Клиника A&J принимает по трём адресам в Мурманске: улица Карла Либкнехта, 28, улица Воровского, 5/23, и Кольский проспект, 97/3. Не все аппараты есть в каждом филиале (например, NeoGen — на Карла Либкнехта), поэтому при записи по номеру 78-70-30 или онлайн администратор подскажет нужный адрес.' },
+];
 const steps = [
   { title: 'Консультация', text: 'Врач соберёт анамнез, выслушает пожелания и оценит состояние кожи.' },
   { title: 'Индивидуальный план', text: 'Подберём аппарат или сочетание процедур и домашний уход под вашу задачу.' },
@@ -78,7 +88,7 @@ const photos: { key: ImageKey; alt: string }[] = [
 ---
 <Base
   title="Аппаратная косметология в Мурманске: RF, SMAS, лазер, LPG — клиника A&J"
-  description="13 аппаратов для лица и тела: Volnewmer, Morpheus 8, Liftera, Lumecca, NeoGen, MeDioStar, Heleo4, LPG. Врач подберёт процедуру на консультации. Запись: 78-70-30"
+  description="Аппаратная косметология в Мурманске: Volnewmer, Morpheus 8, Liftera, Lumecca, NeoGen, MeDioStar, Heleo4, LPG. Аппарат подберёт врач. Запись: 78-70-30"
 >
   <section class="cs-hero">
     <Header />
@@ -209,6 +219,8 @@ const photos: { key: ImageKey; alt: string }[] = [
         {photos.map((p) => <li><img src={img(p.key)} alt={p.alt} width="600" height="800" loading="lazy" /></li>)}
       </ul>
     </section>
+
+    <Faq items={faq} />
 
     <Directions current="/cosmetology" />
 

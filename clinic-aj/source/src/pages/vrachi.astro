@@ -46,8 +46,8 @@ const jsonLd = [
 ];
 ---
 <Base
-  title="Врачи и косметологи клиники A&J в Мурманске: специалисты, стаж, запись"
-  description="Врачи и специалисты клиники A&J в Мурманске: врач-косметолог и дерматолог, косметологи-эстетисты, массажист. Стаж и фото специалистов. Запишитесь онлайн или по номеру 78-70-30"
+  title="Врачи и косметологи клиники A&J в Мурманске: стаж, фото, запись"
+  description="Врачи и специалисты клиники A&J в Мурманске: врач-косметолог, дерматолог, косметологи-эстетисты, массажист. Стаж и фото. Запись онлайн и по номеру 78-70-30"
   jsonLd={jsonLd}
 >
   <section class="cs-hero">
@@ -85,7 +85,7 @@ const jsonLd = [
           <li class="dl__row">
             <a class="dl__photo" href={url} tabindex="-1" aria-hidden="true">
               {photo
-                ? <img src={photo} alt="" width="400" height="500" loading="lazy" />
+                ? <img src={photo} alt={`${d.name}${spec ? `, ${spec.toLowerCase()}` : ''} — клиника A&J, Мурманск`} width="400" height="500" loading="lazy" />
                 : <span class="dl__initials">{initials}</span>}
             </a>
             <div class="dl__info">
