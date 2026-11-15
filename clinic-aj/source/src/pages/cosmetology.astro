@@ -20,7 +20,7 @@ const goals = [
   { title: 'Подтянуть кожу и овал лица', items: [['volnewmer', 'Volnewmer'], ['liftera', 'Liftera'], ['morpheus', 'Morpheus 8'], ['micro', 'Микротоки']] },
   { title: 'Омолодить кожу и улучшить её качество', items: [['neogen', 'NeoGen'], ['lumecca', 'Lumecca'], ['mediostar', 'MeDioStar'], ['hydrafacial', 'HydraFacial']] },
   { title: 'Пигментация и сосудистые проявления', items: [['lumecca', 'Lumecca'], ['mediostar', 'MeDioStar'], ['acne', 'Консультация']] },
-  { title: 'Акне и проблемная кожа', items: [['heleo', 'Heleo4'], ['acne', 'Консультация']] },
+  { title: 'Акне и проблемная кожа', items: [['heleo', 'Heleo4'], ['/rubcy-posle-akne', 'Рубцы постакне'], ['acne', 'Консультация']] },
   { title: 'Целлюлит, отёки и тонус тела', items: [['lpg', 'LPG-массаж'], ['morpheus', 'Morpheus 8']] },
   { title: 'Не знаю, что мне подойдёт', items: [['acne', 'Записаться на консультацию']] },
 ];
@@ -145,7 +145,7 @@ const photos: { key: ImageKey; alt: string }[] = [
         {goals.map((g) => (
           <li class="cs-nav__item">
             <h3>{g.title}</h3>
-            <ul>{g.items.map(([id, name]) => <li><a href={`#${id}`}>{name}</a></li>)}</ul>
+            <ul>{g.items.map(([id, name]) => <li><a href={id.startsWith('/') ? id : `#${id}`}>{name}</a></li>)}</ul>
           </li>
         ))}
       </ul>
@@ -169,7 +169,7 @@ const photos: { key: ImageKey; alt: string }[] = [
           ))}
           <li class="cs-card cs-card--soft" id="acne">
             <h3>Аппаратное лечение акне и сосудистых проявлений</h3>
-            <p>Здесь нет одного «лучшего» метода: у каждого свои преимущества, и подходит он не всем. Врач соберёт анамнез, подберёт процедуры и индивидуальный уход за кожей.</p>
+            <p>Здесь нет одного «лучшего» метода: у каждого свои преимущества, и подходит он не всем. Врач соберёт анамнез, подберёт процедуры и индивидуальный уход за кожей. Если после акне остались рубцы, посмотрите, <a href="/rubcy-posle-akne">как мы работаем с рубцами постакне</a>.</p>
             <a class="cs-card__link" href="#contact">Записаться на консультацию →</a>
           </li>
         </ul>

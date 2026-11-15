@@ -1,0 +1,291 @@
+---
+// Страница /rubcy-posle-akne — «Лечение рубцов после акне (постакне)» (15.11). Дизайн как у /lifting (методы карточками, стили — styles/inner.css),
+// крошки через /cosmetology (там карточка «Аппаратное лечение акне»). Подход — из видео главного врача (IMG_9412.MOV владельца 15.11 → public/video/akne.mp4,
+// 720x1280, заставка akne-poster.webp, плавающее окошко слева внизу как на /lazer): сначала инъекционные методики (субцизия + коллагеностимулирующий препарат),
+// затем аппаратные процедуры. Методы для рубцов и постакне — только те, что уже указаны на страницах клиники: Morpheus 8 (/rf), NeoGen (/neogen),
+// плазмолифтинг (/plazma), коллагенотерапия (/kollagenoterapiya). Медицинские сведения сверены с AAD и обзорами (отчёт — analysis/rubcy-posle-akne-fact-check.md).
+// 38-ФЗ: без обещаний результата, «без боли», благодарностей и случаев излечения; время процедур, число сеансов и названия препаратов не пишем.
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Contacts from '../components/Contacts.astro';
+import Footer from '../components/Footer.astro';
+import Directions from '../components/Directions.astro';
+import { site } from '../data/site';
+import { img } from '../data/images';
+import { breadcrumbsLd, clinicRef, abs } from '../data/schema';
+import '../styles/inner.css';
+
+const PATH = '/rubcy-posle-akne';
+const TITLE = 'Лечение рубцов после акне в Мурманске | Клиника эстетической косметологии A&J';
+const DESCRIPTION = 'Лечение рубцов постакне в клинике A&J в Мурманске: субцизия, коллагеностимулирующие препараты, игольчатый RF-лифтинг Morpheus 8, плазма NeoGen. План подбирает врач. Запишитесь онлайн или по номеру 78-70-30';
+
+const benefits = [
+  { title: 'Консультация врача', text: 'Врач определит тип рубцов и составит план.' },
+  { title: 'Комбинированный подход', text: 'Инъекционные и аппаратные методы.' },
+  { title: 'Сертифицированные препараты', text: 'Подбираем под вашу кожу и задачу.' },
+  { title: 'Три адреса в Мурманске', text: 'Ежедневно с 9:00 до 21:00.' },
+];
+const types = [
+  { title: 'Точечные (ice pick)', text: 'Узкие глубокие углубления, похожие на проколы. Уходят глубоко в кожу.' },
+  { title: 'Штампованные (boxcar)', text: 'Округлые углубления с чёткими, почти отвесными краями.' },
+  { title: 'Волнообразные (rolling)', text: 'Широкие углубления с плавными краями: кожу изнутри стягивают тяжи соединительной ткани.' },
+  { title: 'Гипертрофические', text: 'Плотные рубцы, которые возвышаются над кожей в пределах бывшего воспаления.' },
+  { title: 'Келоидные', text: 'Рубцы, которые выходят за границы повреждения. Требуют отдельного подхода.' },
+  { title: 'Пятна постакне', text: 'Красные или тёмные пятна на месте высыпаний. Это не рубцы, работа с ними другая.' },
+];
+const methods: { id: string; href: string; title: string; forWhat: string; text: string }[] = [
+  { id: 'subcision', href: '', title: 'Субцизия', forWhat: 'Атрофические рубцы, в первую очередь волнообразные.', text: 'Врач вводит тонкую иглу под рубец и разделяет тяжи соединительной ткани, которые тянут кожу вниз. Так дно рубца освобождается и приподнимается.' },
+  { id: 'stimulator', href: '', title: 'Коллагеностимулирующие препараты', forWhat: 'Поддержка дна рубца после субцизии.', text: 'Под освобождённое дно рубца врач вводит препарат, который стимулирует выработку собственного коллагена. Препарат и схему подбирают индивидуально.' },
+  { id: 'morpheus', href: '/rf', title: 'Игольчатый RF-лифтинг Morpheus 8', forWhat: 'Рубцы, следы постакне, рельеф кожи.', text: 'Микроиглы проникают в кожу и передают радиочастотную энергию на заданную глубину, запуская обновление коллагена.' },
+  { id: 'neogen', href: '/neogen', title: 'Плазменное омоложение NeoGen', forWhat: 'Рубцы, следы акне, рельеф и поры.', text: 'Аппарат воздействует на кожу азотной плазмой. Режим и глубину воздействия врач подбирает под задачу.' },
+  { id: 'prp', href: '/plazma', title: 'Плазмолифтинг (PRP)', forWhat: 'Следы акне, тон и качество кожи.', text: 'В кожу вводят плазму, полученную из собственной крови пациента. Врач может сочетать её с другими методами.' },
+  { id: 'collagen', href: '/kollagenoterapiya', title: 'Коллагенотерапия', forWhat: 'Упругость кожи, рубцы и растяжки.', text: 'Препараты с коллагеном вводятся в кожу и поддерживают её каркас. Подходит ли метод для вашей задачи, решит врач.' },
+];
+const requests = [
+  'Остались углубления или неровности после акне',
+  'Неровный рельеф кожи на щеках, висках или лбу',
+  'Хочется понять, какие рубцы у вас и что с ними можно сделать',
+  'Пробовали домашний уход, а рельеф не меняется',
+];
+const steps = [
+  { title: 'Консультация', text: 'Врач осмотрит кожу, определит тип рубцов и расспросит о лечении акне, в том числе о приёме изотретиноина. Если высыпания ещё активны, сначала нужно взять их под контроль.' },
+  { title: 'Инъекционный этап', text: 'Субцизия и введение коллагеностимулирующего препарата готовят кожу к следующему этапу.' },
+  { title: 'Аппаратный этап и наблюдение', text: 'Врач подбирает аппаратные процедуры для рельефа кожи, число сеансов и интервалы, следит, как кожа отвечает на лечение, и при необходимости меняет план.' },
+];
+const faq = [
+  { q: 'Можно ли полностью убрать рубцы после акне?', a: 'Рубец — это изменённая ткань, и сделать кожу такой, какой она была до акне, нельзя. Задача лечения — сделать рубцы менее заметными. Чего можно ожидать в вашем случае, врач скажет после осмотра.' },
+  { q: 'Почему лечение начинают с инъекций, а не с аппаратов?', a: 'У многих атрофических рубцов дно стянуто тяжами соединительной ткани. Субцизия освобождает его, а коллагеностимулирующий препарат помогает поддержать. После этого кожа готова к аппаратным процедурам.' },
+  { q: 'Можно ли лечить рубцы, если ещё есть высыпания?', a: 'Обычно лечение рубцов начинают, когда акне под контролем: новые воспаления могут оставлять новые рубцы, а некоторые процедуры способны обострить высыпания. Если акне активно, врач сначала подберёт уход и лечение кожи.' },
+  { q: 'Сколько нужно процедур?', a: 'Это зависит от типа и глубины рубцов и от того, как кожа отвечает на лечение. Обычно нужен курс, иногда несколько методов. План и интервалы составляет врач.' },
+  { q: 'Это больно?', a: 'Ощущения индивидуальны. Перед процедурой врач расскажет, чего ожидать, и обсудит с вами обезболивание.' },
+  { q: 'Что будет после процедуры?', a: 'Возможны покраснение, отёк, следы от уколов и небольшие синяки, длительность зависит от метода. Врач расскажет, как ухаживать за кожей после процедуры.' },
+];
+const contra = [
+  'беременность и грудное вскармливание',
+  'воспаление, инфекция или активные высыпания в зоне процедуры',
+  'герпес в стадии обострения',
+  'склонность к образованию келоидных рубцов',
+  'нарушения свёртываемости крови',
+  'онкологические заболевания, обострение хронических заболеваний',
+  'приём изотретиноина сейчас или недавно — обсудите с врачом',
+];
+
+const jsonLd = [
+  breadcrumbsLd([
+    { name: 'Главная', href: '/' },
+    { name: 'Аппаратная косметология', href: '/cosmetology' },
+    { name: 'Лечение рубцов после акне', href: PATH },
+  ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    url: abs(PATH),
+    name: 'Лечение рубцов после акне',
+    description: DESCRIPTION,
+    inLanguage: 'ru',
+    publisher: clinicRef,
+    about: {
+      '@type': 'MedicalCondition',
+      name: 'Рубцы после акне',
+      alternateName: ['Рубцы постакне', 'Постакне', 'Атрофические рубцы после акне'],
+      possibleTreatment: [
+        { '@type': 'MedicalProcedure', name: 'Субцизия' },
+        { '@type': 'MedicalProcedure', name: 'Игольчатый RF-лифтинг', url: abs('/rf') },
+        { '@type': 'MedicalProcedure', name: 'Плазменное омоложение NeoGen', url: abs('/neogen') },
+        { '@type': 'MedicalProcedure', name: 'Плазмолифтинг (PRP)', url: abs('/plazma') },
+        { '@type': 'MedicalProcedure', name: 'Коллагенотерапия', url: abs('/kollagenoterapiya') },
+      ],
+    },
+    video: {
+      '@type': 'VideoObject',
+      name: 'Лечение рубцов постакне: с чего начинает врач',
+      description: 'Врач клиники A&J рассказывает, почему лечение рубцов постакне начинают с инъекционных методик (субцизии) и только потом переходят к аппаратным процедурам.',
+      thumbnailUrl: abs('/video/akne-poster.webp'),
+      contentUrl: abs('/video/akne.mp4'),
+      uploadDate: '2026-11-15',
+      duration: 'PT26S',
+      inLanguage: 'ru',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    url: abs(PATH),
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base title={TITLE} description={DESCRIPTION} jsonLd={jsonLd}>
+  <section class="cs-hero">
+    <Header />
+
+    <div class="container">
+      <nav class="cs-crumbs" aria-label="Хлебные крошки">
+        <a href="/">Главная</a><span aria-hidden="true">/</span><a href="/cosmetology">Аппаратная косметология</a><span class="cs-crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Лечение рубцов после акне</span>
+      </nav>
+    </div>
+
+    <div class="container in-hero">
+      <div class="in-hero__text">
+        <p class="cs-eyebrow">Клиника A&amp;J</p>
+        <h1 class="cs-hero__title">Лечение рубцов <span>после акне</span></h1>
+        <p class="cs-hero__lead">Работаем с рубцами постакне поэтапно: сначала инъекционные методики, затем аппаратные процедуры. План составляет врач после осмотра.</p>
+        <div class="cs-actions">
+          <a class="cs-btn" href="#contact">Записаться на консультацию</a>
+          <a class="cs-phone" href={site.phone.href}>
+            <span class="cs-phone__label">или позвоните</span>
+            <span class="cs-phone__num">{site.phone.display}</span>
+          </a>
+        </div>
+      </div>
+      <div class="in-hero__visual" aria-hidden="true">
+        <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" />
+        <img class="in-hero__woman" src={img('promoWoman')} alt="" width="700" height="700" fetchpriority="high" />
+      </div>
+    </div>
+
+    <div class="cs-benefits">
+      <ul class="container cs-benefits__list">
+        {benefits.map((b) => (
+          <li>
+            <img src={img('star')} alt="" width="15" height="15" />
+            <div><strong>{b.title}</strong><span>{b.text}</span></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <main>
+    <section class="container cs-intro">
+      <p class="cs-eyebrow">О проблеме</p>
+      <h2 class="cs-title">Что такое рубцы постакне</h2>
+      <p class="cs-intro__text">Рубцы постакне — следы, которые остаются на коже после глубоких воспалительных элементов акне. Чаще всего это атрофические рубцы: углубления, где ткани стало меньше. Реже встречаются гипертрофические и келоидные рубцы, которые, наоборот, возвышаются над кожей. Работа с рубцами — одна из самых сложных задач в косметологии: тип рубцов у одного человека бывает разным, и обычно нужен не один метод, а их сочетание.</p>
+    </section>
+
+    <section class="container bio-block">
+      <p class="cs-eyebrow">Виды</p>
+      <h2 class="cs-title">Какие бывают рубцы после акне</h2>
+      <ul class="bio-zones rb-types">
+        {types.map((t) => <li><h3>{t.title}</h3><p>{t.text}</p></li>)}
+      </ul>
+    </section>
+
+    <section class="container bio-block">
+      <p class="cs-eyebrow">Подход врача</p>
+      <h2 class="cs-title">Почему мы начинаем с инъекционных методик</h2>
+      <ul class="bio-pair">
+        <li>
+          <h3>Сначала освободить дно рубца</h3>
+          <p>Дно многих атрофических рубцов стянуто тяжами соединительной ткани, и одни аппаратные процедуры не всегда до них «достают». Поэтому лечение мы не начинаем с аппаратов: основной подход — субцизия, после которой под рубец вводят коллагеностимулирующий препарат.</p>
+        </li>
+        <li>
+          <h3>Затем аппаратные процедуры</h3>
+          <p>Подготовленную кожу врач может вести дальше аппаратными методами, которые работают с рельефом: игольчатым RF-лифтингом Morpheus 8 или плазмой NeoGen. Последовательность и сочетание методов подбирают под ваши рубцы.</p>
+        </li>
+      </ul>
+      <p class="rb-video-note">О подходе к лечению рассказывает <a href="/vrach-smykova-valeriya">Валерия Смыкова</a>, главный врач клиники: видео в окошке слева внизу.</p>
+    </section>
+
+    <section class="container bio-block cs-devices">
+      <p class="cs-eyebrow">Методы</p>
+      <h2 class="cs-title">Какие методы есть в клинике</h2>
+      <ul class="cs-devices__grid">
+        {methods.map((m) => (
+          <li class="cs-card" id={m.id}>
+            <h3>{m.title}</h3>
+            <p class="cs-card__for">{m.forWhat}</p>
+            <p>{m.text}</p>
+            {m.href ? <a class="cs-card__link" href={m.href}>Подробнее о процедуре →</a> : <a class="cs-card__link" href="#contact">Записаться на консультацию →</a>}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="cs-results bio-results">
+      <div class="container cs-results__inner">
+        <div>
+          <h2 class="cs-results__title">С чем приходят</h2>
+          <p class="cs-results__note">Какие методы подойдут именно вам, решает врач после консультации.</p>
+        </div>
+        <ul class="cs-results__list">
+          {requests.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="container cs-steps">
+      <h2 class="section-title">Как проходит лечение</h2>
+      <ol class="cs-steps__list">
+        {steps.map((s, i) => (
+          <li>
+            <span class="cs-steps__num">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="container in-faq">
+      <p class="cs-eyebrow">Вопросы и ответы</p>
+      <h2 class="cs-title">Что обычно спрашивают</h2>
+      <div class="in-faq__list">
+        {faq.map((f, i) => (
+          <details open={i === 0}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="container cs-med">
+      <div class="cs-med__card">
+        <h2>Когда лечение может быть невозможно</h2>
+        <ul>
+          {contra.map((c) => <li>{c}</li>)}
+        </ul>
+        <p>Это общий перечень, окончательное решение принимает врач. Имеются противопоказания. Необходима консультация специалиста.</p>
+      </div>
+      <div class="cs-med__card cs-med__card--alt">
+        <h2>Другие процедуры для кожи</h2>
+        <p class="in-cross__text">Если высыпания ещё есть, начните с ухода за кожей. Посмотрите, что ещё есть в клинике.</p>
+        <p class="in-cross__links">
+          <a href="/clean">Чистка лица →</a>
+          <a href="/heleo4">LED-терапия Heleo4 →</a>
+          <a href="/ozonoterapiya">Озонотерапия →</a>
+          <a href="/mezoterapiya">Мезотерапия →</a>
+          <a href="/instructions#morpheus">Памятка перед Morpheus 8 и после →</a>
+          <a href="/injections">Инъекционная косметология →</a>
+          <a href="/cosmetology">Аппаратная косметология →</a>
+        </p>
+      </div>
+    </section>
+
+    <Directions />
+
+    <section class="cs-cta">
+      <div class="container cs-cta__inner">
+        <div>
+          <h2 class="cs-cta__title">Хотите понять, что можно сделать с рубцами?</h2>
+          <p class="cs-cta__sub">Приходите на консультацию: врач определит тип рубцов и составит план.</p>
+          <p class="cs-cta__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
+        </div>
+        <a class="cs-cta__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+      </div>
+    </section>
+
+    <Contacts />
+  </main>
+  <Footer />
+
+  <script is:inline src="/video-widget.js?v=2" data-src="/video/akne.mp4" data-poster-src="/video/akne-poster.webp" data-label="Видео: главный врач клиники рассказывает о лечении рубцов постакне" defer></script>
+</Base>
+
+<style>
+  @media (min-width: 960px) { .rb-types { grid-template-columns: repeat(3, 1fr); } }
+  .rb-video-note { margin-top: 24px; color: var(--muted); }
+  .rb-video-note a { color: var(--wine); text-decoration: underline; text-underline-offset: 4px; }
+  .rb-video-note a:hover { color: var(--graphite); }
+</style>

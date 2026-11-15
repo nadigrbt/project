@@ -47,7 +47,8 @@ export const services: ServiceGroup[] = [
   <li>Лазерное омоложение MeDioStar Monolith</li>
 </ul>
 <p><a class="accent" href="/cosmetology">Подробнее →</a><br>
-<a href="/lifting">Подтяжка лица без хирургии →</a></p>`,
+<a href="/lifting">Подтяжка лица без хирургии →</a><br>
+<a href="/rubcy-posle-akne">Лечение рубцов после акне →</a></p>`,
   },
   {
     title: 'Инъекционная косметология',
