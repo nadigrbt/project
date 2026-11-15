@@ -11,7 +11,7 @@ import Directions from '../components/Directions.astro';
 import { site } from '../data/site';
 import { img } from '../data/images';
 import { doctors, doctorUrl, isIndexable, specialtyLine, experience } from '../data/doctors';
-import { abs, breadcrumbsLd, clinicLd, doctorLd } from '../data/schema';
+import { abs, breadcrumbsLd, doctorLd, CLINIC_ID } from '../data/schema';
 import '../styles/inner.css';
 
 const PRODOCTOROV_CLINIC = 'https://prodoctorov.ru/murmansk/lpu/113320-aj/';
@@ -28,9 +28,12 @@ const rows = doctors.map((d) => ({
 
 const jsonLd = [
   {
+    // Полная разметка клиники — в Base.astro (тот же @id); здесь только сотрудники и профиль на ПроДокторов
     '@context': 'https://schema.org',
-    ...clinicLd(),
-    sameAs: [...clinicLd().sameAs, PRODOCTOROV_CLINIC],
+    '@type': 'MedicalClinic',
+    '@id': CLINIC_ID,
+    name: 'Клиника эстетической косметологии A&J',
+    sameAs: [PRODOCTOROV_CLINIC],
     employee: doctors.filter(isIndexable).map((d) => doctorLd(d, d.photo ? img(d.photo as any) : undefined)),
   },
   {

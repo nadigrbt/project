@@ -14,11 +14,9 @@
      GTEestiPro-Medium.woff2     (500)
    Пока файлов нет, сайт показывает Jost.
    ------------------------------------------------------------ */
-@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-Thin.woff2') format('woff2'); font-weight: 100; font-display: swap; }
-@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-UltraLight.woff2') format('woff2'); font-weight: 200; font-display: swap; }
-@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
-@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'GT Eesti Pro'; src: url('/fonts/GTEestiPro-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+/* Правила @font-face для GT Eesti Pro подключаются в layouts/Base.astro, только если
+   папка public/fonts есть: иначе браузер на каждой странице запрашивал бы 5 несуществующих
+   файлов (ошибки 404 замедляли загрузку). */
 
 :root {
   /* ---- Палитра сайта: 4 цвета ---- */

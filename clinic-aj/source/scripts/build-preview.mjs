@@ -46,7 +46,8 @@ for (const name of readdirSync(tmp)) {
 
 // api/ (PHP) на GitHub Pages не работает — не копируем
 rmSync(join(tmp, 'api'), { recursive: true, force: true });
-for (const f of ['.htaccess', 'robots.txt']) rmSync(join(tmp, f), { force: true });
+// sitemap.xml на тестовой копии не нужен: она закрыта от поиска
+for (const f of ['.htaccess', 'robots.txt', 'sitemap.xml']) rmSync(join(tmp, f), { force: true });
 
 // Убираем старую сборку и кладём новую рядом с source/
 for (const name of readdirSync(out)) {
