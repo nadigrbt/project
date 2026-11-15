@@ -1,0 +1,61 @@
+---
+// Блок «Вопросы и ответы» (15.11, SEO) для страниц, где своего блока вопросов нет: главная, /cosmetology, /volnewmer.
+// Разметка FAQPage для Яндекса и Google строится сама из этого блока при сборке (integrations/seo.mjs ищет section.in-faq),
+// поэтому вопросы на странице и в разметке всегда совпадают.
+// Ответы — только факты, подтверждённые на сайте или владельцем: без цен, времени процедур, обещаний результата и «без боли» (38-ФЗ).
+type Item = { q: string; a: string; links?: { href: string; label: string }[] };
+interface Props {
+  items: Item[];
+  eyebrow?: string;
+  title?: string;
+}
+const { items, eyebrow = 'Вопросы и ответы', title = 'Что обычно спрашивают' } = Astro.props;
+---
+<section class="container in-faq">
+  <p class="faq-eyebrow">{eyebrow}</p>
+  <h2 class="faq-title">{title}</h2>
+  <div class="in-faq__list">
+    {items.map((f, i) => (
+      <details open={i === 0}>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+        {f.links?.length ? (
+          <p class="faq-links">
+            {f.links.map((l) => <a href={l.href}>{l.label} →</a>)}
+          </p>
+        ) : null}
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .in-faq { padding-top: 88px; padding-bottom: 88px; }
+  .faq-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font);
+    font-size: var(--fs-small);
+    font-weight: var(--w-regular);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--wine);
+  }
+  .faq-eyebrow::before { content: ''; width: 40px; height: 1px; background: currentColor; }
+  .faq-title { margin-top: 20px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
+  .in-faq__list { margin-top: 32px; }
+  details { border-top: 1px solid var(--line); padding: 20px 0; }
+  details:last-child { border-bottom: 1px solid var(--line); }
+  summary { display: flex; justify-content: space-between; gap: 20px; cursor: pointer; list-style: none; font-family: var(--font); font-size: var(--fs-h3); font-weight: var(--w-light); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; flex: none; color: var(--wine); font-size: var(--fs-h3); line-height: 1; }
+  details[open] summary::after { content: '×'; }
+  details p { margin-top: 14px; max-width: 760px; color: var(--muted); }
+  .faq-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .faq-links a { color: var(--wine); text-decoration: none; border-bottom: 1px solid currentColor; }
+  @media (max-width: 767px) {
+    .in-faq { padding-top: 60px; padding-bottom: 60px; }
+    .faq-eyebrow { letter-spacing: 1.5px; }
+  }
+</style>

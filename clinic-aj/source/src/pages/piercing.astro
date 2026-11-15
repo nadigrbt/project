@@ -50,11 +50,12 @@ const faq = [
   { q: 'С какого возраста можно проколоть уши ребёнку?', a: 'Прокалываем мочки ушей детям с рождения.' },
   { q: 'Какие серьги ставят?', a: 'Гипоаллергенные серьги из медицинской стали или титана в стерильных одноразовых картриджах.' },
   { q: 'Как ухаживать за проколом?', a: 'Подробные рекомендации по уходу вы получите от специалиста сразу после процедуры.' },
+  { q: 'Где проколоть уши ребёнку в Мурманске?', a: 'В клинике A&J по системе Inverness: детям с рождения и взрослым. Запишитесь онлайн или по номеру 78-70-30, администратор подскажет, в каком филиале проводится процедура.' }
 ];
 ---
 <Base
-  title="Прокол мочек ушей в Мурманске для детей и взрослых: система Inverness | Клиника эстетической косметологии A&J"
-  description="Прокол мочек ушей по системе Inverness в клинике A&J в Мурманске: стерильные одноразовые картриджи и гипоаллергенные серьги. Запишитесь онлайн или по номеру 78-70-30"
+  title="Прокол ушей в Мурманске детям и взрослым: Inverness — клиника A&J"
+  description="Прокол ушей в Мурманске детям и взрослым по системе Inverness в клинике A&J: с рождения, одноразовые стерильные картриджи, игровая зона. Запись: 78-70-30"
 >
   <section class="cs-hero">
     <Header />
@@ -78,9 +79,9 @@ const faq = [
           </a>
         </div>
       </div>
-      <div class="in-hero__visual" aria-hidden="true">
+      <div class="in-hero__visual">
         <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
-        <img class="in-hero__woman pr-hero" src={img('pierHero')} alt="" width="900" height="910" fetchpriority="high" aria-hidden="true" />
+        <img class="in-hero__woman pr-hero" src={img('pierHero')} alt="Девочка с серёжкой после прокола мочки уха" width="900" height="910" fetchpriority="high" />
       </div>
     </div>
 
@@ -191,7 +192,7 @@ const faq = [
     <Contacts />
   </main>
   <Footer />
-  <script is:inline src="/video-widget.js?v=2" data-src={videoUrl} defer></script>
+  <script is:inline src="/video-widget.js?v=4" data-src={videoUrl} defer></script>
 </Base>
 
 <style>

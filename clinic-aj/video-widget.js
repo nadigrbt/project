@@ -29,9 +29,13 @@
   var v = box.querySelector('video');
   v.setAttribute('aria-label', label);
   if (poster) v.poster = poster;
-  v.src = src;
+  // Видео начинает грузиться после загрузки страницы (+1,5 с), чтобы не мешать первому экрану (скорость, Core Web Vitals)
+  function start() { if (!v.getAttribute('src')) { v.src = src; var p = v.play(); if (p && p.catch) p.catch(function () {}); } }
+  if (document.readyState === 'complete') setTimeout(start, 1500);
+  else window.addEventListener('load', function () { setTimeout(start, 1500); });
 
   function open() {
+    start();
     box.classList.add('vw--open');
     box.removeAttribute('role'); box.removeAttribute('aria-label');
     v.muted = false; v.controls = true; v.currentTime = 0; v.loop = false;

@@ -55,6 +55,7 @@ const faq = [
   { q: 'Чем ручная чистка отличается от аппаратной?', a: 'При ручной чистке косметолог очищает кожу инструментами и руками, при аппаратной используется специальный прибор. Часто методы сочетают.' },
   { q: 'Будет ли покраснение после чистки?', a: 'После ручной и комбинированной чистки кожа может быть покрасневшей и чувствительной, обычно это быстро проходит. Реакция кожи индивидуальна, подробности расскажет косметолог.' },
   { q: 'Как часто нужно делать чистку?', a: 'Частоту подбирает косметолог в зависимости от типа кожи и выбранной процедуры.' },
+  { q: 'Где сделать чистку лица в Мурманске?', a: 'В клинике A&J: ручную, комбинированную и аппаратную чистку (HydraFacial, PRO FACIAL) проводят косметологи клиники. Запишитесь онлайн или по номеру 78-70-30, администратор подскажет, в каком филиале проводится процедура.' }
 ];
 const contra = [
   'острые воспалительные заболевания кожи в зоне процедуры',
@@ -66,8 +67,8 @@ const contra = [
 ];
 ---
 <Base
-  title="Чистка лица в Мурманске: ручная, атравматическая, HydraFacial | Клиника эстетической косметологии A&J"
-  description="Чистки лица в клинике A&J в Мурманске: ручная, комбинированная Christina Comodex, атравматическая Holy Land, аппаратные PRO FACIAL и HydraFacial. Запишитесь онлайн или по номеру 78-70-30"
+  title="Чистка лица в Мурманске: ручная, HydraFacial, Holy Land — клиника A&J"
+  description="Чистка лица в Мурманске в клинике A&J: ручная, Christina Comodex, атравматическая Holy Land, аппаратная HydraFacial и PRO FACIAL. Запись: 78-70-30"
 >
   <section class="cs-hero">
     <Header />
@@ -91,9 +92,9 @@ const contra = [
           </a>
         </div>
       </div>
-      <div class="in-hero__visual" aria-hidden="true">
+      <div class="in-hero__visual">
         <img class="in-hero__letters" src={img('cosmLetters')} alt="" width="1183" height="821" aria-hidden="true" />
-        <img class="in-hero__woman" src={img('cleanWoman')} alt="" width="700" height="700" fetchpriority="high" aria-hidden="true" />
+        <img class="in-hero__woman" src={img('cleanWoman')} alt="Девушка с чистой ухоженной кожей лица" width="700" height="700" fetchpriority="high" />
       </div>
     </div>
 
@@ -254,7 +255,7 @@ const contra = [
     <Contacts />
   </main>
   <Footer />
-  <script is:inline src="/video-widget.js?v=2" data-src={videoUrl} defer></script>
+  <script is:inline src="/video-widget.js?v=4" data-src={videoUrl} defer></script>
 </Base>
 
 <style>

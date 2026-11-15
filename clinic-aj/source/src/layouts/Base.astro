@@ -7,13 +7,20 @@ import '@fontsource/commissioner/300.css';
 import '@fontsource/commissioner/400.css';
 import '@fontsource/commissioner/500.css';
 import '../styles/global.css';
+import jostThin from '@fontsource/jost/files/jost-cyrillic-200-normal.woff2?url';
+import commissionerLight from '@fontsource/commissioner/files/commissioner-cyrillic-300-normal.woff2?url';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import MobileMenu from '../components/MobileMenu.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import { site } from '../data/site';
 import { img } from '../data/images';
+import { clinicLd, SITE_URL, CLINIC_ID } from '../data/schema';
 
 interface Props {
+  /** До 70 знаков: «Услуга в Мурманске — клиника A&J». Без цен. */
   title: string;
+  /** 140–170 знаков: что за услуга, для кого, призыв записаться. Без цен и времени процедур. */
   description: string;
   ogTitle?: string;
   ogDescription?: string;
@@ -22,44 +29,83 @@ interface Props {
   noindex?: boolean;
   /** Разметка schema.org (JSON-LD) для поисковиков: объект или список объектов */
   jsonLd?: object | object[];
+  /** website (по умолчанию), article — статьи блога, profile — страницы врачей */
   ogType?: string;
+  /** Подпись к картинке для соцсетей (если ogImage своя) */
+  ogImageAlt?: string;
 }
 
-const { title, description, ogTitle = title, ogDescription = description, ogImage, noindex = false, jsonLd, ogType = 'website' } = Astro.props;
-const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const { title, description, ogTitle = title, ogDescription = description, ogImage, ogImageAlt, ogType = 'website', noindex = false, jsonLd } = Astro.props;
+const extraLd = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site).href;
 const og = ogImage ?? new URL(img('og'), Astro.site).href;
+const isHome = Astro.url.pathname === '/' || /\/index(\.html)?$/.test(Astro.url.pathname);
+const robots = noindex || import.meta.env.PUBLIC_NOINDEX === '1' ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+
+// GT Eesti Pro (платный шрифт с Тильды) подключаем, только если файлы лежат в public/fonts
+const hasGtEesti = existsSync(join(process.cwd(), 'public', 'fonts'));
+const gtEestiCss = [
+  ['Thin', 100], ['UltraLight', 200], ['Light', 300], ['Regular', 400], ['Medium', 500],
+].map(([n, w]) => `@font-face{font-family:'GT Eesti Pro';src:url('/fonts/GTEestiPro-${n}.woff2') format('woff2');font-weight:${w};font-display:swap}`).join('');
+
+// Разметка schema.org о клинике (на всех страницах): сеть + три филиала — data/schema.ts, факты из data/site.ts
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  name: 'Клиника A&J',
+  alternateName: 'Клиника эстетической косметологии A&J',
+  url: `${SITE_URL}/`,
+  inLanguage: 'ru',
+  publisher: { '@id': CLINIC_ID },
+};
+const ld = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
 ---
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-page-noindex={noindex ? '' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {/* Тестовая копия на GitHub Pages не должна попадать в поиск (npm run preview-build) */}
-    {(noindex || import.meta.env.PUBLIC_NOINDEX === '1') && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="robots" content={robots} />
     <meta name="format-detection" content="telephone=no" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <!-- Если файлы GT Eesti Pro лежат в public/fonts, включаем толщины как на Тильде -->
-    <script is:inline>
-      document.fonts && document.fonts.load('200 16px "GT Eesti Pro"').then(function (f) {
-        if (f.length) document.documentElement.classList.add('gt-eesti');
-      });
-    </script>
+    <meta name="theme-color" content="#F1EAE0" />
+
+    {/* Шрифты первого экрана: заголовки (Jost 200) и текст (Commissioner 300) — грузим сразу */}
+    <link rel="preload" href={jostThin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={commissionerLight} as="font" type="font/woff2" crossorigin />
+    {hasGtEesti && <Fragment set:html={`<style>${gtEestiCss}</style>`} />}
+    {/* Если файлы GT Eesti Pro лежат в public/fonts, включаем толщины как на Тильде */}
+    {hasGtEesti && (
+      <script is:inline>
+        document.fonts && document.fonts.load('200 16px "GT Eesti Pro"').then(function (f) {
+          if (f.length) document.documentElement.classList.add('gt-eesti');
+        });
+      </script>
+    )}
 
     <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Клиника A&J" />
+    <meta property="og:locale" content="ru_RU" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:image" content={og} />
-    <meta property="og:locale" content="ru_RU" />
-    {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+    {!ogImage && <meta property="og:image:width" content="1200" />}
+    {!ogImage && <meta property="og:image:height" content="985" />}
+    <meta property="og:image:alt" content={ogImageAlt ?? (ogImage ? ogTitle : 'Логотип клиники эстетической косметологии A&J')} />
+    <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" type="image/svg+xml" href={img('faviconLight')} media="(prefers-color-scheme: light)" />
-    <link rel="icon" type="image/svg+xml" href={img('faviconDark')} media="(prefers-color-scheme: dark)" />
-    <link rel="icon" type="image/svg+xml" href={img('favicon')} />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href={img('favicon')} />
     <link rel="apple-touch-icon" href={img('appleIcon')} />
+
+    <script is:inline type="application/ld+json" set:html={ld({ '@context': 'https://schema.org', ...clinicLd() })} />
+    {isHome && <script is:inline type="application/ld+json" set:html={ld(websiteLd)} />}
+    {extraLd.map((x) => <script is:inline type="application/ld+json" set:html={ld(x)} />)}
     <link rel="stylesheet" href="/a11y.css?v=2" />
     {/* Версия для слабовидящих включается до отрисовки, чтобы страница не «мигала» */}
     <script is:inline>
