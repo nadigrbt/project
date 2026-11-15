@@ -28,7 +28,7 @@ const others = doctors.filter((x) => x.slug !== d.slug);
 const role = spec ? spec.toLowerCase() : 'специалист';
 
 const title = spec
-  ? `${d.name} — ${role} в Мурманске | Клиника A&J`
+  ? `${d.name} — ${role} | A&J, Мурманск`
   : `${d.name} — специалист клиники A&J в Мурманске`;
 const description = [
   `${d.name}${d.position ? `, ${d.position.toLowerCase()}` : ''}${spec ? `, ${role}` : ', специалист'} клиники эстетической косметологии A&J в Мурманске.`,
