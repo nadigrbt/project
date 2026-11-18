@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Promo from '../components/Promo.astro';
 import Services from '../components/Services.astro';
+import SiteSearch from '../components/SiteSearch.astro';
 import Education from '../components/Education.astro';
 import Gallery from '../components/Gallery.astro';
 import About from '../components/About.astro';
@@ -31,6 +32,10 @@ const faq = [
   <main>
     <Hero />
     <Promo />
+    <!-- Поиск по сайту (18.11, по просьбе владельца — перед «Нашими услугами») -->
+    <section class="home-search" aria-label="Поиск по сайту">
+      <div class="container"><SiteSearch /></div>
+    </section>
     <Services />
     <Education />
     <Gallery />
@@ -40,3 +45,10 @@ const faq = [
   </main>
   <Footer />
 </Base>
+
+<style>
+  /* Полоса с поиском на фоне «Наших услуг», без отдельной границы между ними */
+  .home-search { background: var(--cream); padding: 80px 0 0; }
+  .home-search :global(.ssearch) { max-width: 760px; }
+  @media (max-width: 959px) { .home-search { padding-top: 48px; } }
+</style>
