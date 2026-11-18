@@ -53,21 +53,58 @@
     return p[n];
   };
 
+  // «Как слышится»: типичные ошибки в русском письме дают одинаковый ключ.
+  // о/а, е/и/э/ё, ы/и, я/а, ю/у, звонкие/глухие (б/п, в/ф, г/к, д/т, ж/ш, з/с), ц/с, щ/ш,
+  // ь/ъ не пишем, двойные буквы — одна: «марщины» = «морщины», «масаж» = «массаж»,
+  // «педекюр» = «педикюр», «тотуаж» = «татуаж», «биоривитолизация» = «биоревитализация».
+  const PH = { о: 'а', я: 'а', е: 'и', ё: 'и', э: 'и', ы: 'и', й: 'и', ю: 'у', б: 'п', в: 'ф', г: 'к', д: 'т', ж: 'ш', з: 'с', ц: 'с', щ: 'ш', ь: '', ъ: '' };
+  const phCache = new Map();
+  const phon = (w) => {
+    let r = phCache.get(w);
+    if (r === undefined) {
+      r = [...w].map((c) => (c in PH ? PH[c] : c)).join('').replace(/(.)\1+/g, '$1');
+      phCache.set(w, r);
+    }
+    return r;
+  };
+
   // Насколько слово запроса q похоже на слово страницы t: 1 — то же слово, 0 — не похоже
+  const allowedTypos = (n) => (n >= 7 ? 2 : n >= 4 ? 1 : 0);
   const quality = (q, t) => {
     if (q === t) return 1;
     if (q.length >= 2 && t.startsWith(q)) return 0.9; // слово ещё набирают
     if (t.length >= 4 && q.startsWith(t)) return 0.8;
-    const allowed = q.length >= 8 ? 2 : q.length >= 4 ? 1 : 0;
+    if (Math.abs(q.length - t.length) > 3 && !(t.length > q.length)) return 0;
+    // Ошибка «на слух» — почти как точное совпадение
+    const pq = phon(q), pt = phon(t);
+    if (pq.length >= 3 && pq === pt) return 0.8;
+    if (pq.length >= 4 && pt.startsWith(pq)) return 0.72;
+    // Опечатки: пропущенная, лишняя, заменённая или переставленная буква (и то же по ключу «на слух»)
+    const allowed = allowedTypos(q.length);
     if (!allowed) return 0;
-    const d = dist(q, t);
+    // Ошибка «на слух» плюс опечатка — только в длинных словах, иначе «машина» нашла бы «морщины»
+    const d = Math.min(dist(q, t), pq.length >= 7 ? dist(pq, pt) : 9);
     if (d <= allowed) return d === 1 ? 0.65 : 0.5;
     if (t.length > q.length && dist(q, t.slice(0, q.length)) <= allowed) return 0.5;
     return 0;
   };
 
+  // Латиница вместо кириллицы: «botox» → «ботокс», «massazh» → «массаж», «epilyaciya» → «эпиляция»
+  const TR = [['shch', 'щ'], ['sch', 'щ'], ['zh', 'ж'], ['kh', 'х'], ['ch', 'ч'], ['sh', 'ш'], ['ts', 'ц'], ['ya', 'я'], ['yu', 'ю'], ['yo', 'е'], ['ye', 'е'], ['ja', 'я'], ['ju', 'ю'],
+    ['ci', 'ци'], ['ce', 'це'], ['cy', 'ци'], ['ph', 'ф'], ['x', 'кс'], ['a', 'а'], ['b', 'б'], ['c', 'к'], ['d', 'д'], ['e', 'е'], ['f', 'ф'], ['g', 'г'], ['h', 'х'],
+    ['i', 'и'], ['j', 'й'], ['k', 'к'], ['l', 'л'], ['m', 'м'], ['n', 'н'], ['o', 'о'], ['p', 'п'], ['q', 'к'], ['r', 'р'], ['s', 'с'], ['t', 'т'], ['u', 'у'],
+    ['v', 'в'], ['w', 'в'], ['y', 'и'], ['z', 'з']];
+  const translit = (s) => {
+    let out = '';
+    for (let i = 0; i < s.length;) {
+      const hit = TR.find(([l]) => s.startsWith(l, i));
+      if (hit) { out += hit[1]; i += hit[0].length; } else { out += s[i]; i++; }
+    }
+    return out;
+  };
+
   /* ---------- Индекс ---------- */
-  const FIELDS = [['title', 10], ['keys', 9], ['alt', 5], ['sub', 4], ['heads', 3], ['section', 2], ['desc', 2], ['text', 1]];
+  const FIELDS = [['title', 10], ['keys', 10], ['alt', 5], ['sub', 4], ['heads', 3], ['section', 2], ['desc', 2], ['text', 1]];
   let index = null;
   let loading = null;
   let vocab = [];
@@ -85,6 +122,7 @@
         ...p,
         f,
         exact: [p.title, ...(p.keys || [])].map((k) => stems(k).join(' ')).filter(Boolean),
+        exactPh: [p.title, ...(p.keys || [])].map((k) => stems(k).map(phon).join(' ')).filter(Boolean),
         keyStems: new Set([...f.title, ...f.keys]),
       };
     });
@@ -95,7 +133,7 @@
 
   const load = () => {
     if (!loading) {
-      loading = fetch(`${BASE}/search-index.json?v=1`)
+      loading = fetch(`${BASE}/search-index.json?v=2`)
         .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
         .then((d) => (index = prepare(d)))
         .catch((e) => { loading = null; throw e; });
@@ -133,8 +171,13 @@
   const variants = (raw) => {
     const s = raw.toLowerCase();
     const out = [s];
-    if (/[a-z]/.test(s) && !/[а-я]/.test(s)) out.push(swap(s, EN, RU)); // «kfpth» → «лазер»
+    if (/[a-z]/.test(s) && !/[а-я]/.test(s)) {
+      out.push(swap(s, EN, RU)); // «kfpth» → «лазер»
+      out.push(translit(s)); // «botox» → «ботокс»
+    }
     if (/[а-я]/.test(s) && !/[a-z]/.test(s)) out.push(swap(s, RU, EN)); // «дзп» → «lpg»
+    // Раздельно вместо слитно: «био ревитализация», «плазмо лифтинг», «пост акне»
+    for (const v of [...out]) if (/\s/.test(v.trim())) out.push(v.replace(/\s+/g, ''));
     return out;
   };
 
@@ -145,6 +188,7 @@
     const qs = stems(raw);
     if (!qs.length) return [];
     const joined = qs.join(' ');
+    const joinedPh = qs.map(phon).join(' ');
 
     // Для каждого слова запроса — его совпадения и совпадения синонимов
     const tokens = qs.map((q) => {
@@ -182,6 +226,8 @@
       let tier = 2;
       if (p.exact.includes(joined)) tier = 0;
       else if (allKey || p.exact.some((k) => k.startsWith(joined))) tier = 1;
+      // Название или ключ, написанные с ошибкой «на слух» («педекюр», «тотуаж») — сразу за точными
+      else if (p.exactPh.includes(joinedPh)) tier = 1.5;
       return { p, tier, score, full: bests.every(Boolean) };
     });
     const full = res.filter((r) => r.full);
