@@ -86,7 +86,7 @@ export const images = {
   // Иконка сайта: на Тильде SVG весом 1 МБ, у нас PNG 96×96 (~10 КБ) и public/favicon.ico (16/32/48 px)
   favicon:       { file: 'favicon-96.png' },
   appleIcon:     { file: 'apple-touch-icon.png', remote: `${T}/tild6237-3737-4130-b965-373233396138/kosmetologiya_murman.png`, width: 192 },
-  // Врачи (28.10): временно — фото с ПроДокторов (скриншоты владельца), маленькие; заменить оригиналами
+  // Врачи (18.11): фото с Яндекс Диска клиники (папка «сотрудники»), обрезка 4:5, 800×1000. Согласие на публикацию есть на все фото сайта.
   doctorBorovkova:  { file: 'doctor-borovkova.webp' },
   doctorSmykova:    { file: 'doctor-smykova.webp' },
   doctorAgaeva:     { file: 'doctor-agaeva.webp' },
@@ -94,6 +94,10 @@ export const images = {
   doctorMatveeva:   { file: 'doctor-matveeva.webp' },
   doctorPogorelova: { file: 'doctor-pogorelova.webp' },
   doctorHarinova:   { file: 'doctor-harinova.webp' },
+  doctorVeriya:     { file: 'doctor-veriya.webp' },
+  doctorDuguzheva:  { file: 'doctor-duguzheva.webp' },
+  doctorMingaleva:  { file: 'doctor-mingaleva.webp' },
+  doctorBordzilovskaya: { file: 'doctor-bordzilovskaya.webp' },
   og:            { file: 'og.jpg',             remote: `${T}/tild3133-3666-4639-b434-376539316537/AJ_logo.jpg`, width: 1200 },
 
   // Страница /volnewmer
