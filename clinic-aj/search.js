@@ -133,7 +133,7 @@
 
   const load = () => {
     if (!loading) {
-      loading = fetch(`${BASE}/search-index.json?v=2`)
+      loading = fetch(`${BASE}/search-index.json?v=3`)
         .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
         .then((d) => (index = prepare(d)))
         .catch((e) => { loading = null; throw e; });
@@ -378,6 +378,20 @@
       if (li) setActive([...list.children].indexOf(li));
     });
     document.addEventListener('pointerdown', (e) => { if (!root.contains(e.target)) open(false); });
-    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) open(false); });
+    // Нажатие на подсказку или результат не должно забирать фокус у строки: в Safari (Mac, iPhone)
+    // ссылка не получает фокус, строка теряет его раньше клика, и список закрывался до перехода.
+    panel.addEventListener('mousedown', (e) => e.preventDefault());
+    // Ссылки в списке открываем сами — на случай, если список успел закрыться до клика
+    panel.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href]');
+      if (!a || a.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      e.preventDefault();
+      location.href = a.href;
+    });
+    root.addEventListener('focusout', (e) => {
+      if (root.contains(e.relatedTarget)) return;
+      // Закрываем чуть позже, когда клик по подсказке уже сработал
+      setTimeout(() => { if (!root.contains(document.activeElement)) open(false); }, 200);
+    });
   });
 })();
