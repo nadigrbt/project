@@ -42,7 +42,7 @@ export const site = {
 
   metrikaId: 94733259,
 
-  developer: { label: 'маркетинговая поддержка', url: 'https://t.me/nadigrb' },
+  developer: { label: 'Разработка и маркетинговая поддержка', url: 'https://t.me/nadigrb' },
 };
 
 export const mainNav = [
