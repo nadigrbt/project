@@ -50,10 +50,10 @@ const nav = [
 
   .footer__nav,
   .footer__legal nav { display: grid; justify-items: start; align-content: start; gap: 15px; padding-top: 6px; }
+  /* Все ссылки подвала одним шрифтом, размером и толщиной (владелец 18.11):
+     Commissioner, var(--fs-small), var(--w-light) — как у строки «Разработка…». */
   .footer__nav a,
-  .footer__legal a { font-size: var(--fs-small); line-height: 25px; letter-spacing: normal; color: var(--ink-2); text-decoration: none; }
-  .footer__nav a { font-weight: var(--w-light); }
-  .footer__legal nav a { font-weight: var(--w-thin); }
+  .footer__legal a { font-family: var(--font-text); font-size: var(--fs-small); font-weight: var(--w-light); line-height: 25px; letter-spacing: normal; color: var(--ink-2); text-decoration: none; }
   .footer__nav a:hover,
   .footer__legal nav a:hover { opacity: 0.6; }
   .footer__nav .is-underlined { border-bottom: 1px solid var(--ink-2); }
@@ -64,6 +64,7 @@ const nav = [
     gap: 8px;
     margin-top: 58px;
     font-size: var(--fs-small);
+    font-weight: var(--w-light);
     line-height: 23px;
     letter-spacing: normal;
   }
