@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import seo from './integrations/seo.mjs';
+import searchIndex from './integrations/search-index.mjs';
 
 // Сайт собирается в статические HTML-файлы (папка dist/),
 // которые загружаются на хостинг Timeweb в public_html.
@@ -10,7 +11,8 @@ export default defineConfig({
   trailingSlash: 'never',
   compressHTML: true,
   // sitemap.xml и разметка schema.org (хлебные крошки, вопросы, услуги) — integrations/seo.mjs
-  integrations: [seo()],
+  // search-index.json для поиска на главной — integrations/search-index.mjs
+  integrations: [seo(), searchIndex()],
   // Для тестовой копии на GitHub Pages папка со стилями без «_» в начале (иначе Pages её прячет)
   ...(process.env.PUBLIC_NOINDEX === '1' ? { build: { format: 'file', assets: 'assets' } } : {}),
 });
