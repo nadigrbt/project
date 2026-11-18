@@ -1,6 +1,7 @@
 ---
 import Header from './Header.astro';
 import Socials from './Socials.astro';
+import SiteSearch from './SiteSearch.astro';
 import { site } from '../data/site';
 import { img } from '../data/images';
 
@@ -33,6 +34,9 @@ const links = [
         </a>
       </div>
 
+      <!-- Поиск по сайту (18.11): public/search.js, ключи и синонимы — data/search.mjs -->
+      <div class="hero__search"><SiteSearch /></div>
+
       <ul class="hero__benefits">
         {benefits.map((b) => (
           <li><img src={img('star')} alt="" width="15" height="15" /><span set:html={b} /></li>
@@ -63,7 +67,9 @@ const links = [
 </section>
 
 <style>
-  .hero { position: relative; background: var(--white); overflow: hidden; }
+  /* По горизонтали обрезаем большие буквы A&J, по вертикали — нет: список результатов поиска
+     может выходить за нижний край первого экрана (overflow: clip, в старых браузерах — hidden) */
+  .hero { position: relative; background: var(--white); overflow: hidden; overflow: clip visible; }
 
   /* ---------- Первый экран: текст слева, врачи справа ---------- */
   .hero__top {
@@ -153,9 +159,11 @@ const links = [
   }
   .hero__phone:hover .hero__phone-num { color: var(--wine); }
 
+  .hero__search { margin-top: 32px; }
+
   .hero__benefits {
     list-style: none;
-    margin: 48px 0 0;
+    margin: 40px 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -211,6 +219,7 @@ const links = [
     .hero__title { margin-top: 20px; font-size: 36px; }
     .hero__lead { margin-top: 20px; }
     .hero__actions { margin-top: 28px; }
+    .hero__search { margin-top: 24px; }
     .hero__btn { width: 100%; }
     .hero__visual { order: 1; height: 400px; margin-top: 36px; }
     .hero__letters { width: 700px; }
