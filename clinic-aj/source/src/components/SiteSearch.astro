@@ -1,5 +1,6 @@
 ---
-// Строка поиска по сайту (18.11). Стоит на первом экране главной, под кнопкой записи.
+// Строка поиска по сайту (18.11). На главной — большая строка перед «Нашими услугами»;
+// во внутренних страницах — компактная, выезжает из шапки по кнопке с лупой (class="ssearch--compact").
 // Логика — public/search.js, индекс страниц собирается при сборке (integrations/search-index.mjs),
 // ключи и синонимы — src/data/search.mjs.
 import { site } from '../data/site';
@@ -167,6 +168,11 @@ const { class: cls = '' } = Astro.props;
   .ssearch__empty { display: grid; gap: 6px; padding: 12px 16px; font-size: var(--fs-small); line-height: 1.5; color: var(--muted); }
   .ssearch__empty[hidden] { display: none; }
   .ssearch__empty a { color: var(--wine); }
+
+  /* Компактный вариант — в шапке внутренних страниц (Header search) */
+  .ssearch--compact .ssearch__input { height: 48px; padding-left: 48px; font-size: 16px; }
+  .ssearch--compact .ssearch__icon { left: 18px; }
+  .ssearch--compact .ssearch__clear { right: 6px; }
 
   @media (max-width: 959px) {
     .ssearch { max-width: none; }

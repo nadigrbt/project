@@ -85,6 +85,7 @@ export default function searchIndex() {
             .replace(/<script[\s\S]*?<\/script>/g, ' ')
             .replace(/<style[\s\S]*?<\/style>/g, ' ')
             .replace(/<header[\s\S]*?<\/header>/g, ' ')
+            .replace(/<form[^>]*data-site-search[\s\S]*?<\/form>/g, ' ')
             .replace(/<section class="contacts"[\s\S]*$/, ' ');
 
           pages.push({

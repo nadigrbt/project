@@ -1,8 +1,14 @@
 ---
 import { mainNav, site } from '../data/site';
 import { img } from '../data/images';
+import SiteSearch from './SiteSearch.astro';
+
+// search — компактный поиск во внутренних страницах (19.11, вариант на согласовании,
+// пока только на /lpg). На главной поиск — большая строка перед «Нашими услугами».
+interface Props { search?: boolean }
+const { search = false } = Astro.props;
 ---
-<header class="header container">
+<header class:list={['header container', search && 'header--search']}>
   <a class="header__logo" href="/" aria-label="A&J — на главную">
     <img src={img('logo')} alt="A&J — медицина, косметология" width="172" height="64" />
   </a>
@@ -14,6 +20,12 @@ import { img } from '../data/images';
 
   <a class="header__phone" href={site.phone.href}>{site.phone.display}</a>
 
+  {search && (
+    <button class="header__search-btn" type="button" aria-label="Поиск по сайту" title="Поиск по сайту" aria-expanded="false" aria-controls="hsearch" data-hsearch-open>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5L21 21" stroke-linecap="round" /></svg>
+    </button>
+  )}
+
   <!-- Версия для слабовидящих: та же кнопка возвращает обычную версию (public/a11y.js, a11y.css) -->
   <button class="a11y-btn" type="button" data-a11y-toggle aria-label="Версия для слабовидящих" title="Версия для слабовидящих">
     <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg>
@@ -23,7 +35,51 @@ import { img } from '../data/images';
   <button class="header__burger" type="button" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false" data-menu-open>
     <span></span><span></span><span></span>
   </button>
+
 </header>
+
+<!-- Вне <header>: у шапки свой z-index, строка должна быть поверх всей страницы -->
+{search && (
+  <div class="hsearch" id="hsearch" hidden data-hsearch>
+    <div class="hsearch__backdrop" data-hsearch-close></div>
+    <div class="hsearch__bar">
+      <div class="container hsearch__inner">
+        <SiteSearch class="ssearch--compact" />
+        <button class="hsearch__close" type="button" aria-label="Закрыть поиск" data-hsearch-close>
+          <svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke-linecap="round" /></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+{search && (
+  <script is:inline>
+    (() => {
+      const box = document.querySelector('[data-hsearch]');
+      const btn = document.querySelector('[data-hsearch-open]');
+      if (!box || !btn) return;
+      const input = box.querySelector('[data-search-input]');
+      const toggle = (on) => {
+        box.hidden = !on;
+        btn.setAttribute('aria-expanded', String(on));
+        document.documentElement.classList.toggle('hsearch-open', on);
+        if (on) input.focus();
+        else btn.focus();
+      };
+      btn.addEventListener('click', () => toggle(box.hidden));
+      box.querySelectorAll('[data-hsearch-close]').forEach((el) => el.addEventListener('click', () => toggle(false)));
+      // Esc: сначала search.js закрывает список, следующий Esc — закрывает строку
+      let listWasOpen = false;
+      input.addEventListener('keydown', (e) => { if (e.key === 'Escape') listWasOpen = !box.querySelector('[data-search-panel]').hidden; }, true);
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape' || box.hidden) return;
+        if (listWasOpen) { listWasOpen = false; return; }
+        toggle(false);
+      });
+    })();
+  </script>
+)}
 
 <style>
   .header {
@@ -82,12 +138,75 @@ import { img } from '../data/images';
   .header__burger span:nth-child(2) { top: 11px; }
   .header__burger span:nth-child(3) { top: 21px; width: 20px; }
 
+  /* ---------- Компактный поиск (внутренние страницы) ---------- */
+  /* Лупа занимает место — сдвигаем меню левее, чтобы «Записаться» не прилипало к телефону */
+  .header--search .header__nav { margin-left: 90px; }
+  .header__search-btn {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: none;
+    color: var(--graphite);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .header__search-btn:hover,
+  .header__search-btn:focus-visible,
+  .header__search-btn[aria-expanded="true"] { border-color: currentColor; }
+
+  /* Строка выезжает сверху поверх страницы — не сдвигает и не перекрывает контент надолго */
+  .hsearch { position: fixed; inset: 0; z-index: 100; }
+  .hsearch[hidden] { display: none; }
+  .hsearch__backdrop { position: absolute; inset: 0; background: rgba(38, 35, 35, 0.28); animation: hsearch-fade 0.2s ease-out; }
+  .hsearch__bar {
+    position: relative;
+    padding: 14px 0;
+    background: var(--white);
+    box-shadow: 0 10px 30px rgba(38, 35, 35, 0.1);
+    animation: hsearch-down 0.22s ease-out;
+  }
+  .hsearch__inner { display: flex; align-items: center; gap: 12px; }
+  .hsearch__inner :global(.ssearch) { max-width: 720px; margin: 0 auto; }
+  .hsearch__close {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--graphite);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .hsearch__close:hover { border-color: var(--graphite); }
+  :global(html.hsearch-open) { overflow: hidden; }
+  @keyframes hsearch-down { from { transform: translateY(-100%); } to { transform: none; } }
+  @keyframes hsearch-fade { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hsearch__bar, .hsearch__backdrop { animation: none; }
+  }
+
   @media (max-width: 1199px) {
-    .header__nav { margin-left: auto; gap: 40px; }
+    .header__search-btn { margin-left: 28px; margin-right: 0; }
+    .header__search-btn + :global(.a11y-btn) { margin-left: 8px; }
+    .header__nav,
+    .header--search .header__nav { margin-left: auto; gap: 40px; }
     .header__phone { display: none; }
   }
   @media (max-width: 959px) {
     .header__nav { display: none; }
     .header__burger { display: block; }
+    .header__search-btn { margin-left: auto; }
+    .hsearch__bar { padding: 10px 0; }
+    .hsearch__inner { gap: 8px; }
   }
 </style>
