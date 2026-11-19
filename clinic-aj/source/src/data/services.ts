@@ -63,6 +63,7 @@ export const services: ServiceGroup[] = [
   <li><a href="/plazma">Плазмолифтинг. PRP терапия</a></li>
   <li><a href="/lipolitiki">Инъекции липолитиков</a></li>
   <li><a href="/kollagenoterapiya">Коллагенотерапия</a></li>
+  <li><a href="/kollagenostimulyatory">Коллагеностимуляторы</a></li>
   <li><a href="/nitevoy-lifting">Нитевой лифтинг</a></li>
   <li><a href="/botulino">Ботулинотерапия</a></li>
   <li><a href="/ozonoterapiya">Озонотерапия</a></li>
