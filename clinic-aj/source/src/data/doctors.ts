@@ -34,7 +34,7 @@ export interface Doctor {
   services?: { href: string; label: string }[];
   /** Статьи врача в блоге */
   articles?: { href: string; label: string }[];
-  /** Раздел на странице /vrachi: врачи или медицинские сёстры в косметологии. Без раздела — в начале списка. */
+  /** Врач или медсестра (для справки; на /vrachi все в одном списке, порядок — как в массиве) */
   group?: 'doctor' | 'nurse';
 }
 
@@ -234,12 +234,6 @@ export const doctors: Doctor[] = [
 ];
 
 export const doctorUrl = (d: Doctor) => `/vrach-${d.slug}`;
-
-/** Разделы страницы /vrachi */
-export const doctorGroups = [
-  { id: 'doctor', title: 'Врачи' },
-  { id: 'nurse', title: 'Медицинские сёстры в косметологии' },
-] as const;
 
 /** Страница готова для поиска: есть хотя бы специальность */
 export const isIndexable = (d: Doctor) => d.specialties.length > 0;
