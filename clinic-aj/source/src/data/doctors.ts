@@ -248,10 +248,14 @@ export const isIndexable = (d: Doctor) => d.specialties.length > 0;
 export const specialtyLine = (d: Doctor) =>
   d.specialties.map((s, i) => (i ? s.toLowerCase() : s)).join(', ');
 
-/** «Стаж 12 лет» по году начала практики */
+/** Стаж показываем только от 9 лет (решение владельца 19.11) */
+export const MIN_EXPERIENCE_YEARS = 9;
+
+/** «Стаж 12 лет» по году начала практики; меньше MIN_EXPERIENCE_YEARS — не показываем */
 export function experience(d: Doctor, now = new Date()): string | undefined {
   if (!d.practiceSince) return undefined;
   const n = now.getFullYear() - d.practiceSince;
+  if (n < MIN_EXPERIENCE_YEARS) return undefined;
   const m10 = n % 10, m100 = n % 100;
   const word = m10 === 1 && m100 !== 11 ? 'год' : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? 'года' : 'лет';
   return `Стаж ${n} ${word}`;
