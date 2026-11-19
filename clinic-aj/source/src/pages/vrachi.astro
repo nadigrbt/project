@@ -1,5 +1,5 @@
 ---
-// Страница /vrachi — «Врачи клиники» (28.10, разделы «Врачи» и «Медицинские сёстры в косметологии» — 18.11). Список — data/doctors.ts, у каждого своя страница /vrach-<slug> (pages/[doctor].astro).
+// Страница /vrachi — «Врачи клиники» (28.10; с 19.11 — один общий список врачей и медсестёр). Список — data/doctors.ts, у каждого своя страница /vrach-<slug> (pages/[doctor].astro).
 // Дизайн по образцу /orto (стили — styles/inner.css). Данные о врачах — только с ПроДокторов или от владельца, ничего не выдумываем.
 // Для Яндекса: title/description с именами, разметка schema.org (MedicalClinic + сотрудники, список врачей, хлебные крошки), страница в sitemap.xml.
 // Ссылки на страницу: меню в шапке и мобильное меню (site.ts → mainNav), подвал, полоса под первым экраном главной, «Что ещё есть в клинике» на направлениях.
@@ -10,7 +10,7 @@ import Footer from '../components/Footer.astro';
 import Directions from '../components/Directions.astro';
 import { site } from '../data/site';
 import { img } from '../data/images';
-import { doctors, doctorGroups, doctorUrl, isIndexable, specialtyLine, experience } from '../data/doctors';
+import { doctors, doctorUrl, isIndexable, specialtyLine, experience } from '../data/doctors';
 import { abs, breadcrumbsLd, doctorLd, CLINIC_ID } from '../data/schema';
 import '../styles/inner.css';
 
@@ -25,11 +25,7 @@ const rows = doctors.map((d) => ({
   spec: specialtyLine(d),
   exp: experience(d),
 }));
-// Разделы (18.11): сначала без раздела (Рашитова, Соколец — по просьбе владельца), затем «Врачи» и «Медицинские сёстры в косметологии»
-const sections = [
-  { id: 'top', title: undefined as string | undefined, rows: rows.filter((r) => !r.d.group) },
-  ...doctorGroups.map((g) => ({ id: g.id, title: g.title as string | undefined, rows: rows.filter((r) => r.d.group === g.id) })),
-].filter((s) => s.rows.length);
+// Один общий список врачей и медсестёр, без разделов (решение владельца 19.11); порядок — как в data/doctors.ts
 
 const jsonLd = [
   {
@@ -85,32 +81,27 @@ const jsonLd = [
 
   <main>
     <section class="container dl">
-      {sections.map((sec) => (
-        <div class="dl__group" id={sec.title ? sec.id : undefined}>
-          {sec.title && <h2 class="dl__group-title">{sec.title}</h2>}
-          <ul class="dl__list">
-            {sec.rows.map(({ d, url, photo, initials, spec, exp }) => (
-              <li class="dl__row">
-                <a class="dl__photo" href={url} tabindex="-1" aria-hidden="true">
-                  {photo
-                    ? <img src={photo} alt={`${d.name}${spec ? `, ${spec.toLowerCase()}` : ''} — клиника A&J, Мурманск`} width="400" height="500" loading="lazy" />
-                    : <span class="dl__initials">{initials}</span>}
-                </a>
-                <div class="dl__info">
-                  {d.position && <p class="dl__pos">{d.position}</p>}
-                  <h3 class="dl__name"><a href={url}>{d.name}</a></h3>
-                  <p class="dl__spec">{spec || 'Специальность уточняется'}</p>
-                  {exp && <p class="dl__exp">{exp}</p>}
-                  <div class="dl__actions">
-                    <a class="dl__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
-                    <a class="dl__more" href={url}>Подробнее<span class="dl__more-long"> о специалисте</span> →</a>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <ul class="dl__list">
+        {rows.map(({ d, url, photo, initials, spec, exp }) => (
+          <li class="dl__row">
+            <a class="dl__photo" href={url} tabindex="-1" aria-hidden="true">
+              {photo
+                ? <img src={photo} alt={`${d.name}${spec ? `, ${spec.toLowerCase()}` : ''} — клиника A&J, Мурманск`} width="400" height="500" loading="lazy" />
+                : <span class="dl__initials">{initials}</span>}
+            </a>
+            <div class="dl__info">
+              {d.position && <p class="dl__pos">{d.position}</p>}
+              <h2 class="dl__name"><a href={url}>{d.name}</a></h2>
+              <p class="dl__spec">{spec || 'Специальность уточняется'}</p>
+              {exp && <p class="dl__exp">{exp}</p>}
+              <div class="dl__actions">
+                <a class="dl__btn" href={site.bookingUrl} target="_blank" rel="noopener">Записаться онлайн</a>
+                <a class="dl__more" href={url}>Подробнее<span class="dl__more-long"> о специалисте</span> →</a>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
     </section>
 
     <section class="container cs-med">
@@ -152,8 +143,6 @@ const jsonLd = [
 
 <style>
   .dl { padding-top: 56px; padding-bottom: 88px; }
-  .dl__group + .dl__group { margin-top: 64px; }
-  .dl__group-title { font-size: var(--fs-h2); font-weight: var(--w-regular); line-height: 1.2; margin-bottom: 24px; }
   .dl__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
   .dl__row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; align-items: center; padding: 32px 0; border-bottom: 1px solid var(--line); }
   .dl__photo { display: grid; place-items: center; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 0; background: var(--ivory); text-decoration: none; }
@@ -172,8 +161,6 @@ const jsonLd = [
   .dl__more:hover { color: var(--graphite); }
   @media (max-width: 959px) {
     .dl { padding-top: 32px; padding-bottom: 60px; }
-    .dl__group + .dl__group { margin-top: 44px; }
-    .dl__group-title { margin-bottom: 16px; }
     .dl__row { grid-template-columns: 110px minmax(0, 1fr); gap: 20px; align-items: start; padding: 24px 0; }
     .dl__actions { gap: 12px 20px; margin-top: 16px; }
     .dl__btn { min-height: 44px; padding: 0 22px; }
