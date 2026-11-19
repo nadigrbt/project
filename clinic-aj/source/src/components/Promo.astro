@@ -10,6 +10,8 @@ import { img } from '../data/images';
           <h2 class="promo__title">Volnewmer</h2>
           <p class="promo__lead">Аппарат нового поколения для безоперационной подтяжки лица и улучшения качества кожи.</p>
           <a class="promo__btn" href="/volnewmer">Узнать о процедуре</a>
+          <!-- 38-ФЗ, ст. 24 (19.11): та же строка, что в полосе записи на страницах услуг -->
+          <p class="promo__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
         </div>
         <div class="promo__visual">
           <img class="promo__woman" src={img('promoWoman')} alt="" aria-hidden="true" width="700" height="700" loading="lazy" />
@@ -82,6 +84,7 @@ import { img } from '../data/images';
     transition: background-color 0.2s;
   }
   .promo__btn:hover { background: var(--wine); }
+  .promo__warn { margin-top: 18px; max-width: 440px; font-size: var(--fs-small); letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
 
   .promo__visual {
     position: relative;

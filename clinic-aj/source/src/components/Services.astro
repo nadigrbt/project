@@ -16,6 +16,8 @@ import { services } from '../data/services';
         </details>
       ))}
     </div>
+    <!-- 38-ФЗ, ст. 24 (19.11): та же строка, что в полосе записи на страницах услуг -->
+    <p class="services__warn">Имеются противопоказания. Необходима консультация специалиста.</p>
   </div>
 </section>
 
@@ -30,6 +32,7 @@ import { services } from '../data/services';
     line-height: 53px;
   }
   .services__list { padding-top: 26px; }
+  .services__warn { margin-top: 20px; padding-bottom: 40px; font-size: var(--fs-small); letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
 
   .svc { border-top: 1px solid rgba(0, 0, 0, 0.08); }
   .svc:last-child { border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
