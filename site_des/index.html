@@ -16,13 +16,15 @@ a{color:inherit}
 .wrap{position:relative;max-width:1400px;margin:0 auto;padding:0 32px}
 
 /* шапка */
-.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:28px 0;font:400 14px/1.2 var(--S);color:var(--mute);letter-spacing:.01em}
-.top b{color:var(--white);font-weight:600}
-.me{display:flex;align-items:center;gap:16px;text-align:right;max-width:560px}
-.me img{flex:none;order:2;width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:28px 0;font:400 14px/1.2 var(--S);color:var(--mute);letter-spacing:.01em}
+.top>b{color:var(--white);font-weight:600;font-size:15px;padding-top:4px}
+.me{display:flex;align-items:stretch;gap:20px;max-width:820px;text-align:left}
+.av{position:relative;flex:none;width:96px;height:96px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bio{min-width:0}
 .me h4{margin:0 0 5px;color:var(--white);font:600 15px/1.25 var(--S);letter-spacing:-.01em}
 .me p{margin:0 0 12px;color:#a79e92;font-size:13.5px;line-height:1.5}
-.links{display:flex;gap:14px;justify-content:flex-end;flex-wrap:wrap}
+.links{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .links a{color:var(--white);text-decoration:none;font-weight:500;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:1px}
 .links a:hover{border-bottom-color:var(--white)}
 .hero{padding:90px 0 190px}
@@ -61,16 +63,16 @@ a{color:inherit}
 footer{border-top:1px solid var(--line);padding:40px 0 60px;font:400 14px/1.6 var(--S);color:var(--mute);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
 @media (max-width:900px){.list{grid-template-columns:1fr}.fx h2{font-size:38px}}
-@media (max-width:700px){.top{align-items:flex-start;flex-direction:column;gap:20px}.me{text-align:left;max-width:none}.me img{order:0}.links{justify-content:flex-start}}
+@media (max-width:700px){.top{flex-direction:column;gap:24px}.top>b{order:-1}.av{align-self:flex-start}}
 @media (max-width:520px){.wrap{padding:0 18px}.hero{padding-top:44px}.tab:nth-child(n+4){display:none}.bar{gap:10px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><b>Примеры эффектов</b>
-    <div class="me"><div><h4>Разработка сайтов, IT-решения и digital-маркетинг</h4><p>Создаю современные сайты с нестандартным дизайном, интерактивными эффектами и продуманной функциональностью. Разрабатываю IT-продукты, автоматизирую бизнес-процессы и выстраиваю интернет-маркетинг, который помогает бизнесу привлекать клиентов и расти.</p>
-      <div class="links"><a href="https://t.me/nadigrb" target="_blank" rel="noopener">Telegram @nadigrb</a><a href="https://nadigrb.ru/me" target="_blank" rel="noopener">Моё портфолио</a></div></div>
-      <img src="avatar.jpg" alt="Фото автора" width="64" height="64"></div></div>
+  <div class="top">
+    <div class="me"><div class="av"><img src="avatar.jpg" alt="Фото автора"></div><div class="bio"><h4>Разработка сайтов, IT-решения и digital-маркетинг</h4><p>Создаю современные сайты с нестандартным дизайном, интерактивными эффектами и продуманной функциональностью. Разрабатываю IT-продукты, автоматизирую бизнес-процессы и выстраиваю интернет-маркетинг, который помогает бизнесу привлекать клиентов и расти.</p>
+      <div class="links"><a href="https://nadigrb.ru/me" target="_blank" rel="noopener">Моё портфолио</a><a href="https://t.me/nadigrb" target="_blank" rel="noopener">Telegram @nadigrb</a></div></div></div>
+    <b>Примеры эффектов</b></div>
   <section class="hero">
     <h1>Эффекты<br>для вашего сайта</h1>
   </section>
@@ -149,6 +151,10 @@ if(!reduce){
   }),{threshold:.35});
   vids.forEach(v=>{near.observe(v);io.observe(v)});
 }
+/* кружок с аватаркой равен по высоте блоку с описанием */
+(()=>{const av=document.querySelector('.av'),bio=document.querySelector('.bio');
+  const fit=()=>{const d=Math.round(bio.getBoundingClientRect().height);if(d>0){av.style.width=av.style.height=d+'px'}};
+  fit();new ResizeObserver(fit).observe(bio);if(document.fonts)document.fonts.ready.then(fit)})();
 </script>
 </body>
 </html>
