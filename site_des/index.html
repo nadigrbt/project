@@ -18,7 +18,13 @@ a{color:inherit}
 /* шапка */
 .top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:28px 0;font:400 14px/1.2 var(--S);color:var(--mute);letter-spacing:.01em}
 .top b{color:var(--white);font-weight:600}
-.hero{padding:70px 0 60px}
+.me{display:flex;align-items:center;gap:14px;text-align:right;max-width:440px}
+.me img{flex:none;order:2;width:52px;height:52px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.me p{margin:0 0 6px;color:#cfc6b9;font-size:13.5px;line-height:1.4}
+.links{display:flex;gap:14px;justify-content:flex-end;flex-wrap:wrap}
+.links a{color:var(--white);text-decoration:none;font-weight:500;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:1px}
+.links a:hover{border-bottom-color:var(--white)}
+.hero{padding:90px 0 190px}
 .hero h1{margin:0;font:800 clamp(46px,8vw,116px)/.98 var(--F);letter-spacing:-.02em}
 
 
@@ -54,17 +60,21 @@ a{color:inherit}
 footer{border-top:1px solid var(--line);padding:40px 0 60px;font:400 14px/1.6 var(--S);color:var(--mute);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
 @media (max-width:900px){.list{grid-template-columns:1fr}.fx h2{font-size:38px}}
+@media (max-width:700px){.top{align-items:flex-start;flex-direction:column;gap:20px}.me{text-align:left;max-width:none}.me img{order:0}.links{justify-content:flex-start}}
 @media (max-width:520px){.wrap{padding:0 18px}.hero{padding-top:44px}.tab:nth-child(n+4){display:none}.bar{gap:10px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><span><b>31 эффект</b> для сайтов</span><span>Портфолио эффектов</span></div>
+  <div class="top"><b>Примеры эффектов</b>
+    <div class="me"><div><p>Делаю сайты с анимацией и интерактивными эффектами. Напишите — обсудим ваш проект.</p>
+      <div class="links"><a href="https://t.me/nadigrb" target="_blank" rel="noopener">Telegram @nadigrb</a><a href="https://nadigrb.ru/me" target="_blank" rel="noopener">Моё портфолио</a></div></div>
+      <img src="avatar.jpg" alt="Фото автора" width="52" height="52"></div></div>
   <section class="hero">
     <h1>Эффекты<br>для вашего сайта</h1>
   </section>
   <main class="list" id="list"></main>
-  <footer><span>31 эффект</span><span>Портфолио эффектов для сайтов</span></footer>
+  <footer><span>Примеры эффектов</span><span><a href="https://t.me/nadigrb" target="_blank" rel="noopener">@nadigrb</a></span></footer>
 </div>
 
 <script>
