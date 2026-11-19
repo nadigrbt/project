@@ -17,7 +17,6 @@ a{color:inherit}
 
 /* шапка */
 .top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:28px 0;font:400 14px/1.2 var(--S);color:var(--mute);letter-spacing:.01em}
-.top>b{color:var(--white);font-weight:600;font-size:15px;padding-top:4px}
 .me{display:flex;align-items:stretch;gap:20px;max-width:820px;text-align:left}
 .av{position:relative;flex:none;width:96px;height:96px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
 .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -62,9 +61,21 @@ a{color:inherit}
 
 footer{border-top:1px solid var(--line);padding:40px 0 60px;font:400 14px/1.6 var(--S);color:var(--mute);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
-@media (max-width:900px){.list{grid-template-columns:1fr}.fx h2{font-size:38px}}
-@media (max-width:700px){.top{flex-direction:column;gap:24px}.top>b{order:-1}.av{align-self:flex-start}}
-@media (max-width:520px){.wrap{padding:0 18px}.hero{padding-top:44px}.tab:nth-child(n+4){display:none}.bar{gap:10px}}
+@media (max-width:900px){.list{grid-template-columns:minmax(0,1fr)}.fx h2{font-size:38px}}
+@media (max-width:700px){
+  .top{padding:22px 0 0}
+  .me{flex-direction:column;gap:16px;max-width:none}
+  .av{width:84px!important;height:84px!important}
+  .bio h4{font-size:16px}
+  .bio p{font-size:14px}
+  .hero{padding:56px 0 90px}
+  .hero h1{font-size:clamp(40px,13.5vw,72px)}
+  .fx{padding-bottom:64px}
+  .fx h2{font-size:34px}
+  .num b{font-size:56px}
+  .win{border-radius:18px}
+}
+@media (max-width:520px){.wrap{padding:0 18px}.tab:nth-child(n+3){display:none}.bar{gap:10px}}
 </style>
 </head>
 <body>
@@ -72,7 +83,7 @@ footer{border-top:1px solid var(--line);padding:40px 0 60px;font:400 14px/1.6 va
   <div class="top">
     <div class="me"><div class="av"><img src="avatar.jpg" alt="Фото автора"></div><div class="bio"><h4>Разработка сайтов, IT-решения и digital-маркетинг</h4><p>Создаю современные сайты с нестандартным дизайном, интерактивными эффектами и продуманной функциональностью. Разрабатываю IT-продукты, автоматизирую бизнес-процессы и выстраиваю интернет-маркетинг, который помогает бизнесу привлекать клиентов и расти.</p>
       <div class="links"><a href="https://nadigrb.ru/me" target="_blank" rel="noopener">Моё портфолио</a><a href="https://t.me/nadigrb" target="_blank" rel="noopener">Telegram @nadigrb</a></div></div></div>
-    <b>Примеры эффектов</b></div>
+  </div>
   <section class="hero">
     <h1>Эффекты<br>для вашего сайта</h1>
   </section>
