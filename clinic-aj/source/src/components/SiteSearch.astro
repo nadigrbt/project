@@ -6,8 +6,10 @@
 import { site } from '../data/site';
 
 // id — нужен свой у каждой строки на странице (в шапке, в блоке направлений, на главной)
-interface Props { class?: string; id?: string; placeholder?: string }
-const { class: cls = '', id = 'site-search', placeholder = 'Найти процедуру, аппарат или врача' } = Astro.props;
+// placeholderShort — подсказка для узкого телефона (до 479 px), подставляет public/search.js (19.11:
+// «Найти процедуру, аппарат или врача» на iPhone обрезалась до «…аппарат или»)
+interface Props { class?: string; id?: string; placeholder?: string; placeholderShort?: string }
+const { class: cls = '', id = 'site-search', placeholder = 'Найти процедуру, аппарат или врача', placeholderShort = 'Процедура, аппарат или врач' } = Astro.props;
 ---
 <form class:list={['ssearch', cls]} role="search" data-site-search autocomplete="off" action="#">
   <label class="visually-hidden" for={id}>Поиск по сайту</label>
@@ -22,6 +24,7 @@ const { class: cls = '', id = 'site-search', placeholder = 'Найти проц�
       type="search"
       enterkeyhint="search"
       placeholder={placeholder}
+      data-placeholder-short={placeholderShort !== placeholder ? placeholderShort : undefined}
       role="combobox"
       aria-autocomplete="list"
       aria-expanded="false"
@@ -46,7 +49,7 @@ const { class: cls = '', id = 'site-search', placeholder = 'Найти проц�
   </div>
   <p class="visually-hidden" aria-live="polite" data-search-status></p>
 </form>
-<script is:inline src="/search.js?v=4" defer></script>
+<script is:inline src="/search.js?v=5" defer></script>
 
 <style is:global>
   .ssearch { position: relative; width: 100%; max-width: 560px; z-index: 30; }
@@ -177,6 +180,8 @@ const { class: cls = '', id = 'site-search', placeholder = 'Найти проц�
 
   @media (max-width: 959px) {
     .ssearch { max-width: none; }
+    /* пока строка пустая, крестика нет — отдаём его место подсказке, чтобы она не обрезалась */
+    .ssearch__input:placeholder-shown { padding-right: 20px; }
     .ssearch__panel { max-height: min(380px, 55vh); }
   }
 </style>

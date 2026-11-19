@@ -16,6 +16,16 @@
   const roots = document.querySelectorAll('[data-site-search]');
   if (!roots.length) return;
 
+  // На узком телефоне — короткая подсказка в строке (data-placeholder-short, 19.11):
+  // длинная «Найти процедуру, аппарат или врача» не помещалась и обрезалась.
+  const narrow = window.matchMedia('(max-width: 479px)');
+  const fitPlaceholders = () => document.querySelectorAll('[data-placeholder-short]').forEach((i) => {
+    if (!i.dataset.placeholderFull) i.dataset.placeholderFull = i.placeholder;
+    i.placeholder = narrow.matches ? i.dataset.placeholderShort : i.dataset.placeholderFull;
+  });
+  fitPlaceholders();
+  if (narrow.addEventListener) narrow.addEventListener('change', fitPlaceholders);
+
   // Адрес сайта: на тестовой копии он /project/clinic-aj, на рабочем — корень
   const me = document.currentScript || document.querySelector('script[src*="search.js"]');
   const BASE = me ? new URL('.', me.src).pathname.replace(/\/$/, '') : '';

@@ -193,3 +193,13 @@ button { font: inherit; letter-spacing: inherit; }
   --w-regular: 400;
   --w-medium: 500;
 }
+
+/* Хлебные крошки на телефоне (19.11, скриншот владельца со страницы «Врачи»): всегда в одну строку, с отступом до следующего блока.
+   Если цепочка не помещается, обрезается многоточием только название текущей страницы — оно и так
+   повторяется в заголовке ниже. Общее правило для всех вариантов крошек (cs-, vr-, vn-, ct-crumbs). */
+@media (max-width: 959px) {
+  nav[aria-label="Хлебные крошки"] { flex-wrap: nowrap; align-items: baseline; min-width: 0; overflow: hidden; line-height: 1.5; margin-bottom: 12px; }
+  nav[aria-label="Хлебные крошки"] > * { flex-shrink: 0; white-space: nowrap; }
+  nav[aria-label="Хлебные крошки"] > [aria-current],
+  nav[aria-label="Хлебные крошки"] > :last-child { flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+}
