@@ -215,7 +215,7 @@ const photos: { key: ImageKey; alt: string }[] = [
     min-height: 600px;
   }
   .vr-hero__text { position: relative; z-index: 2; padding: 40px 0 64px; }
-  .vr-crumbs { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-bottom: 36px; font-size: var(--fs-small); color: var(--muted); }
+  .vr-crumbs { display: flex; gap: 10px; margin-bottom: 36px; font-size: var(--fs-small); color: var(--muted); }
   .vr-crumbs a { text-decoration: none; }
   .vr-crumbs a:hover { color: var(--wine); }
   .vr-hero__title { margin-top: 28px; font-size: var(--fs-h1); line-height: 1.12; font-weight: var(--w-thin); }
@@ -371,7 +371,7 @@ const photos: { key: ImageKey; alt: string }[] = [
   /* ---------- Мобильный ---------- */
   @media (max-width: 959px) {
     .vr-hero__top { grid-template-columns: 1fr; gap: 0; min-height: 0; }
-    .vr-hero__text { padding: 24px 0 0; }
+    .vr-hero__text { min-width: 0; padding: 24px 0 0; }
     .vr-crumbs { margin-bottom: 24px; }
     .vr-eyebrow { letter-spacing: 1.5px; }
     .vr-hero__title { margin-top: 18px; font-size: var(--fs-h1); }
