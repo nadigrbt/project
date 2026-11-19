@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Портфолио веб-эффектов</title>
+<meta name="description" content="31 веб-эффект: анимации текста, скролл-эффекты, курсоры, шейдеры, WebGL и интерактив для сайтов.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;800&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0c;--fg:#f2efe8;--mut:#8d8a82;--lime:#c8ff3d;--orange:#ff5b2e;--cream:#efe9dc;--ink:#121212;--line:rgba(255,255,255,.09)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--fg);font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh}
+header{max-width:1480px;margin:0 auto;padding:clamp(28px,6vw,72px) clamp(18px,4vw,48px) clamp(20px,3vw,40px);display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line)}
+h1{font:400 clamp(40px,9vw,128px)/.92 'Archivo Black',Impact,sans-serif;letter-spacing:-.02em}
+h1 span{color:var(--lime)}
+.count{font:500 13px 'JetBrains Mono',monospace;color:var(--mut);text-align:right;white-space:nowrap}
+.count b{display:block;font:400 clamp(32px,5vw,64px)/1 'Archivo Black',Impact,sans-serif;color:var(--fg);margin-bottom:6px}
+main{max-width:1480px;margin:0 auto;padding:clamp(24px,4vw,48px) clamp(18px,4vw,48px) 80px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:44px 26px}
+.card{min-width:0}
+.demo{position:relative;overflow:hidden;aspect-ratio:16/10;border-radius:16px;container-type:size;isolation:isolate;background:#161618;touch-action:pan-y;user-select:none;-webkit-user-select:none;box-shadow:0 0 0 1px var(--line)}
+.meta{display:flex;gap:14px;align-items:baseline;padding:14px 2px 0}
+.num{font:500 12px 'JetBrains Mono',monospace;color:var(--lime);flex:none}
+.meta h3{font:600 18px/1.25 'Manrope',sans-serif;letter-spacing:-.01em}
+.meta p{font:400 12.5px 'JetBrains Mono',monospace;color:var(--mut);margin-top:4px}
+footer{max-width:1480px;margin:0 auto;padding:0 clamp(18px,4vw,48px) 48px;color:var(--mut);font:400 12px 'JetBrains Mono',monospace}
+
+/* ---------- общие ---------- */
+.abs{position:absolute;inset:0}
+.demo canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.demo svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* 01 split text */
+.d1{position:absolute;inset:0;display:grid;place-content:center;padding:0 8cqw;font:400 11.5cqw/1.02 'Archivo Black',Impact,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.d1 .ln{display:block;overflow:hidden;padding:.06em 0}
+.d1 .ln:last-child{color:var(--orange)}
+.d1 i{display:inline-block;font-style:normal;transform:translateY(118%) rotate(8deg);transform-origin:0 100%}
+.d1.on i{transform:none;transition:transform .6s cubic-bezier(.215,.61,.355,1);transition-delay:calc(var(--i)*30ms)}
+/* 02 text fill */
+.d2{position:absolute;inset:0;padding:7cqw 8cqw;display:flex;align-items:center;font:600 7.6cqw/1.12 'Manrope',sans-serif;letter-spacing:-.02em;color:var(--fg)}
+.d2 span.acc{color:var(--lime)}
+.d2 .cap{display:inline-block;width:11cqw;height:5.6cqw;border-radius:999px;vertical-align:middle;margin:0 .6cqw;background:linear-gradient(120deg,var(--orange),#ffb26b)}
+/* 03 stacked cards */
+.sc{position:absolute;left:5cqw;right:5cqw;top:0;height:64%;border-radius:14px;padding:4cqw;display:flex;flex-direction:column;justify-content:space-between;transform-origin:50% 0;will-change:transform}
+.sc span{font:500 3.2cqw 'JetBrains Mono',monospace}
+.sc b{font:800 7.5cqw/1 'Manrope',sans-serif;letter-spacing:-.02em}
+.sc em{position:absolute;right:4cqw;top:4cqw;bottom:4cqw;width:30cqw;border-radius:10px;background:rgba(0,0,0,.14)}
+/* 04 horizontal */
+.hrow{position:absolute;left:0;top:19%;bottom:15%;display:flex;gap:3cqw;padding:0 4cqw;will-change:transform}
+.hc{position:relative;flex:none;width:56cqw;border-radius:12px;overflow:hidden}
+.hc i{position:absolute;top:0;bottom:0;left:-12%;width:124%;background:radial-gradient(circle at 70% 30%,rgba(255,255,255,.55),transparent 45%),linear-gradient(160deg,rgba(255,255,255,.1),rgba(0,0,0,.25))}
+.hc span{position:absolute;left:3cqw;bottom:2.4cqw;font:800 8cqw/1 'Manrope';color:rgba(0,0,0,.75)}
+.hcount{position:absolute;left:4cqw;top:5cqw;font:500 3.4cqw 'JetBrains Mono',monospace;color:var(--mut)}
+.hcount b{color:var(--fg);font-weight:500}
+.hbar{position:absolute;left:4cqw;right:4cqw;bottom:6cqw;height:2px;background:rgba(255,255,255,.14)}
+.hbar i{display:block;height:100%;background:var(--lime);width:0}
+/* 06 zoom */
+.d6w{position:absolute;top:50%;font:400 9cqw/1 'Archivo Black',Impact;white-space:nowrap;transform:translateY(-50%)}
+.d6img{position:absolute;inset:0;background:radial-gradient(circle at 68% 34%,#ffe2a8 0 7%,transparent 7.5%),linear-gradient(165deg,#ff9a5c,#9c3a6e 52%,#1b1034)}
+.d6cap{position:absolute;left:5cqw;right:5cqw;bottom:5cqw;display:flex;justify-content:space-between;font:600 3.6cqw 'Manrope';color:#fff;opacity:0}
+/* 09 magnetic */
+.mbtn{position:absolute;left:50%;top:50%;width:38cqw;height:13cqw;margin:-6.5cqw 0 0 -19cqw;border-radius:999px;border:1.5px solid rgba(255,255,255,.5);display:grid;place-items:center;overflow:hidden;font:600 4cqw 'Manrope';color:var(--fg);will-change:transform}
+.mbtn::before{content:"";position:absolute;inset:0;background:var(--lime);transform:translateY(101%);transition:transform .4s cubic-bezier(.2,.7,.2,1);border-radius:inherit}
+.mbtn.act{color:var(--ink)}.mbtn.act::before{transform:none}
+.mbtn span{position:relative;display:block;will-change:transform}
+.vdot{position:absolute;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:rgba(255,255,255,.55);pointer-events:none}
+/* 10 blend cursor */
+.d10t{position:absolute;inset:0;display:grid;place-content:center;font:400 19cqw/.92 'Archivo Black',Impact;color:var(--ink);text-align:center;letter-spacing:-.02em}
+.d10c{position:absolute;left:0;top:0;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;width:24px;height:24px}
+/* 11 trail */
+.tr{position:absolute;left:0;top:0;width:19cqw;height:25cqw;border-radius:8px;opacity:0;will-change:transform}
+.d11t{position:absolute;inset:0;display:grid;place-content:center;font:600 4cqw 'JetBrains Mono';color:rgba(255,255,255,.35);letter-spacing:.2em;text-transform:uppercase}
+/* 12 hover preview */
+.d12l{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 6cqw}
+.d12r{display:grid;grid-template-columns:5cqw 1fr 18cqw 8cqw;align-items:center;padding:2.4cqw 0;border-bottom:1px solid rgba(255,255,255,.12);font:600 5.2cqw 'Manrope';letter-spacing:-.02em;transition:opacity .3s}
+.d12r small{font:400 2.8cqw 'JetBrains Mono';color:var(--mut)}
+.pv{position:absolute;left:0;top:0;width:34cqw;height:22cqw;border-radius:8px;pointer-events:none;will-change:transform;z-index:3}
+/* 13 marquee */
+.d13{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:1cqw;overflow:hidden}
+.mq{white-space:nowrap;font:400 17cqw/1 'Archivo Black',Impact;letter-spacing:-.01em;will-change:transform}
+.mq.o{color:transparent;-webkit-text-stroke:1.5px var(--fg)}
+.mq.l{color:var(--lime)}
+/* 14 variable font */
+.d14{position:absolute;inset:0;display:grid;place-content:center;gap:5cqw;font-family:'Roboto Flex',sans-serif}
+.d14h{display:flex;justify-content:center;font-size:13cqw;line-height:1;color:var(--fg);white-space:nowrap}
+.d14h i{font-style:normal;display:inline-block}
+.ax{display:flex;gap:4cqw;justify-content:center;font:400 2.6cqw 'JetBrains Mono'}
+.ax div{width:30cqw}.ax div span{color:var(--mut)}
+.ax div u{display:block;height:2px;background:rgba(255,255,255,.15);margin-top:1.2cqw;text-decoration:none}
+.ax div u i{display:block;height:100%;background:var(--lime);width:0}
+/* 15 liquid */
+.d15t{position:absolute;inset:0;display:grid;place-content:center;font:400 12cqw/.95 'Archivo Black',Impact;color:rgba(255,255,255,.92);text-align:center;mix-blend-mode:overlay;pointer-events:none}
+/* 16 3d */
+.d16{position:absolute;inset:0;perspective:90cqw}
+.d16l{position:absolute;left:7cqw;top:50%;transform:translateY(-50%);font:500 3.2cqw/2.2 'JetBrains Mono';color:var(--mut)}
+.d16l div{transition:color .3s}.d16l .on{color:var(--lime)}
+.obj{--u:1cqw;position:absolute;left:67%;top:50%;width:calc(26*var(--u));height:calc(44*var(--u));margin:calc(-22*var(--u)) 0 0 calc(-13*var(--u));transform-style:preserve-3d;will-change:transform}
+.fc{position:absolute;backface-visibility:hidden;border-radius:calc(3*var(--u))}
+.fc.f{inset:0;transform:translateZ(calc(2*var(--u)));background:radial-gradient(circle at 30% 20%,#7aa7ff,#3a2c8f 55%,#140f3a);box-shadow:inset 0 0 0 calc(.8*var(--u)) #cfd3dc}
+.fc.b{inset:0;transform:rotateY(180deg) translateZ(calc(2*var(--u)));background:linear-gradient(135deg,#e9ebf0,#9ba0ad 50%,#d7dae2)}
+.fc.l{width:calc(4*var(--u));height:100%;left:calc(-2*var(--u));transform:rotateY(-90deg);background:linear-gradient(#cfd3dc,#7c818d)}
+.fc.r{width:calc(4*var(--u));height:100%;left:calc(24*var(--u));transform:rotateY(90deg);background:linear-gradient(#cfd3dc,#7c818d)}
+.fc.t{height:calc(4*var(--u));width:100%;top:calc(-2*var(--u));transform:rotateX(90deg);background:#c4c8d2}
+.fc.u{height:calc(4*var(--u));width:100%;top:calc(42*var(--u));transform:rotateX(-90deg);background:#8b909c}
+.shd{position:absolute;left:67%;bottom:9%;width:28cqw;height:5cqw;margin-left:-14cqw;border-radius:50%;background:radial-gradient(rgba(0,0,0,.55),transparent 70%)}
+/* 20 glass */
+.gs{position:absolute;overflow:hidden;background:linear-gradient(135deg,#1a1a3e,#4a1f6a)}
+.gs i{position:absolute;border-radius:50%}
+.gs b{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font:400 24cqw/1 'Archivo Black',Impact;color:#fff;letter-spacing:-.02em}
+.cap{position:absolute;overflow:hidden;border-radius:999px;width:44cqw;height:16cqw;backdrop-filter:blur(1px);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.75),inset 0 -10px 18px rgba(255,255,255,.14),inset 0 0 0 1px rgba(255,255,255,.28),0 14px 34px rgba(0,0,0,.35)}
+.cap .cl{position:absolute;filter:saturate(1.35) contrast(1.06)}
+.cap::before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;background:radial-gradient(120% 90% at 50% -10%,rgba(255,255,255,.55),transparent 45%),radial-gradient(60% 120% at 0% 50%,rgba(255,60,120,.28),transparent 60%),radial-gradient(60% 120% at 100% 50%,rgba(60,160,255,.3),transparent 60%)}
+.cap span{position:absolute;inset:0;z-index:3;display:grid;place-items:center;font:700 3.8cqw 'Manrope';color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.35)}
+/* 21 / 25 fx cards */
+.fx{position:absolute;overflow:hidden;transition:left .85s cubic-bezier(.7,0,.2,1),top .85s cubic-bezier(.7,0,.2,1),width .85s cubic-bezier(.7,0,.2,1),height .85s cubic-bezier(.7,0,.2,1),border-radius .85s cubic-bezier(.7,0,.2,1),opacity .5s,transform .6s}
+.fx .lb{position:absolute;left:3cqw;bottom:2.4cqw;font:700 3.4cqw 'Manrope';color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.3);transition:font-size .85s cubic-bezier(.7,0,.2,1)}
+.pg{position:absolute;left:6cqw;right:6cqw;top:61%;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s}
+.pg.on{opacity:1;transform:none;transition-delay:.55s}
+.pg b{display:block;font:800 6.4cqw 'Manrope';letter-spacing:-.02em;color:var(--fg)}
+.pg u{display:block;height:1.4cqw;border-radius:99px;background:rgba(255,255,255,.14);margin-top:2cqw;text-decoration:none}
+.pg u:nth-of-type(2){width:70%}
+.pg s{display:inline-block;margin-top:3cqw;padding:1.6cqw 4cqw;border-radius:99px;background:var(--lime);color:var(--ink);font:700 3cqw 'Manrope';text-decoration:none}
+.dt{position:absolute;left:4cqw;right:4cqw;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s;font:600 3.4cqw 'Manrope';color:#fff;display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.35);padding-top:1.6cqw}
+.fx.open .dt{opacity:1;transform:none}
+/* 23 snap */
+.sn{position:absolute;inset:0;overflow:hidden}
+.ss{height:100%;position:relative;display:grid;align-content:center;padding:0 9cqw}
+.ss b{display:block;font:400 11cqw/1 'Archivo Black',Impact;letter-spacing:-.02em;transform:translateY(30px);opacity:0;transition:.7s cubic-bezier(.2,.7,.2,1)}
+.ss p{font:500 3.4cqw 'Manrope';margin-top:2.4cqw;opacity:0;transform:translateY(20px);transition:.7s .12s cubic-bezier(.2,.7,.2,1)}
+.ss.in b,.ss.in p{opacity:1;transform:none}
+.ss i{position:absolute;right:15cqw;top:50%;width:20cqw;height:20cqw;margin-top:-10cqw;border-radius:50%;background:rgba(0,0,0,.14);transform:scale(.4);opacity:0;transition:.8s .1s}
+.ss.in i{transform:none;opacity:1}
+.dots{position:absolute;right:4cqw;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2cqw;z-index:2;transition:color .4s;color:var(--ink)}
+.dots i{width:1.5cqw;height:1.5cqw;border-radius:50%;background:currentColor;opacity:.3;transition:.3s}
+.dots i.on{opacity:1;transform:scale(1.5)}
+.snc{position:absolute;left:5cqw;bottom:4cqw;font:500 3cqw 'JetBrains Mono';z-index:2;transition:color .4s;color:var(--ink)}
+/* 24 gallery */
+.d24{cursor:grab}
+.gstrip{position:absolute;left:0;top:14%;bottom:14%;display:flex;gap:2.4cqw;padding:0 3.5cqw;will-change:transform}
+.gc{flex:none;width:34cqw;border-radius:10px;position:relative;overflow:hidden;transform:skewX(var(--sk,0deg))}
+.gc span{position:absolute;left:2.4cqw;bottom:2cqw;font:800 7cqw/1 'Manrope';color:rgba(255,255,255,.9)}
+.dragc{position:absolute;left:0;top:0;width:16cqw;height:16cqw;margin:-8cqw 0 0 -8cqw;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;font:700 3.2cqw 'Manrope';pointer-events:none;opacity:0;z-index:3;transition:opacity .25s}
+/* 26 scramble */
+.d26{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:2.2cqw;padding:0 7cqw;font:500 4.4cqw/1.2 'JetBrains Mono',ui-monospace,monospace;color:var(--lime);white-space:pre}
+.d26 div:nth-child(2){color:var(--fg)}.d26 div:nth-child(3){color:var(--mut);font-size:3.4cqw}
+/* 27 lines */
+.d27p{position:absolute;right:4cqw;top:3.4cqw;font:500 3.6cqw 'JetBrains Mono';color:var(--lime)}
+.d27c{position:absolute;left:4cqw;top:3.4cqw;font:500 2.8cqw 'JetBrains Mono';color:var(--mut)}
+/* 28 spotlight */
+.d28{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:2.2cqw;padding:3.5cqw}
+.sp{position:relative;border-radius:10px;background:#111114;padding:3cqw;display:flex;flex-direction:column;justify-content:flex-end;--x:-999px;--y:-999px;overflow:hidden}
+.sp::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(180px circle at var(--x) var(--y),rgba(200,255,61,.17),transparent 70%)}
+.sp::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(150px circle at var(--x) var(--y),rgba(200,255,61,.95),transparent 70%),rgba(255,255,255,.07);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.sp b{position:relative;z-index:1;font:700 3.2cqw 'Manrope'}
+.sp small{position:relative;z-index:1;font:400 2.2cqw 'JetBrains Mono';color:var(--mut);margin-top:.8cqw}
+.sp i{position:relative;z-index:1;width:4cqw;height:4cqw;border-radius:6px;background:rgba(200,255,61,.18);margin-bottom:auto;display:block}
+/* 30 counter */
+.d30{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;background:rgba(255,255,255,.1)}
+.st{background:var(--bg);padding:3.6cqw 4.5cqw;display:flex;flex-direction:column;justify-content:space-between}
+.st b{font:800 9cqw/1 'Manrope';letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.st b small{font-size:.5em;color:var(--lime);margin-left:.15em}
+.st span{font:500 2.6cqw 'JetBrains Mono';color:var(--mut)}
+.st .bars{display:flex;align-items:flex-end;gap:3px;height:6cqw}
+.st .bars i{flex:1;background:var(--lime);opacity:.85;height:0;border-radius:1px}
+/* 31 preloader */
+.pre{position:absolute;inset:0;z-index:3;background:#0c0c0c;transition:opacity .2s}
+.pre b{position:absolute;left:5cqw;bottom:4cqw;font:400 22cqw/.8 'Archivo Black',Impact;font-variant-numeric:tabular-nums;color:var(--fg)}
+.pre i{position:absolute;left:50%;top:44%;width:19cqw;height:25cqw;margin:-12.5cqw 0 0 -9.5cqw;border-radius:6px;background:linear-gradient(160deg,#ffb26b,#9c3a6e)}
+.pre u{position:absolute;left:5cqw;right:5cqw;top:5cqw;height:2px;background:rgba(255,255,255,.15)}
+.pre u s{display:block;height:100%;background:var(--lime);width:0}
+.cur{position:absolute;left:0;right:0;height:50.5%;background:#0c0c0c;z-index:2;transition:transform .8s cubic-bezier(.7,0,.2,1)}
+.cur.t{top:0}.cur.b{bottom:0}
+.cur.t.go{transform:translateY(-101%)}.cur.b.go{transform:translateY(101%)}
+.d31h{position:absolute;inset:0;display:grid;place-content:center;background:var(--cream);color:var(--ink);font:400 15cqw/1 'Archivo Black',Impact;letter-spacing:-.02em}
+.d31h .ln{display:block;overflow:hidden}
+.d31h i{display:inline-block;font-style:normal;transform:translateY(115%)}
+.d31h.on i{transform:none;transition:transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i)*45ms)}
+/* d18 d19 chips */
+.chips{position:absolute;left:3cqw;bottom:3cqw;display:flex;gap:1.6cqw;z-index:2}
+.chips button{font:500 2.6cqw 'JetBrains Mono';color:var(--fg);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:.9cqw 2.4cqw;cursor:pointer}
+.chips button.on{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+
+@media (prefers-reduced-motion:reduce){.fx,.pg,.dt,.ss b,.ss p,.ss i{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Веб-<br><span>эффекты</span></h1>
+  <div class="count"><b id="cnt">31</b>эффект на странице</div>
+</header>
+<main><div class="grid" id="grid"></div></main>
+<footer>Наведите курсор на карточки: многие эффекты реагируют на мышь.</footer>
+
+<script>
+'use strict';
+/* ================= утилиты ================= */
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const easeOut=t=>1-Math.pow(1-t,3);
+const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const tri=x=>1-Math.abs((x%2)-1);
+const h=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
+
+/* цикл анимации: работает только пока карточка видна */
+function loop(el,fn){
+  if(reduced){fn(2.4,0);return}
+  let vis=false,raf=0,last=0;const t0=performance.now();
+  const tick=now=>{if(!vis)return;fn((now-t0)/1000,Math.min(.05,(now-last)/1000||.016));last=now;raf=requestAnimationFrame(tick)};
+  new IntersectionObserver(([e])=>{vis=e.isIntersecting;if(vis){last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)}},{threshold:.05}).observe(el);
+}
+/* положение курсора внутри карточки */
+function track(el){
+  const s={x:0,y:0,vx:0,vy:0,inside:false};
+  el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();const nx=e.clientX-r.left,ny=e.clientY-r.top;s.vx=nx-s.x;s.vy=ny-s.y;s.x=nx;s.y=ny;s.inside=true});
+  el.addEventListener('pointerleave',()=>{s.inside=false});
+  el.addEventListener('pointerup',e=>{if(e.pointerType!=='mouse')s.inside=false});
+  el.addEventListener('pointercancel',()=>{s.inside=false});
+  s.at=(ix,iy)=>s.inside?{x:s.x,y:s.y,real:true}:{x:ix,y:iy,real:false};
+  return s;
+}
+function mkCanvas(el,dprMax=1.5){
+  const c=document.createElement('canvas');el.appendChild(c);
+  const o={c,ctx:c.getContext('2d'),w:0,h:0,dpr:1,dirty:true};
+  const rs=()=>{o.dpr=Math.min(devicePixelRatio||1,dprMax);o.w=el.clientWidth;o.h=el.clientHeight;c.width=Math.max(1,o.w*o.dpr);c.height=Math.max(1,o.h*o.dpr);o.ctx.setTransform(o.dpr,0,0,o.dpr,0,0);o.dirty=true};
+  rs();new ResizeObserver(rs).observe(el);return o;
+}
+const rnd=(a,b)=>a+Math.random()*(b-a);
+
+/* ================= 01 Появление текста по буквам ================= */
+function d1(el){
+  const wrap=h('div','d1');let k=0;
+  wrap.innerHTML=['Живой','заголовок'].map(w=>`<span class="ln">${[...w].map(c=>`<i style="--i:${k++}">${c}</i>`).join('')}</span>`).join('');
+  el.append(wrap);let on=null;
+  loop(el,t=>{const p=t%3.8,s=p>.3&&p<3.3;if(s!==on){on=s;wrap.classList.toggle('on',s)}});
+}
+/* ================= 02 Заливка текста при скролле ================= */
+function d2(el){
+  const words='Мы делаем сайты, которые хочется листать'.split(' ');
+  const p=h('p','d2');p.innerHTML='<span>'+words.map((w,i)=>`<span class="${i===words.length-1?'acc':''}">${w}</span>${i===1?' <span class="cap"></span>':''}`).join(' ')+'</span>';
+  el.append(p);const sp=[...p.querySelectorAll('span span:not(.cap)')];
+  loop(el,t=>{const m=t%5.5,pr=clamp((m-.3)/3.6);sp.forEach((s,i)=>{const k=clamp(pr*(sp.length+1.5)-i);s.style.opacity=.15+.85*k});
+    p.querySelector('.cap').style.opacity=.15+.85*clamp(pr*3-.4)});
+}
+/* ================= 03 Карточки стопкой ================= */
+function d3(el){
+  const C=[['#c8ff3d','#111','01','Старт'],['#ff5b2e','#fff','02','Дизайн'],['#efe9dc','#111','03','Запуск']];
+  const cards=C.map(([bg,fg,n,t])=>{const c=h('div','sc',`<span>${n}</span><b>${t}</b><em></em>`);c.style.background=bg;c.style.color=fg;el.append(c);return c});
+  loop(el,t=>{const H=el.clientHeight,m=t%6.5,down=easeIO(clamp((m-5.2)/1.1));
+    const e=[1,(easeIO(clamp((m-.5)/1.1)))*(1-down),(easeIO(clamp((m-1.8)/1.1)))*(1-down)];
+    cards.forEach((c,i)=>{let after=0;for(let k=i+1;k<3;k++)after+=e[k];
+      const y=16+i*14+(1-e[i])*H;c.style.transform=`translateY(${y}px) scale(${1-.05*after})`;c.style.filter=`brightness(${1-.26*after})`;c.style.zIndex=i});});
+}
+/* ================= 04 Горизонтальный скролл ================= */
+function d4(el){
+  const cs=['#ff5b2e','#c8ff3d','#7aa7ff','#efe9dc','#ff8fb1'];
+  const row=h('div','hrow',cs.map((c,i)=>`<div class="hc" style="background:${c}"><i></i><span>0${i+1}</span></div>`).join(''));
+  const cnt=h('div','hcount','<b>01</b> / 05'),bar=h('div','hbar','<i></i>');el.append(row,cnt,bar);
+  const ims=[...row.querySelectorAll('i')];
+  loop(el,t=>{const W=el.clientWidth,m=t%6,p=m<5?easeIO(clamp((m-.4)/4.2)):1-easeIO(clamp(m-5));
+    const total=W*.04*2+5*W*.56+4*W*.024,max=Math.max(0,total-W);
+    row.style.transform=`translateX(${-p*max}px)`;
+    ims.forEach((im,i)=>{im.style.transform=`translateX(${(p*4-i)*-6}%)`});
+    cnt.innerHTML=`<b>0${Math.round(p*4)+1}</b> / 05`;bar.firstChild.style.width=p*100+'%'});
+}
+/* ================= 05 Параллакс ================= */
+function d5(el){
+  let forest='';for(let i=0,x=-10;x<420;x+=16,i++)forest+=`M${x} 246L${x+8} ${222-(i%3)*9}L${x+16} 246Z`;
+  el.innerHTML=`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="sk5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b2250"/><stop offset=".6" stop-color="#e0698a"/><stop offset="1" stop-color="#ffb26b"/></linearGradient></defs>
+<rect x="-50" width="500" height="420" fill="url(#sk5)"/>
+<g data-s="6"><circle cx="270" cy="120" r="26" fill="#ffd9a0"/></g>
+<g data-s="12"><path d="M-20 150L60 95L115 140L175 80L240 140L300 92L360 130L420 105V420H-20Z" fill="#7a5a9a"/></g>
+<g data-s="26"><path d="M-20 185L70 130L130 178L205 118L285 182L345 140L420 175V420H-20Z" fill="#4a3c78"/></g>
+<g data-s="38"><text x="200" y="150" text-anchor="middle" font-family="Archivo Black,Impact" font-size="62" fill="#fff4e0" letter-spacing="2">NORD</text></g>
+<g data-s="52"><path d="M-20 225L80 165L150 215L230 155L320 220L420 180V420H-20Z" fill="#241d48"/></g>
+<g data-s="68"><path d="${forest}" fill="#15112e"/><rect x="-20" y="244" width="440" height="200" fill="#15112e"/></g>
+<g data-s="90"><path d="M-20 262Q100 232 200 258T420 246V420H-20Z" fill="#0b0919"/></g></svg>`;
+  const gs=[...el.querySelectorAll('g[data-s]')];
+  loop(el,t=>{const p=easeIO(tri(t/3.2));gs.forEach(g=>g.setAttribute('transform',`translate(0 ${-p*g.dataset.s})`))});
+}
+/* ================= 06 Влёт в картинку ================= */
+function d6(el){
+  el.style.background='#0e0e10';
+  const L=h('div','d6w','ВЛЁТ'),R=h('div','d6w','В КАДР'),img=h('div','d6img'),cap=h('div','d6cap','<span>Смотреть проект</span><span>→</span>');
+  L.style.left='5cqw';R.style.right='5cqw';el.append(L,R,img,cap);
+  loop(el,t=>{const m=t%6.4,p=easeIO(clamp((m-.5)/2.6))*(1-easeIO(clamp((m-5.1)/.9)));
+    img.style.clipPath=`inset(${(1-p)*34}% ${(1-p)*36}% ${(1-p)*34}% ${(1-p)*36}% round ${(1-p)*16}px)`;
+    img.style.transform=`scale(${1.25-.25*p})`;
+    L.style.transform=`translate(${-p*70}cqw,-50%)`;R.style.transform=`translate(${p*70}cqw,-50%)`;L.style.opacity=R.style.opacity=1-p*1.4;
+    cap.style.opacity=clamp((p-.85)/.15)});
+}
+/* ================= 07 Проявление через маску ================= */
+function d7(el){
+  el.innerHTML=`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><defs>
+<mask id="m7" maskUnits="userSpaceOnUse" x="-3000" y="-3000" width="6400" height="6250"><rect x="-3000" y="-3000" width="6400" height="6250" fill="#000"/><text id="t7" x="200" y="178" text-anchor="middle" font-family="Archivo Black,Impact,sans-serif" font-size="128" fill="#fff">NOVA</text></mask>
+<linearGradient id="g7" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9a5c"/><stop offset=".55" stop-color="#b5395f"/><stop offset="1" stop-color="#2a1250"/></linearGradient></defs>
+<rect x="-50" width="500" height="250" fill="#efe9dc"/>
+<g mask="url(#m7)"><rect x="-3000" y="-3000" width="6400" height="6250" fill="url(#g7)"/><circle cx="280" cy="80" r="46" fill="#ffe2a8" opacity=".85"/><circle cx="110" cy="190" r="70" fill="#1b1034" opacity=".45"/></g>
+<g id="c7" opacity="0"><text x="20" y="232" font-family="Manrope" font-weight="700" font-size="13" fill="#fff">Коллекция 24</text><text x="380" y="232" text-anchor="end" font-family="Manrope" font-weight="700" font-size="13" fill="#fff">Смотреть →</text></g></svg>`;
+  const t7=el.querySelector('#t7'),c7=el.querySelector('#c7');
+  loop(el,t=>{const m=t%6.6,p=easeIO(clamp((m-.6)/3))*(1-easeIO(clamp((m-5.3)/.9)));
+    const s=Math.exp(p*Math.log(18)),cx=200,cy=134;
+    t7.setAttribute('transform',`translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})`);
+    c7.setAttribute('opacity',clamp((p-.9)/.1))});
+}
+/* ================= 08 Переход фигурным срезом ================= */
+function d8(el){
+  el.innerHTML=`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><defs><clipPath id="cp8"><path id="cl8"/></clipPath></defs>
+<rect x="-50" width="500" height="250" fill="#ff5b2e"/><circle cx="110" cy="120" r="70" fill="#ffb26b"/><rect x="80" y="70" width="60" height="120" rx="30" fill="#7a1f3d" opacity=".75"/>
+<text x="230" y="110" font-family="Archivo Black,Impact" font-size="34" fill="#fff4e0">ПЕРВАЯ</text><text x="230" y="146" font-family="Archivo Black,Impact" font-size="34" fill="#fff4e0">СЕКЦИЯ</text>
+<path id="vp8" fill="#efe9dc"/>
+<g clip-path="url(#cp8)"><path d="M250 250V140a50 50 0 0 1 100 0V250Z" fill="#c8ff3d"/><circle cx="300" cy="120" r="22" fill="#121212"/><text x="40" y="112" font-family="Archivo Black,Impact" font-size="32" fill="#121212">ВТОРАЯ</text><text x="40" y="146" font-family="Archivo Black,Impact" font-size="32" fill="#121212">СЕКЦИЯ</text></g></svg>`;
+  const cl=el.querySelector('#cl8'),vp=el.querySelector('#vp8');
+  loop(el,t=>{const m=t%6.2,p=m<4.4?easeIO(clamp((m-.4)/2.4)):1-easeIO(clamp((m-4.6)/1.4));
+    const top=lerp(290,-14,p),amp=34*Math.sin(Math.PI*p);let d=`M-20 ${top}`;
+    for(let x=-20;x<=420;x+=10)d+=`L${x} ${top+amp*Math.sin(x/400*6.28*1.5+t*2.2)}`;
+    d+=`L420 400L-20 400Z`;cl.setAttribute('d',d);vp.setAttribute('d',d)});
+}
+/* ================= 09 Магнитные кнопки ================= */
+function d9(el){
+  const b=h('div','mbtn','<span>Связаться</span>'),dot=h('div','vdot');el.append(b,dot);const lab=b.firstChild;
+  const P=track(el);let x=0,y=0,vx=0,vy=0,lx=0,ly=0,lvx=0,lvy=0;
+  loop(el,t=>{const W=el.clientWidth,H=el.clientHeight,cx=W/2,cy=H/2;
+    const p=P.at(cx+Math.cos(t*.9)*W*.4,cy+Math.sin(t*1.3)*H*.34);
+    const dx=p.x-cx,dy=p.y-cy,near=Math.hypot(dx,dy)<Math.max(110,W*.3);
+    const tx=near?dx*.35:0,ty=near?dy*.35:0;
+    vx+=(tx-x)*.12;vy+=(ty-y)*.12;vx*=.78;vy*=.78;x+=vx;y+=vy;
+    lvx+=(tx*1.3-lx)*.1;lvy+=(ty*1.3-ly)*.1;lvx*=.8;lvy*=.8;lx+=lvx;ly+=lvy;
+    b.style.transform=`translate(${x}px,${y}px)`;lab.style.transform=`translate(${lx-x}px,${ly-y}px)`;
+    b.classList.toggle('act',near);dot.style.transform=`translate(${p.x}px,${p.y}px)`;dot.style.display=p.real?'none':'block'});
+}
+/* ================= 10 Инвертирующий курсор ================= */
+function d10(el){
+  el.style.background='#efe9dc';
+  const tx=h('div','d10t','BIG<br>TYPE'),c=h('div','d10c');el.append(tx,c);const P=track(el);let px=0,py=0,sz=24;
+  loop(el,t=>{const W=el.clientWidth,H=el.clientHeight,p=P.at(W/2+Math.cos(t*.8)*W*.32,H/2+Math.sin(t*1.1)*H*.3);
+    const r=tx.getBoundingClientRect(),er=el.getBoundingClientRect(),over=p.x>r.left-er.left+W*.2&&p.x<r.right-er.left-W*.2&&p.y>H*.18&&p.y<H*.84;
+    px+=(p.x-px)*.18;py+=(p.y-py)*.18;sz+=((over?Math.min(W*.5,200):24)-sz)*.12;
+    c.style.width=c.style.height=sz+'px';c.style.transform=`translate(${px-sz/2}px,${py-sz/2}px)`});
+}
+/* ================= 11 Шлейф из картинок ================= */
+function d11(el){
+  el.style.background='#0f0f12';el.append(h('div','d11t','Selected work'));
+  const pool=[];for(let i=0;i<10;i++){const e=h('div','tr');const hh=i*36;e.style.background=`radial-gradient(circle at 30% 30%,hsl(${hh+30} 90% 70%),transparent 50%),linear-gradient(140deg,hsl(${hh} 80% 58%),hsl(${hh+50} 70% 30%))`;el.append(e);pool.push({e,x:0,y:0,r:0,born:-9})}
+  const P=track(el);let lx=null,ly=0,acc=0,idx=0,z=1;
+  loop(el,t=>{const W=el.clientWidth,H=el.clientHeight,p=P.at(W/2+Math.cos(t*1.1)*W*.36,H/2+Math.sin(t*1.7)*H*.3);
+    if(lx!=null){acc+=Math.hypot(p.x-lx,p.y-ly)}lx=p.x;ly=p.y;
+    if(acc>W*.14){acc=0;const q=pool[idx++%pool.length];q.x=p.x;q.y=p.y;q.r=rnd(-12,12);q.born=t;q.e.style.zIndex=z++}
+    pool.forEach(q=>{const a=t-q.born;if(a>.9){q.e.style.opacity=0;return}
+      const s=a<.12?lerp(.6,1,a/.12):lerp(1,0,easeOut((a-.12)/.78));
+      q.e.style.opacity=1;q.e.style.transform=`translate(${q.x-el.clientWidth*.095}px,${q.y-el.clientWidth*.125}px) rotate(${q.r}deg) scale(${s})`})});
+}
+/* ================= 12 Превью при наведении ================= */
+function d12(el){
+  const R=[['01','Аврора','Брендинг','2025'],['02','Норд','Сайт','2025'],['03','Сигма','Продукт','2024'],['04','Лайт','Приложение','2024']];
+  const G=['linear-gradient(135deg,#ff9a5c,#9c3a6e)','linear-gradient(135deg,#c8ff3d,#1f7a5a)','linear-gradient(135deg,#7aa7ff,#2a1f7a)','linear-gradient(135deg,#ff8fb1,#6a1f5c)'];
+  const l=h('div','d12l',R.map(r=>`<div class="d12r"><small>${r[0]}</small><span>${r[1]}</span><small>${r[2]}</small><small>${r[3]}</small></div>`).join(''));
+  const pv=h('div','pv');el.append(l,pv);const rows=[...l.children];const P=track(el);let cur=-1,px=0,py=0,rot=0;
+  loop(el,t=>{const W=el.clientWidth,er=el.getBoundingClientRect();
+    let idx=Math.floor(t/1.4)%4;const rr=rows[idx].getBoundingClientRect();
+    let p=P.at(W*.58,rr.top-er.top+rr.height/2);
+    if(P.inside){idx=rows.findIndex(r=>{const b=r.getBoundingClientRect();return p.y>=b.top-er.top&&p.y<b.bottom-er.top});}
+    if(idx!==cur&&idx>=0){cur=idx;pv.style.background=G[idx];if(!reduced)pv.animate([{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0)'}],{duration:380,easing:'cubic-bezier(.7,0,.2,1)'})}
+    rows.forEach((r,i)=>r.style.opacity=(cur<0||i===cur)?1:.4);
+    const tx=p.x+16,ty=p.y-pv.offsetHeight*.5,ddx=tx-px;px+=ddx*.12;py+=(ty-py)*.12;rot+=(clamp(ddx*.5,-8,8)-rot)*.15;
+    pv.style.transform=`translate(${px}px,${py}px) rotate(${rot}deg)`});
+}
+/* ================= 13 Бегущая строка с ускорением ================= */
+function d13(el){
+  const w=h('div','d13');const T=['Движение • Скорость • Ритм • ','Скролл • Эффект • Поток • ','Wow • Motion • Flow • '];
+  const rows=T.map((s,i)=>{const r=h('div','mq '+['','o','l'][i],s.repeat(6));w.append(r);return{r,x:-i*80,dir:i===1?1:-1}});el.append(w);
+  loop(el,t=>{const sp=Math.pow(Math.max(0,Math.sin(t*1.1)),6),vel=1+sp*14;
+    rows.forEach(o=>{const cyc=o.r.scrollWidth/6||400;o.x+=o.dir*vel*1.1;if(o.x<-cyc)o.x+=cyc;if(o.x>0)o.x-=cyc;
+      o.r.style.transform=`translateX(${o.x}px) skewX(${-o.dir*Math.min(12,sp*12)}deg)`})});
+}
+/* ================= 14 Живой шрифт ================= */
+function d14(el){
+  const wrap=h('div','d14'),hd=h('div','d14h','Variable'.split('').map(c=>`<i>${c}</i>`).join('')),ax=h('div','ax','<div><span>wght</span> <b>0</b><u><i></i></u></div><div><span>wdth</span> <b>0</b><u><i></i></u></div>');
+  wrap.append(hd,ax);el.append(wrap);const L=[...hd.children].map(e=>({e,w:300,d:80}));const P=track(el);const bs=ax.querySelectorAll('b'),fs=ax.querySelectorAll('u i');
+  loop(el,t=>{const er=el.getBoundingClientRect();let mw=0,md=0;
+    L.forEach((o,i)=>{let tw,td;
+      if(P.inside){const r=o.e.getBoundingClientRect(),d=Math.hypot(r.left+r.width/2-er.left-P.x,r.top+r.height/2-er.top-P.y),k=clamp(1-d/(er.width*.3));tw=150+850*k;td=40+111*k}
+      else{const k=Math.sin(t*2-i*.7)*.5+.5;tw=200+700*k;td=60+85*k}
+      o.w+=(tw-o.w)*.15;o.d+=(td-o.d)*.15;o.e.style.fontVariationSettings=`"wght" ${o.w.toFixed(0)},"wdth" ${o.d.toFixed(0)}`;mw+=o.w;md+=o.d});
+    mw/=L.length;md/=L.length;bs[0].textContent=Math.round(mw);bs[1].textContent=Math.round(md);fs[0].style.width=(mw-100)/9+'%';fs[1].style.width=(md-25)/1.26+'%'});
+}
+/* ================= 15 Жидкий градиент (WebGL) ================= */
+function d15(el){
+  el.style.background='linear-gradient(135deg,#ff5b2e,#7a3cc9 55%,#0c1030)';
+  el.append(h('div','d15t','Soft<br>flow'));
+  const c=document.createElement('canvas');el.prepend(c);const gl=c.getContext('webgl',{antialias:false,alpha:false});
+  if(!gl||reduced)return;
+  const vs='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  const fs=`#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+uniform vec2 r;uniform float t;
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*noise(p);p*=2.;a*=.5;}return v;}
+void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=uv*vec2(r.x/r.y,1.)*1.6;float tt=t*.18;
+vec2 q=vec2(fbm(p+tt),fbm(p+vec2(5.2,1.3)-tt));
+vec2 w=vec2(fbm(p+2.*q+vec2(1.7,9.2)+tt*.7),fbm(p+2.*q+vec2(8.3,2.8)-tt*.6));
+float f=fbm(p+2.*w);
+vec3 c1=vec3(1.,.36,.18),c2=vec3(.98,.78,.55),c3=vec3(.35,.22,.75),c4=vec3(.05,.07,.18);
+vec3 col=mix(c4,c3,smoothstep(.2,.6,f));col=mix(col,c1,smoothstep(.45,.85,length(q)));col=mix(col,c2,smoothstep(.55,1.,w.x*f*2.2));
+col+=(hash(gl_FragCoord.xy+t)-.5)*.06;gl_FragColor=vec4(col,1.);}`;
+  const sh=(ty,src)=>{const s=gl.createShader(ty);gl.shaderSource(s,src);gl.compileShader(s);return s};
+  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))return;
+  gl.useProgram(pr);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const a=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
+  const ur=gl.getUniformLocation(pr,'r'),ut=gl.getUniformLocation(pr,'t');
+  loop(el,t=>{const d=Math.min(devicePixelRatio||1,1.5),w=Math.round(el.clientWidth*d),hh=Math.round(el.clientHeight*d);
+    if(c.width!==w||c.height!==hh){c.width=w;c.height=hh;gl.viewport(0,0,w,hh)}
+    gl.uniform2f(ur,w,hh);gl.uniform1f(ut,t);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)});
+}
+/* ================= 16 3D-объект на скролле ================= */
+function d16(el){
+  el.style.background='radial-gradient(circle at 70% 45%,#2a2d4a,#0e0f1a 70%)';
+  const w=h('div','d16');const obj=h('div','obj','<div class="fc f"></div><div class="fc b"></div><div class="fc l"></div><div class="fc r"></div><div class="fc t"></div><div class="fc u"></div>');
+  const lab=h('div','d16l','<div>01 Корпус</div><div>02 Экран</div><div>03 Материал</div>');
+  w.append(obj);el.append(w,lab,h('div','shd'));const ls=[...lab.children];
+  loop(el,t=>{const p=easeIO(tri(t/3.6));obj.style.transform=`rotateX(${12-p*24}deg) rotateY(${-48+p*120}deg) scale(${.95+p*.2})`;
+    const i=Math.min(2,Math.floor(p*3));ls.forEach((l,k)=>l.classList.toggle('on',k===i))});
+}
+/* ================= 17 Частицы в логотип ================= */
+function d17(el){
+  el.style.background='#0b0b10';const O=mkCanvas(el,1.5),ctx=O.ctx;
+  const off=document.createElement('canvas');off.width=off.height=160;const o=off.getContext('2d');
+  o.lineWidth=15;o.strokeStyle='#fff';o.beginPath();o.arc(80,84,50,0,6.283);o.stroke();o.fillStyle='#fff';o.beginPath();o.arc(122,40,14,0,6.283);o.fill();
+  const d=o.getImageData(0,0,160,160).data,pts=[];for(let y=0;y<160;y+=2)for(let x=0;x<160;x+=2)if(d[(y*160+x)*4+3]>128)pts.push([x-80,y-80]);
+  const P=pts.map((p,i)=>({tx:p[0],ty:p[1],x:0,y:0,dl:rnd(0,1.4),c:['#c8ff3d','#ff5b2e','#efe9dc'][i%3]}));
+  const M=track(el);let cyc=-1,scat=false;
+  loop(el,t=>{const W=O.w,H=O.h,s=Math.min(W,H)*.62/160,m=t%7,cy=Math.floor(t/7);
+    if(cy!==cyc){cyc=cy;scat=false;P.forEach(p=>{p.x=rnd(-W/s/2,W/s/2);p.y=rnd(-H/s/2,H/s/2)})}
+    if(m>5.4&&!scat){scat=true;P.forEach(p=>{p.sx=rnd(-W/s/2,W/s/2);p.sy=rnd(-H/s/2,H/s/2)})}
+    ctx.clearRect(0,0,W,H);ctx.save();ctx.translate(W/2,H/2);ctx.scale(s,s);
+    const mx=(M.x-W/2)/s,my=(M.y-H/2)/s;
+    P.forEach(p=>{const gx=scat?p.sx:p.tx,gy=scat?p.sy:p.ty;
+      if(m>p.dl-.2||scat){p.x+=(gx-p.x)*.07;p.y+=(gy-p.y)*.07}
+      if(M.inside){const dx=p.x-mx,dy=p.y-my,dd=Math.hypot(dx,dy);if(dd<26&&dd>.01){p.x+=dx/dd*(26-dd)*.5;p.y+=dy/dd*(26-dd)*.5}}
+      ctx.fillStyle=p.c;ctx.fillRect(p.x-.8,p.y-.8,1.6,1.6)});
+    ctx.restore()});
+}
+/* ================= 18 Дизеринг ================= */
+function d18(el){
+  const O=mkCanvas(el,1),ctx=O.ctx;
+  const bay=n=>{let m=[[0,2],[3,1]];while(m.length<n){const k=m.length,r=[];for(let y=0;y<k*2;y++){r[y]=[];for(let x=0;x<k*2;x++){const b=m[y%k][x%k]*4,q=(y<k?0:1)*2+(x<k?0:1);r[y][x]=b+[0,2,3,1][q]}}m=r}const N=n*n;return m.map(r=>r.map(v=>(v+.5)/N))};
+  const B={4:bay(4),8:bay(8)};let mode=8,lastS=0,lastIn=false;
+  const pal=['#14110f','#ff5b2e','#f2e9d8'];
+  const shade=(u,v,asp)=>{const x=(u-.5)*asp,y=v-.5;let val=.1+.28*(1-v);const r=.3,d=Math.hypot(x,y);
+    if(d<r){const nx=x/r,ny=y/r,nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));val=.12+.88*Math.max(0,nx*-.45+ny*-.55+nz*.7)}
+    else{const e=Math.hypot(x/.34,(y-.34)/.07);if(e<1)val*=.45}
+    return val};
+  const chips=h('div','chips','<button data-m="4">Bayer 4×4</button><button class="on" data-m="8">Bayer 8×8</button>');el.append(chips);
+  chips.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;mode=+b.dataset.m;[...chips.children].forEach(c=>c.classList.toggle('on',c===b));O.dirty=true});
+  const M=track(el);
+  loop(el,t=>{const W=O.w,H=O.h,m=t%5,s=Math.max(3,Math.round(lerp(16,3,easeOut(clamp((m-.2)/2.6)))));
+    const p=M.at(W*.5+Math.cos(t*.9)*W*.3,H*.5+Math.sin(t*1.3)*H*.2),inn=true;
+    if(s===lastS&&!O.dirty&&!inn)return;
+    lastS=s;O.dirty=false;const cw=Math.ceil(W/s),ch=Math.ceil(H/s),T=B[mode],asp=W/H;
+    for(let y=0;y<ch;y++)for(let x=0;x<cw;x++){const val=shade((x+.5)/cw,(y+.5)/ch,asp),th=T[y%mode][x%mode];
+      ctx.fillStyle=pal[Math.floor(clamp(val+(th-.5)*.55,0,.999)*3)];ctx.fillRect(x*s,y*s,s,s)}
+    /* оригинал вокруг курсора */
+    ctx.save();ctx.beginPath();ctx.arc(p.x,p.y,Math.min(W,H)*.2,0,6.283);ctx.clip();
+    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#5a4a3c');g.addColorStop(1,'#1c1612');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    const sr=H*.3,sg=ctx.createRadialGradient(W/2-sr*.3,H/2-sr*.35,sr*.1,W/2,H/2,sr);sg.addColorStop(0,'#ffd9a0');sg.addColorStop(.5,'#ff5b2e');sg.addColorStop(1,'#3a1208');
+    ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();ctx.ellipse(W/2,H*.84,sr*1.1,sr*.18,0,0,6.283);ctx.fill();
+    ctx.fillStyle=sg;ctx.beginPath();ctx.arc(W/2,H/2,sr,0,6.283);ctx.fill();ctx.restore();
+    ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(p.x,p.y,Math.min(W,H)*.2,0,6.283);ctx.stroke()});
+}
+/* ================= 19 ASCII ================= */
+function d19(el){
+  el.style.background='#070b08';const O=mkCanvas(el,1.5),ctx=O.ctx,ramp=' .:-=+*#%@';let last=-1;
+  const field=(u,v,t)=>{let s=0;const B=[[.5+Math.cos(t*.9)*.2,.5+Math.sin(t*1.2)*.18,.17],[.5+Math.cos(t*1.4+2)*.22,.5+Math.sin(t*.8+1)*.2,.13],[.5+Math.cos(t*.6+4)*.15,.5+Math.sin(t*1.1+3)*.22,.1]];
+    B.forEach(b=>{const dx=(u-b[0])*1.6,dy=v-b[1];s+=b[2]*b[2]/(dx*dx+dy*dy+.002)});return clamp(s*.7)};
+  loop(el,t=>{if(t-last<.033)return;last=t;const W=O.w,H=O.h,m=t%6.5,cs=Math.round(lerp(17,11,easeOut(clamp((m-1.8)/2.2))));
+    ctx.fillStyle='#070b08';ctx.fillRect(0,0,W,H);
+    const scan=clamp((m-.2)/1.6)*H,cw=cs*.6,cols=Math.ceil(W/cw),rows=Math.ceil(H/cs);
+    ctx.font=`${cs*1.05}px ui-monospace,Menlo,monospace`;ctx.textBaseline='top';ctx.fillStyle='#c8ff3d';
+    for(let r=0;r<rows;r++){const y=r*cs;if(y>scan)break;
+      for(let c=0;c<cols;c++){const v=field(c/cols,r/rows,t),i=Math.floor(v*(ramp.length-1));if(i>0)ctx.fillText(ramp[i],c*cw,y)}}
+    if(scan<H){ctx.fillStyle='rgba(200,255,61,.9)';ctx.fillRect(0,scan,W,2)}});
+}
+/* ================= 20 Эффект стекла ================= */
+function d20(el){
+  const mk=()=>{const s=h('div','gs','<i style="left:8%;top:12%;width:34%;aspect-ratio:1;background:#ff5b2e"></i><i style="right:6%;bottom:6%;width:42%;aspect-ratio:1;background:#c8ff3d"></i><i style="left:40%;top:-14%;width:26%;aspect-ratio:1;background:#4f8bff"></i><b>LIQUID</b>');return s};
+  const scene=mk();scene.style.inset=0;const cap=h('div','cap');const cl=mk();cl.classList.add('cl');cap.append(cl,h('span','','Подробнее →'));el.append(scene,cap);
+  const P=track(el);let px=0,py=0,init=false;
+  loop(el,t=>{const W=el.clientWidth,H=el.clientHeight,cw=cap.offsetWidth,ch=cap.offsetHeight;
+    const p=P.at(W/2+Math.cos(t*.7)*W*.22,H/2+Math.sin(t*1.1)*H*.2);
+    if(!init){px=p.x;py=p.y;init=true}px+=(p.x-px)*.1;py+=(p.y-py)*.1;
+    const x=clamp(px-cw/2,0,W-cw),y=clamp(py-ch/2,0,H-ch);
+    cap.style.left=x+'px';cap.style.top=y+'px';
+    cl.style.cssText=`width:${W}px;height:${H}px;left:${-x}px;top:${-y}px;transform-origin:${x+cw/2}px ${y+ch/2}px;transform:scale(1.22)`});
+}
+/* ================= 21 Переходы между страницами ================= */
+function d21(el){
+  const G=['linear-gradient(140deg,#ff9a5c,#9c3a6e)','linear-gradient(140deg,#c8ff3d,#1f7a5a)','linear-gradient(140deg,#7aa7ff,#2a1f7a)'];
+  const T=['Кресло','Лампа','Стол'];
+  const cards=G.map((g,i)=>{const c=h('div','fx',`<span class="lb">${T[i]}</span>`);c.style.background=g;el.append(c);return c});
+  const pg=h('div','pg','<b>Кресло Aero</b><u></u><u></u><s>В корзину</s>');el.append(pg);
+  let st='';const set=s=>{if(s===st)return;st=s;const W=el.clientWidth,H=el.clientHeight;
+    cards.forEach((c,i)=>{if(s==='grid'){c.style.cssText+=`;left:${W*.06+i*W*.3}px;top:${H*.2}px;width:${W*.27}px;height:${H*.6}px;border-radius:12px;opacity:1;transform:none`}
+      else if(i===0){c.style.cssText+=`;left:0;top:0;width:${W}px;height:${H*.56}px;border-radius:0;opacity:1;transform:none;z-index:2`}
+      else{c.style.cssText+=`;opacity:0;transform:scale(.9)`}});pg.classList.toggle('on',s==='page')};
+  set('grid');
+  loop(el,t=>{const m=t%6;set(m>1.2&&m<4.2?'page':'grid')});
+}
+/* ================= 22 Видео на скролле ================= */
+function d22(el){
+  const O=mkCanvas(el,1.5),ctx=O.ctx;
+  loop(el,t=>{const W=O.w,H=O.h,m=t%6.2,p=easeIO(clamp((m-.3)/4.8))*(m<5.4?1:1-easeIO(clamp((m-5.4)/.8)))* 1,f=Math.round(p*119),hz=H*.56;
+    const sk=ctx.createLinearGradient(0,0,0,hz);sk.addColorStop(0,'#1b1034');sk.addColorStop(1,lerpC('#ff7a45','#ffc27a',p));ctx.fillStyle=sk;ctx.fillRect(0,0,W,hz);
+    ctx.fillStyle='#ffe2a8';ctx.beginPath();ctx.arc(W*.5,lerp(hz*1.02,hz*.42,p),H*.13,0,6.283);ctx.fill();
+    ctx.fillStyle='#5a2d6e';ctx.beginPath();ctx.moveTo(0,hz);for(let x=0;x<=W;x+=W/10)ctx.lineTo(x,hz-H*(.1+.07*Math.sin(x*.03+1.3+p*1.2)));ctx.lineTo(W,hz);ctx.fill();
+    ctx.fillStyle='#2a1745';ctx.beginPath();ctx.moveTo(0,hz);for(let x=0;x<=W;x+=W/8)ctx.lineTo(x,hz-H*(.05+.05*Math.sin(x*.05+p*2)));ctx.lineTo(W,hz);ctx.fill();
+    ctx.fillStyle='#17121f';ctx.fillRect(0,hz,W,H-hz);
+    ctx.fillStyle='#2b2438';ctx.beginPath();ctx.moveTo(W*.46,hz);ctx.lineTo(W*.54,hz);ctx.lineTo(W*.9,H);ctx.lineTo(W*.1,H);ctx.fill();
+    ctx.fillStyle='#ffd27a';for(let i=0;i<8;i++){const z=((i+p*6)%8)/8,y=hz+(H-hz)*z*z,hh=(H-hz)*.12*z*z+1,ww=W*.012*z+.5;ctx.fillRect(W/2-ww/2,y,ww,hh)}
+    ctx.fillStyle='rgba(255,255,255,.92)';ctx.font=`500 ${Math.max(10,W*.03)}px JetBrains Mono,monospace`;ctx.textBaseline='top';
+    ctx.fillText(`00:0${Math.floor(f/24)}:${String(f%24).padStart(2,'0')}`,W*.04,H*.06);ctx.textAlign='right';ctx.fillText(`FRAME ${String(f).padStart(3,'0')}/119`,W*.96,H*.06);ctx.textAlign='left';
+    ctx.fillStyle='rgba(255,255,255,.25)';ctx.fillRect(W*.04,H*.93,W*.92,2);ctx.fillStyle='#c8ff3d';ctx.fillRect(W*.04,H*.93,W*.92*p,2)});
+  function lerpC(a,b,t){const A=[1,3,5].map(i=>parseInt(a.substr(i,2),16)),B=[1,3,5].map(i=>parseInt(b.substr(i,2),16));return`rgb(${A.map((v,i)=>Math.round(lerp(v,B[i],t))).join(',')})`}
+}
+/* ================= 23 Секции на весь экран ================= */
+function d23(el){
+  const S=[['#ff5b2e','Скорость','Первая секция',0],['#efe9dc','Стиль','Вторая секция',0],['#1a1a2e','Класс','Третья секция',1]];
+  const sn=h('div','sn',S.map(s=>`<section class="ss" style="background:${s[0]};color:${s[3]?'#fff':'#121212'}"><i></i><b>${s[1]}</b><p>${s[2]}</p></section>`).join(''));
+  const dots=h('div','dots','<i></i><i></i><i></i>'),cn=h('div','snc','01 / 03');el.append(sn,dots,cn);
+  const ss=[...sn.children],ds=[...dots.children];let cur=-1;
+  loop(el,t=>{const i=Math.floor(t/2.4)%3;if(i===cur)return;cur=i;
+    sn.scrollTo({top:i*el.clientHeight,behavior:reduced?'auto':'smooth'});
+    const dark=S[i][3],col=dark?'#fff':'#121212';dots.style.color=cn.style.color=col;
+    ds.forEach((d,k)=>d.classList.toggle('on',k===i));cn.textContent=`0${i+1} / 03`;
+    ss.forEach((s,k)=>{if(k!==i)s.classList.remove('in')});setTimeout(()=>ss[i].classList.add('in'),reduced?0:350)});
+}
+/* ================= 24 Галерея с инерцией ================= */
+function d24(el){
+  el.classList.add('d24');const C=['#ff5b2e','#c8ff3d','#7aa7ff','#efe9dc','#ff8fb1','#ffb26b','#9a7aff'];
+  const st=h('div','gstrip',C.map((c,i)=>`<div class="gc" style="background:linear-gradient(150deg,${c},rgba(0,0,0,.4))"><span>0${i+1}</span></div>`).join(''));
+  const dc=h('div','dragc','Drag');el.append(st,dc);
+  let x=0,v=0,drag=false,lastX=0,idle=0,dir=-1,cx=0,cy=0,over=false,nextKick=1.2,lt=0;
+  el.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;v=0;el.setPointerCapture(e.pointerId)});
+  el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();cx=e.clientX-r.left;cy=e.clientY-r.top;over=e.pointerType==='mouse';
+    if(drag){const dx=e.clientX-lastX;lastX=e.clientX;x+=dx;v=lerp(v,dx,.6);nextKick=lt+3}});
+  const end=()=>{drag=false};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+  el.addEventListener('pointerleave',()=>{over=false});
+  loop(el,(t,dt)=>{lt=t;const W=el.clientWidth,total=W*.035*2+7*W*.34+6*W*.024,min=Math.min(0,W-total),f=dt*60||1;
+    if(!drag){if(t>nextKick&&Math.abs(v)<.3){v=dir*10;dir*=-1;nextKick=t+3.4}
+      x+=v*f;v*=Math.pow(.95,f)}
+    if(x>0){x=0;v=0}if(x<min){x=min;v=0}
+    st.style.transform=`translate3d(${x}px,0,0)`;st.style.setProperty('--sk',clamp(-v*.35,-6,6)+'deg');
+    dc.style.opacity=over?1:0;dc.style.transform=`translate(${cx}px,${cy}px) scale(${drag?.6:1})`});
+}
+/* ================= 25 Раскрытие на весь экран ================= */
+function d25(el){
+  const G=['linear-gradient(140deg,#ff9a5c,#9c3a6e)','linear-gradient(140deg,#c8ff3d,#1f7a5a)','linear-gradient(140deg,#7aa7ff,#2a1f7a)','linear-gradient(140deg,#ff8fb1,#6a1f5c)'];
+  const T=['Лиссабон','Исландия','Киото','Анды'];
+  const cs=G.map((g,i)=>{const c=h('div','fx',`<span class="lb">${T[i]}</span><div class="dt" style="bottom:${15+0}cqw;transition-delay:.45s"><span>12–19 июня</span><span>от 1 290 €</span></div><div class="dt" style="bottom:8cqw;transition-delay:.58s"><span>7 дней</span><span>Забронировать →</span></div>`);c.style.background=g;el.append(c);return c});
+  let st='';const set=s=>{if(s===st)return;st=s;const W=el.clientWidth,H=el.clientHeight,pd=W*.03,g=W*.024,cw=(W-2*pd-g)/2,ch=(H-2*pd-g)/2;
+    cs.forEach((c,i)=>{const lb=c.firstChild;
+      if(s==='open'&&i===1){c.style.cssText+=`;left:0;top:0;width:${W}px;height:${H}px;border-radius:0;opacity:1;transform:none;z-index:3`;lb.style.fontSize='11cqw';lb.style.bottom='24cqw';c.classList.add('open')}
+      else{const col=i%2,row=Math.floor(i/2);c.style.cssText+=`;left:${pd+col*(cw+g)}px;top:${pd+row*(ch+g)}px;width:${cw}px;height:${ch}px;border-radius:12px;opacity:${s==='open'?.25:1};transform:${s==='open'?'scale(.96)':'none'};z-index:${i===1?3:1}`;
+        lb.style.fontSize='';lb.style.bottom='';c.classList.remove('open')}})};
+  set('grid');loop(el,t=>{const m=t%6.6;set(m>1.2&&m<4.8?'open':'grid')});
+}
+/* ================= 26 Расшифровка текста ================= */
+function d26(el){
+  el.style.background='#08090a';const L=['ACCESS GRANTED','ДАННЫЕ РАСШИФРОВАНЫ','> 0x7F3A9C · OK'],rows=L.map(()=>h('div'));const w=h('div','d26');rows.forEach(r=>w.append(r));el.append(w);
+  const pool='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*АБВГДЕЖЗИКЛМН';let last=-1;
+  loop(el,t=>{if(t-last<.045)return;last=t;const m=t%5.2,tt=m-.3;
+    rows.forEach((r,li)=>{const st=li*.35;let s='';[...L[li]].forEach((ch,i)=>{if(ch===' '){s+=' ';return}
+      const fix=st+.25+i*.05;s+=tt<st?' ':tt>=fix?ch:pool[Math.floor(Math.random()*pool.length)]});r.textContent=s})});
+}
+/* ================= 27 Отрисовка линий ================= */
+function d27(el){
+  el.style.background='#0b1016';
+  const P=d=>`<path d="${d}" pathLength="1" fill="none" stroke="#c8ff3d" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" stroke-dasharray="1" stroke-dashoffset="1"/>`;
+  el.innerHTML=`<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet" style="padding:8% 0 2%">
+<g data-g="0">${P('M60 200H340')}${P('M90 200V120H310V200')}</g>
+<g data-g="1">${P('M75 120L200 52L325 120Z')}${P('M258 90V58H280V104')}</g>
+<g data-g="2">${P('M130 150H175V185H130Z')}${P('M225 150H270V185H225Z')}${P('M185 200V150H215V200')}${P('M152.5 150V185M130 167.5H175')}</g>
+<g data-g="3">${P('M90 218H310')}${P('M90 213V223M310 213V223')}${P('M330 120V200')}${P('M325 120H335M325 200H335')}</g>
+<g data-g="4" opacity="0"><text x="200" y="236" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#8d8a82">12.40 m</text><text x="344" y="164" font-family="JetBrains Mono" font-size="9" fill="#8d8a82">6.1</text></g></svg>`;
+  const pc=h('div','d27p','0%'),cp=h('div','d27c','ПРОЕКТ / 07');el.append(pc,cp);
+  const gs=[...el.querySelectorAll('g[data-g]')];
+  loop(el,t=>{const m=t%6.6,p=clamp((m-.3)/4.2);pc.textContent=Math.round(p*100)+'%';
+    gs.forEach(g=>{const i=+g.dataset.g;if(i===4){g.setAttribute('opacity',clamp(p*5-4));return}
+      const k=clamp(p*4-i);g.querySelectorAll('path').forEach(pa=>pa.setAttribute('stroke-dashoffset',1-easeIO(k)))});
+    el.firstChild.style.opacity=m>5.8?1-clamp((m-5.8)/.7):1});
+}
+/* ================= 28 Подсветка за курсором ================= */
+function d28(el){
+  el.style.background='#08080a';const F=['Скорость','Безопасность','Аналитика','Интеграции','Автоматизация','Поддержка'];
+  const g=h('div','d28',F.map((f,i)=>`<div class="sp"><i></i><b>${f}</b><small>0${i+1}</small></div>`).join(''));el.append(g);const cs=[...g.children];const P=track(el);
+  loop(el,t=>{const W=el.clientWidth,H=el.clientHeight,er=el.getBoundingClientRect(),p=P.at(W/2+Math.cos(t*.8)*W*.4,H/2+Math.sin(t*1.2)*H*.35);
+    cs.forEach(c=>{c.style.setProperty('--x',(p.x-c.offsetLeft)+'px');c.style.setProperty('--y',(p.y-c.offsetTop)+'px')})});
+}
+/* ================= 29 Искажение картинок ================= */
+function d29(el){
+  el.style.background='#000';const O=mkCanvas(el,1),ctx=O.ctx;let src=null,ch=null,sw=0,sh=0;
+  const build=()=>{const W=O.w,H=O.h;sw=W;sh=H;src=document.createElement('canvas');src.width=W;src.height=H;const s=src.getContext('2d');
+    s.fillStyle='#efe9dc';s.fillRect(0,0,W,H);const pw=(W-4*W*.03)/3;
+    [['#ff9a5c','#9c3a6e'],['#c8ff3d','#1f7a5a'],['#7aa7ff','#2a1f7a']].forEach((c,i)=>{const x=W*.03+i*(pw+W*.03),y=H*.1,hh=H*.8,g=s.createLinearGradient(x,y,x+pw,y+hh);g.addColorStop(0,c[0]);g.addColorStop(1,c[1]);s.fillStyle=g;s.fillRect(x,y,pw,hh);
+      s.fillStyle='rgba(255,255,255,.85)';s.beginPath();s.arc(x+pw*(.35+.3*i%2),y+hh*.3,pw*.18,0,6.283);s.fill();s.fillStyle='rgba(0,0,0,.28)';s.fillRect(x,y+hh*.62,pw,hh*.38)});
+    ch=['#ff0000','#00ff00','#0000ff'].map(col=>{const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.drawImage(src,0,0);x.globalCompositeOperation='multiply';x.fillStyle=col;x.fillRect(0,0,W,H);return c})};
+  const M=track(el);let kick=0;
+  loop(el,t=>{const W=O.w,H=O.h;if(!src||sw!==W||sh!==H)build();
+    kick=Math.max(kick*.92,Math.min(26,Math.hypot(M.vx,M.vy)*.9));M.vx=M.vy=0;
+    const amp=Math.max(18*Math.pow(Math.max(0,Math.sin(t*1.3)),3),kick);
+    ctx.globalCompositeOperation='source-over';ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
+    const sl=3;for(let y=0;y<H;y+=sl){const dx=Math.sin(y*.045+t*3)*amp;
+      for(let c=0;c<3;c++)ctx.drawImage(ch[c],0,y,W,sl,dx+(c-1)*amp*.35,y,W,sl)}
+    ctx.globalCompositeOperation='source-over'});
+}
+/* ================= 30 Счётчик цифр ================= */
+function d30(el){
+  const S=[[12480,0,'','Пользователей'],[98.6,1,'%','Аптайм'],[3.2,1,'GW','Мощность'],[240,0,'+','Проектов']];
+  const g=h('div','d30',S.map(s=>`<div class="st"><span>${s[3]}</span><b>0<small>${s[2]}</small></b><div class="bars">${Array.from({length:9},(_, i)=>`<i data-h="${30+((i*37)%70)}"></i>`).join('')}</div></div>`).join(''));el.append(g);
+  const cs=[...g.children];
+  loop(el,t=>{const m=t%6;cs.forEach((c,i)=>{const p=easeOut(clamp((m-.3-i*.1)/1.8)),s=S[i];
+    c.querySelector('b').firstChild.nodeValue=(s[0]*p).toLocaleString('ru-RU',{minimumFractionDigits:s[1],maximumFractionDigits:s[1]});
+    c.querySelectorAll('.bars i').forEach((b,k)=>{b.style.height=(b.dataset.h*clamp(p*1.6-k*.08))+'%'})})});
+}
+/* ================= 31 Прелоадер ================= */
+function d31(el){
+  el.style.background='#0c0c0c';
+  const hero=h('div','d31h');let k=0;hero.innerHTML=`<span class="ln">${[...'MAISON'].map(c=>`<i style="--i:${k++}">${c}</i>`).join('')}</span>`;
+  const pre=h('div','pre','<b>000</b><i></i><u><s></s></u>'),ct=h('div','cur t'),cb=h('div','cur b');el.append(hero,pre,ct,cb);
+  const num=pre.querySelector('b'),line=pre.querySelector('s');ct.style.cssText+='';
+  loop(el,t=>{const m=t%6.4,p=easeOut(clamp((m-.2)/2.5));
+    num.textContent=String(Math.round(p*100)).padStart(3,'0');line.style.width=p*100+'%';
+    const done=m>2.9,go=m>3.1&&m<6.0;pre.style.opacity=done?0:1;
+    ct.style.transition=cb.style.transition=(m>=6.0||m<.1)?'none':'';
+    ct.classList.toggle('go',go);cb.classList.toggle('go',go);hero.classList.toggle('on',m>3.5&&m<6.0)});
+}
+
+/* ================= список эффектов ================= */
+const FX=[
+ ['Появление текста по буквам','Split text reveal',d1,'#efe9dc'],
+ ['Заливка текста при скролле','Scroll-driven text fill',d2,'#0f0f12'],
+ ['Карточки стопкой','Sticky stacked cards',d3,'#1b1b1f'],
+ ['Горизонтальный скролл','Horizontal scroll section',d4,'#101013'],
+ ['Параллакс','Layered parallax',d5,'#2b2250'],
+ ['Влёт в картинку','Scroll zoom into image',d6,'#0e0e10'],
+ ['Проявление через маску','Mask reveal',d7,'#efe9dc'],
+ ['Переход фигурным срезом','Shaped clip-path transition',d8,'#ff5b2e'],
+ ['Магнитные кнопки','Magnetic buttons',d9,'#121214'],
+ ['Инвертирующий курсор','Blend-mode cursor',d10,'#efe9dc'],
+ ['Шлейф из картинок за курсором','Image trail',d11,'#0f0f12'],
+ ['Превью при наведении','Hover image preview',d12,'#0f0f12'],
+ ['Бегущая строка с ускорением','Velocity marquee',d13,'#0f0f12'],
+ ['Живой шрифт','Variable font interaction',d14,'#0f0f12'],
+ ['Жидкий градиент','Liquid gradient shader',d15,'#3a2070'],
+ ['3D-объект на скролле','Scroll-driven 3D model',d16,'#14152a'],
+ ['Частицы в логотип','Particle morph',d17,'#0b0b10'],
+ ['Дизеринг','Ordered dithering',d18,'#14110f'],
+ ['ASCII-эффект','ASCII renderer',d19,'#070b08'],
+ ['Эффект стекла','Glass refraction',d20,'#1a1a3e'],
+ ['Переходы между страницами','Page transitions',d21,'#101013'],
+ ['Видео на скролле','Scroll-scrubbed video',d22,'#17121f'],
+ ['Секции на весь экран','Fullscreen scroll snap',d23,'#ff5b2e'],
+ ['Галерея с инерцией','Draggable inertia gallery',d24,'#101013'],
+ ['Раскрытие на весь экран','FLIP expand',d25,'#101013'],
+ ['Расшифровка текста','Text scramble',d26,'#08090a'],
+ ['Отрисовка линий','SVG line drawing',d27,'#0b1016'],
+ ['Подсветка за курсором','Spotlight cards',d28,'#08080a'],
+ ['Искажение картинок на WebGL','WebGL image distortion',d29,'#000'],
+ ['Счётчик цифр','Animated number counter',d30,'#0b0b0c'],
+ ['Прелоадер','Preloader with counter',d31,'#0c0c0c']
+];
+const grid=document.getElementById('grid');
+document.getElementById('cnt').textContent=FX.length;
+FX.forEach(([ru,en,fn,bg],i)=>{
+  const n=String(i+1).padStart(2,'0');
+  const c=h('article','card',`<div class="demo" role="img" aria-label="${ru}"></div><div class="meta"><span class="num">${n}</span><div><h3>${ru}</h3><p>${en}</p></div></div>`);
+  grid.append(c);const d=c.firstChild;d.style.background=bg;
+  try{fn(d)}catch(e){console.error(n,e)}
+});
+</script>
+</body>
+</html>
