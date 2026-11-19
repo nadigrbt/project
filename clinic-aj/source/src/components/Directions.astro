@@ -17,7 +17,6 @@ const list = directions.filter((d) => d.href !== current);
     </div>
     {search && (
       <div class="dr__search">
-        <p class="dr__search-label">Знаете, что ищете? Найдите по названию</p>
         <SiteSearch class="ssearch--compact" id="site-search-dr" placeholder="Процедура, аппарат или врач" />
       </div>
     )}
@@ -41,7 +40,6 @@ const list = directions.filter((d) => d.href !== current);
   .dr__eyebrow::before { content: ''; width: 40px; height: 1px; background: currentColor; }
   .dr__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
   .dr__search { flex: 0 1 460px; }
-  .dr__search-label { margin-bottom: 12px; font-size: var(--fs-small); color: var(--muted); }
   .dr__title { margin-top: 20px; font-size: var(--fs-h2); line-height: 1.15; font-weight: var(--w-thin); }
   .dr__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin: 40px 0 0; padding: 0; list-style: none; }
   .dr__card { position: relative; display: flex; flex-direction: column; height: 100%; padding: 32px 32px 28px; background: var(--ivory); text-decoration: none; transition: background-color 0.25s, color 0.25s; }
