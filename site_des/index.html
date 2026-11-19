@@ -127,10 +127,8 @@ const FX=[
  ['Прелоадер','Preloader with counter']
 ];
 /* превью эффектов лежат на сайте гайда */
-/* превью лежат в папке media/; файлы, которых там пока нет, берутся с сайта гайда */
-const REMOTE='https://wow.sverh.ai/effects-guide/media/';
-const MISSING=new Set(['02.jpg','08.mp4']);
-const media=f=>(MISSING.has(f)?REMOTE:'media/')+f;
+/* превью лежат в папке media/ */
+const media=f=>'media/'+f;
 const pad=n=>String(n).padStart(2,'0');
 const COL=['#FF5B2E','#7AA7FF','#C8A8FF','#FFB26B','#5BD6A3','#FF8FB1','#E8D44D','#6FD0FF'];
 const list=document.getElementById('list');
