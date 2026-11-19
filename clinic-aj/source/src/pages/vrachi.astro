@@ -156,7 +156,7 @@ const jsonLd = [
   .dl__group-title { font-size: var(--fs-h2); font-weight: var(--w-regular); line-height: 1.2; margin-bottom: 24px; }
   .dl__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
   .dl__row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; align-items: center; padding: 32px 0; border-bottom: 1px solid var(--line); }
-  .dl__photo { display: grid; place-items: center; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 100px 100px 0 0; background: var(--ivory); text-decoration: none; }
+  .dl__photo { display: grid; place-items: center; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 0; background: var(--ivory); text-decoration: none; }
   .dl__photo img { width: 100%; height: 100%; object-fit: cover; }
   .dl__initials { font-family: var(--font); font-size: var(--fs-h2); font-weight: var(--w-thin); letter-spacing: 4px; color: var(--wine); }
   .dl__pos { font-family: var(--font); font-size: var(--fs-small); letter-spacing: 2px; text-transform: uppercase; color: var(--wine); margin-bottom: 8px; }
@@ -175,7 +175,6 @@ const jsonLd = [
     .dl__group + .dl__group { margin-top: 44px; }
     .dl__group-title { margin-bottom: 16px; }
     .dl__row { grid-template-columns: 110px minmax(0, 1fr); gap: 20px; align-items: start; padding: 24px 0; }
-    .dl__photo { border-radius: 55px 55px 0 0; }
     .dl__actions { gap: 12px 20px; margin-top: 16px; }
     .dl__btn { min-height: 44px; padding: 0 22px; }
     .dl__more-long { display: none; }
