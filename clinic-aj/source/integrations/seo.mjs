@@ -20,7 +20,7 @@ const PAGE_TYPES = {
     'botulino', 'biorevitalization', 'hand-biorevitalization', 'sfero', 'plazma',
     'clean', 'intim-piling', 'massage', 'lifting',
     'permanent', 'piercing', 'pedikur', 'orto',
-    'mezoterapiya', 'konturnaya-plastika', 'lipolitiki', 'kollagenoterapiya', 'nitevoy-lifting', 'ozonoterapiya',
+    'mezoterapiya', 'konturnaya-plastika', 'lipolitiki', 'kollagenoterapiya', 'kollagenostimulyatory', 'nitevoy-lifting', 'ozonoterapiya',
     'rubcy-posle-akne',
   ],
 };

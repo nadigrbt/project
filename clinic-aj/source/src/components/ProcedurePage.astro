@@ -42,6 +42,8 @@ interface Props {
   cross: Link[];
   ctaTitle: string;
   ctaSub: string;
+  /** Видео в плавающем окошке слева внизу (public/video-widget.js), необязательно */
+  video?: { src: string; poster: string; label: string };
 }
 
 const p = Astro.props;
@@ -195,4 +197,5 @@ const jsonLd = [
     <Contacts />
   </main>
   <Footer />
+  {p.video && <script is:inline src="/video-widget.js?v=4" data-src={p.video.src} data-poster-src={p.video.poster} data-label={p.video.label} defer></script>}
 </Base>

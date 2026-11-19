@@ -294,3 +294,6 @@
   /* фото в арке (/lifting и /massage, решение владельца 28.10) */
   .in-hero__arch--round { width: 400px; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 200px 200px 0 0; }
   @media (max-width: 959px) { .in-hero__arch--round { width: 280px; border-radius: 140px 140px 0 0; } }
+  /* простое прямоугольное фото без арки (/lifting, решение владельца 19.11) */
+  .in-hero__arch--rect { width: 400px; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 0; }
+  @media (max-width: 959px) { .in-hero__arch--rect { width: 280px; } }
