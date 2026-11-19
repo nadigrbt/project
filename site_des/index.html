@@ -8,27 +8,19 @@
 <style>
 @font-face{font-family:SG;font-weight:500;font-display:swap;src:url(fonts/SongerGrotesque-Medium.woff) format('woff')}
 @font-face{font-family:SG;font-weight:800;font-display:swap;src:url(fonts/SongerGrotesque-ExtraBold.woff) format('woff')}
-:root{--bg:#0d0a08;--card:#171310;--line:rgba(242,238,228,.1);--ink:#F2EEE4;--white:#fff;--mute:#9a9083;--lime:#CCFF14;--orange:#D97757;--F:SG,system-ui,sans-serif}
+:root{--bg:#0d0a08;--card:#171310;--line:rgba(242,238,228,.1);--ink:#F2EEE4;--white:#fff;--mute:#9a9083;--lime:#CCFF14;--orange:#D97757;--F:SG,system-ui,sans-serif;--S:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Helvetica,Arial,sans-serif}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--F);font-weight:500;-webkit-font-smoothing:antialiased}
-body:before{content:'';position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.07) 1.4px,transparent 1.4px);background-size:30px 30px;-webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 70%);mask-image:linear-gradient(180deg,#000 0%,transparent 70%)}
 a{color:inherit}
 .wrap{position:relative;max-width:1400px;margin:0 auto;padding:0 32px}
 
 /* шапка */
-.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:28px 0;font:500 17px/1.2 var(--F);color:var(--mute);letter-spacing:.01em}
-.top b{color:var(--white);font-weight:800}
-.hero{padding:70px 0 40px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:28px 0;font:400 14px/1.2 var(--S);color:var(--mute);letter-spacing:.01em}
+.top b{color:var(--white);font-weight:600}
+.hero{padding:70px 0 60px}
 .hero h1{margin:0;font:800 clamp(46px,8vw,116px)/.98 var(--F);letter-spacing:-.02em}
-.hero h1 .l2{display:flex;align-items:center;flex-wrap:wrap;gap:.25em}
-.pill{display:inline-flex;align-items:center;background:var(--lime);color:#141416;border-radius:.24em;padding:.06em .28em .1em;font-size:.62em;letter-spacing:-.01em;transform:rotate(-3deg)}
 
-/* оглавление */
-.idx{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 18px;margin:30px 0 90px;padding:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.idx a{display:flex;gap:12px;text-decoration:none;font:500 18px/1.25 var(--F);color:#cfc6b9;padding:6px 0}
-.idx a span{color:var(--white);font-weight:800;min-width:2ch}
-.idx a:hover{color:var(--white)}
 
 /* эффекты: по 2 экрана в ряд */
 .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px;align-items:start}
@@ -42,35 +34,35 @@ a{color:inherit}
 .dots i:nth-child(2){background:#FEBC2E}
 .dots i:nth-child(3){background:#28C840}
 .tabs{display:flex;flex:1;min-width:0;align-items:center;height:100%;padding:7px 0 5px;gap:2px}
-.tab{position:relative;display:flex;align-items:center;gap:8px;flex:1 1 0;min-width:0;max-width:170px;height:100%;padding:0 8px 0 10px;border-radius:9px;color:#8d857a;font:500 15px/1 var(--F);white-space:nowrap}
+.tab{position:relative;display:flex;align-items:center;gap:8px;flex:1 1 0;min-width:0;max-width:170px;height:100%;padding:0 8px 0 10px;border-radius:9px;color:#8d857a;font:400 13px/1 var(--S);white-space:nowrap}
 .tab+.tab:before{content:'';position:absolute;left:-1px;top:26%;bottom:26%;width:1px;background:rgba(255,255,255,.1)}
-.tab.on{flex:1.9 1 0;max-width:260px;background:#2c2926;color:#f2eee4}
+.tab.on{flex:1.9 1 0;max-width:260px;background:#2c2926;color:#f2eee4;font-weight:500}
 .tab.on:before,.tab.on+.tab:before{display:none}
 .fav{flex:none;width:13px;height:13px;border-radius:4px;background:var(--c,#777)}
 .tab span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .tab em{flex:none;font-style:normal;font-size:15px;line-height:1;opacity:.55;margin-top:-1px}
 .tab.on em{opacity:.8}
-.plus{flex:none;align-self:center;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:#8d857a;font:500 20px/1 var(--F);margin-left:4px;padding-bottom:2px}
+.plus{flex:none;align-self:center;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:#8d857a;font:300 20px/1 var(--S);margin-left:4px;padding-bottom:2px}
 .win video{display:block;width:100%;aspect-ratio:904/744;border-radius:14px;background:#000;object-fit:cover}
 
-.num{margin-top:26px;font:500 18px/1 var(--F);color:var(--mute);display:flex;align-items:baseline;gap:12px}
+.head{margin:0 0 22px}
+.num{font:400 14px/1 var(--S);color:var(--mute);display:flex;align-items:baseline;gap:12px}
 .num b{font:800 72px/.9 var(--F);letter-spacing:-.02em;color:var(--white)}
-.fx h2{margin:18px 0 8px;font:800 46px/1.02 var(--F);letter-spacing:-.015em;color:var(--white)}
-.en{font:500 20px/1.25 var(--F);color:var(--mute)}
+.fx h2{margin:14px 0 8px;font:800 46px/1.02 var(--F);letter-spacing:-.015em;color:var(--white)}
+.en{font:400 17px/1.3 var(--S);color:var(--mute)}
 
-footer{border-top:1px solid var(--line);padding:40px 0 60px;font:500 16px/1.6 var(--F);color:var(--mute);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:40px 0 60px;font:400 14px/1.6 var(--S);color:var(--mute);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
-@media (max-width:900px){.list{grid-template-columns:1fr}.idx{grid-template-columns:1fr 1fr}.fx h2{font-size:38px}}
-@media (max-width:520px){.wrap{padding:0 18px}.idx{grid-template-columns:1fr}.hero{padding-top:44px}.tab:nth-child(n+4){display:none}.bar{gap:10px}}
+@media (max-width:900px){.list{grid-template-columns:1fr}.fx h2{font-size:38px}}
+@media (max-width:520px){.wrap{padding:0 18px}.hero{padding-top:44px}.tab:nth-child(n+4){display:none}.bar{gap:10px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top"><span><b>31 эффект</b> для сайтов</span><span>Портфолио эффектов</span></div>
   <section class="hero">
-    <h1>Эффекты<br><span class="l2">для вашего сайта <span class="pill">портфолио</span></span></h1>
+    <h1>Эффекты<br>для вашего сайта</h1>
   </section>
-  <nav class="idx" id="idx" aria-label="Список эффектов"></nav>
   <main class="list" id="list"></main>
   <footer><span>31 эффект</span><span>Портфолио эффектов для сайтов</span></footer>
 </div>
@@ -114,7 +106,7 @@ const FX=[
 const MEDIA='https://wow.sverh.ai/effects-guide/media/';
 const pad=n=>String(n).padStart(2,'0');
 const COL=['#FF5B2E','#7AA7FF','#C8A8FF','#FFB26B','#5BD6A3','#FF8FB1','#E8D44D','#6FD0FF'];
-const idx=document.getElementById('idx'),list=document.getElementById('list');
+const list=document.getElementById('list');
 
 /* вкладки: активная (текущий эффект) + следующие по списку */
 const tabs=i=>{
@@ -128,12 +120,10 @@ const tabs=i=>{
 
 FX.forEach(([ru,en],i)=>{
   const n=pad(i+1);
-  idx.insertAdjacentHTML('beforeend',`<a href="#e${n}"><span>${n}</span>${ru}</a>`);
   list.insertAdjacentHTML('beforeend',`<article class="fx" id="e${n}">
+    <div class="head"><div class="num"><b>${n}</b>/ ${FX.length}</div><h2>${ru}</h2><div class="en">${en}</div></div>
     <div class="win"><div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="tabs">${tabs(i)}</div></div>
       <video src="${MEDIA}${n}.mp4" poster="${MEDIA}${n}.jpg" muted loop playsinline preload="none" aria-label="${ru}"></video></div>
-    <div class="num"><b>${n}</b>/ ${FX.length}</div>
-    <h2>${ru}</h2><div class="en">${en}</div>
   </article>`);
 });
 
