@@ -5,26 +5,27 @@
 // ключи и синонимы — src/data/search.mjs.
 import { site } from '../data/site';
 
-interface Props { class?: string }
-const { class: cls = '' } = Astro.props;
+// id — нужен свой у каждой строки на странице (в шапке, в блоке направлений, на главной)
+interface Props { class?: string; id?: string; placeholder?: string }
+const { class: cls = '', id = 'site-search', placeholder = 'Найти процедуру, аппарат или врача' } = Astro.props;
 ---
 <form class:list={['ssearch', cls]} role="search" data-site-search autocomplete="off" action="#">
-  <label class="visually-hidden" for="site-search">Поиск по сайту</label>
+  <label class="visually-hidden" for={id}>Поиск по сайту</label>
   <div class="ssearch__field">
     <svg class="ssearch__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <circle cx="10.5" cy="10.5" r="6.5" />
       <path d="M15.5 15.5L21 21" stroke-linecap="round" />
     </svg>
     <input
-      id="site-search"
+      id={id}
       class="ssearch__input"
       type="search"
       enterkeyhint="search"
-      placeholder="Найти процедуру, аппарат или врача"
+      placeholder={placeholder}
       role="combobox"
       aria-autocomplete="list"
       aria-expanded="false"
-      aria-controls="site-search-list"
+      aria-controls={`${id}-list`}
       data-search-input
     />
     <button class="ssearch__clear" type="button" aria-label="Очистить поиск" hidden data-search-clear>
@@ -37,7 +38,7 @@ const { class: cls = '' } = Astro.props;
       <p class="ssearch__label">Часто ищут</p>
       <ul class="ssearch__chips" data-search-popular></ul>
     </div>
-    <ul class="ssearch__list" id="site-search-list" role="listbox" aria-label="Результаты поиска" data-search-list></ul>
+    <ul class="ssearch__list" id={`${id}-list`} role="listbox" aria-label="Результаты поиска" data-search-list></ul>
     <div class="ssearch__empty" hidden data-search-empty>
       <p>По запросу «<span data-search-empty-q></span>» ничего не нашли.</p>
       <p>Позвоните <a href={site.phone.href}>{site.phone.display}</a> или <a href={site.bookingUrl} target="_blank" rel="noopener">запишитесь онлайн</a>: администратор подскажет процедуру.</p>
@@ -45,7 +46,7 @@ const { class: cls = '' } = Astro.props;
   </div>
   <p class="visually-hidden" aria-live="polite" data-search-status></p>
 </form>
-<script is:inline src="/search.js?v=3" defer></script>
+<script is:inline src="/search.js?v=4" defer></script>
 
 <style is:global>
   .ssearch { position: relative; width: 100%; max-width: 560px; z-index: 30; }

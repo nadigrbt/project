@@ -3,10 +3,10 @@ import { mainNav, site } from '../data/site';
 import { img } from '../data/images';
 import SiteSearch from './SiteSearch.astro';
 
-// search — компактный поиск во внутренних страницах (19.11, вариант на согласовании,
-// пока только на /lpg). На главной поиск — большая строка перед «Нашими услугами».
+// search — лупа в шапке с выезжающей строкой поиска. Одобрено владельцем 19.11, стоит
+// на всех страницах, включая главную (там ещё и большая строка перед «Нашими услугами»).
 interface Props { search?: boolean }
-const { search = false } = Astro.props;
+const { search = true } = Astro.props;
 ---
 <header class:list={['header container', search && 'header--search']}>
   <a class="header__logo" href="/" aria-label="A&J — на главную">
@@ -44,7 +44,7 @@ const { search = false } = Astro.props;
     <div class="hsearch__backdrop" data-hsearch-close></div>
     <div class="hsearch__bar">
       <div class="container hsearch__inner">
-        <SiteSearch class="ssearch--compact" />
+        <SiteSearch class="ssearch--compact" id="site-search-top" placeholder="Процедура, аппарат или врач" />
         <button class="hsearch__close" type="button" aria-label="Закрыть поиск" data-hsearch-close>
           <svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke-linecap="round" /></svg>
         </button>
