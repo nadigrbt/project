@@ -51,6 +51,7 @@ const procedures = [
   { href: '/lumecca', label: 'Фотоомоложение Lumecca' },
   { href: '/smas', label: 'SMAS-лифтинг' },
   { href: '/konturnaya-plastika', label: 'Контурная пластика' },
+  { href: '/kollagenostimulyatory', label: 'Коллагеностимуляторы' },
   { href: '/injections', label: 'Инъекционная косметология' },
 ];
 
