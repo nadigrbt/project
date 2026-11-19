@@ -127,7 +127,10 @@ const FX=[
  ['Прелоадер','Preloader with counter']
 ];
 /* превью эффектов лежат на сайте гайда */
-const MEDIA='https://wow.sverh.ai/effects-guide/media/';
+/* превью лежат в папке media/; файлы, которых там пока нет, берутся с сайта гайда */
+const REMOTE='https://wow.sverh.ai/effects-guide/media/';
+const MISSING=new Set(['02.jpg','08.mp4']);
+const media=f=>(MISSING.has(f)?REMOTE:'media/')+f;
 const pad=n=>String(n).padStart(2,'0');
 const COL=['#FF5B2E','#7AA7FF','#C8A8FF','#FFB26B','#5BD6A3','#FF8FB1','#E8D44D','#6FD0FF'];
 const list=document.getElementById('list');
@@ -147,7 +150,7 @@ FX.forEach(([ru,en],i)=>{
   list.insertAdjacentHTML('beforeend',`<article class="fx" id="e${n}">
     <div class="head"><div class="num"><b>${n}</b>/ ${FX.length}</div><h2>${ru}</h2><div class="en">${en}</div></div>
     <div class="win"><div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="tabs">${tabs(i)}</div></div>
-      <video src="${MEDIA}${n}.mp4" poster="${MEDIA}${n}.jpg" muted loop playsinline preload="none" aria-label="${ru}"></video></div>
+      <video src="${media(n+'.mp4')}" poster="${media(n+'.jpg')}" muted loop playsinline preload="none" aria-label="${ru}"></video></div>
   </article>`);
 });
 
